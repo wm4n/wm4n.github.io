@@ -81,6 +81,56 @@
       </tags>
   </entry>
   <entry>
+    <title>為什麼 RD 給的 Android App Bundle 連結不能用！</title>
+    <url>/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小威團隊的 PM，匆忙的跑到小威的座位旁，問到：「小威～ 為什麼你剛剛給我的連結不能用啊！」</p>
+<p>小威回問道：「什麼安裝連結？」</p>
+<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小威看他手機上的畫面：</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>原來自從小威團隊轉用 <a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
+<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
+<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
+<p>小威接著解釋到，該如何開啟：</p>
+<ol>
+<li><p>開啟 Google Play</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
+</li>
+<li><p>點選左上角的漢堡選單</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
+</li>
+<li><p>找到設定，點開進去</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
+</li>
+<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
+</li>
+<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
+</li>
+<li><p>接著找到「內部應用程式分享」，開啟它</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
+
+</li>
+</ol>
+<p>噹噹～ 搞定</p>
+<hr>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
+        </div>
+    
+</div></body></html>]]></content>
+      <categories>
+        <category>小威</category>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>關於 Android 憑證過期</title>
     <url>/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/</url>
     <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>最近網路新聞在流傳著一篇「Android 使用者注意！7.1.1 前舊機將不能正常瀏覽網頁」，小威的公司也對此在做一些可能的準備動作。之所以會對這議題這麼敏感，正是因為不久前，小威公司才因為 <a href="https://support.sectigo.com/articles/Knowledge/Sectigo-AddTrust-External-CA-Root-Expiring-May-30-2020">AddTrust External Root CA 過期</a>，換了自己網站的簽署 root CA 憑證，造成在 Android 5 以下的手機，使用 WebView 時發生錯誤…</p>
