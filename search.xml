@@ -118,7 +118,6 @@
             <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小威還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
           </div>
 
-<hr>
 <div>
     
         <div style="text-align:left;font-size:1em;">
@@ -126,6 +125,46 @@
         </div>
     
 </div></body></html>]]></content>
+      <categories>
+        <category>小威</category>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跳出方塊的 Android</title>
+    <url>/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>老皮是小威公司裡的好友，平常最愛的是，就是偷閒看幾本書，工作休息時，就會拉著小威，分享最近又從書裡學了哪招哪招，批評一下市面上產品、集團策略…。今天一早，老皮也是很興奮的跑來，小威本以為他又要講書裡的哪招，但沒想到老皮竟然掏出他的 Pixel 手機，說道：「你看看，我收集到這麼多的方塊和圈圈。」</p>
+<p>小威好奇問：「什麼！什麼方塊和圈圈」</p>
+<h2 id="App-通知的-icon-🟥-🔵-⬛️-🟤" class="heading-control"><a href="#App-通知的-icon-🟥-🔵-⬛️-🟤" class="headerlink" title="App 通知的 icon 🟥 🔵 ⬛️ 🟤"></a>App 通知的 icon 🟥 🔵 ⬛️ 🟤<a class="heading-anchor" href="#App-通知的-icon-🟥-🔵-⬛️-🟤" aria-hidden="true"></a></h2><p>老皮興奮地指著畫面上的方塊和圈圈：</p>
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="slug">
+
+<p>還有 status bar 上的方塊和圈圈：</p>
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="slug">
+
+<p>這也讓小威會心一笑，這搞笑的方塊和圈圈他之前也遇過。小威記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，只會看到像上面一樣，白色或黑色一塊一塊，什麼都看不清楚。</p>
+<h2 id="該怎麼做❔" class="heading-control"><a href="#該怎麼做❔" class="headerlink" title="該怎麼做❔"></a>該怎麼做❔<a class="heading-anchor" href="#該怎麼做❔" aria-hidden="true"></a></h2><p>雖然 icon 不能用全彩的，但是 Android 允許我們使用一個單色，給 icon 添點色彩，一般通常使用的是企業或產品的品牌色。</p>
+<p>所以正確步驟：</p>
+<ol>
+<li><p>使用單色透明背景的 icon 如下：</p>
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_9.png" class="slug">
+</li>
+<li><p>使用 NotificationCompat.Builder 的 <a href="https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setColor(int)">setColor</a></p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> NotificationCompat.Builder(context, <span class="string">"channelId"</span>)</span><br><span class="line">     .setContentTitle(<span class="string">"title"</span>)</span><br><span class="line">     .setContentText(<span class="string">"message"</span>)</span><br><span class="line">     .setSmallIcon(R.drawable.ic_notify_icon)</span><br><span class="line">     .setColor(Color.RED)</span><br><span class="line">     .setContentIntent(pendingIntent).build();</span><br></pre></td></tr></tbody></table></figure>
+
+</li>
+</ol>
+<p>差不多就這樣～ 產品門面的 icon，還是需要好好關注一下啊 😏</p>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 好 icon 才有好辨識度啊 -------------</p>
+        </div>
+    
+</div>
+</body></html>]]></content>
       <categories>
         <category>小威</category>
         <category>android</category>

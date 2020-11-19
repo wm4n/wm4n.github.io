@@ -9,13 +9,6 @@
   </url>
   
   <url>
-    <loc>https://wm4n.github.io/categories/index.html</loc>
-    
-    <lastmod>2020-11-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://wm4n.github.io/about/index.html</loc>
     
     <lastmod>2020-11-19</lastmod>
@@ -23,7 +16,21 @@
   </url>
   
   <url>
+    <loc>https://wm4n.github.io/categories/index.html</loc>
+    
+    <lastmod>2020-11-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://wm4n.github.io/tags/index.html</loc>
+    
+    <lastmod>2020-11-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://wm4n.github.io/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</loc>
     
     <lastmod>2020-11-19</lastmod>
     
@@ -83,14 +90,14 @@
   </url>
   
   <url>
-    <loc>https://wm4n.github.io/categories/%E5%B0%8F%E5%A8%81/git/</loc>
+    <loc>https://wm4n.github.io/categories/%E5%B0%8F%E5%A8%81/android/</loc>
     <lastmod>2020-11-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://wm4n.github.io/categories/%E5%B0%8F%E5%A8%81/android/</loc>
+    <loc>https://wm4n.github.io/categories/%E5%B0%8F%E5%A8%81/git/</loc>
     <lastmod>2020-11-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
