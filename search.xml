@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>為什麼 RD 給的 Android App Bundle 連結不能用！</title>
+    <url>/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小威團隊的 PM，匆忙的跑到小威的座位旁，問到：「小威～ 為什麼你剛剛給我的連結不能用啊！」</p>
+<p>小威回問道：「什麼安裝連結？」</p>
+<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小威看他手機上的畫面：</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>原來自從小威團隊轉用 <a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
+<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
+<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
+<p>小威接著解釋到，該如何開啟：</p>
+<ol>
+<li><p>開啟 Google Play</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
+</li>
+<li><p>點選左上角的漢堡選單</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
+</li>
+<li><p>找到設定，點開進去</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
+</li>
+<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
+</li>
+<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
+</li>
+<li><p>接著找到「內部應用程式分享」，開啟它</p>
+<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
+
+</li>
+</ol>
+<p>噹噹～ 搞定</p>
+<div class="note danger">
+            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小威還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
+          </div>
+
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
+        </div>
+    
+</div></body></html>]]></content>
+      <categories>
+        <category>小威</category>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git submodule 的分支追蹤</title>
     <url>/git-submodule-%E7%9A%84%E5%88%86%E6%94%AF%E8%BF%BD%E8%B9%A4/</url>
     <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小威在一間資訊公司擔任 Android 軟體工程師，負責公司內的主力產品開發，這是一項功能複雜的產品，它累計了數年的程式碼、商務邏輯、出包經驗等的功能與修正。數年後，團隊中正在推動全新 2.0 的產品，以及公司其他服務也即將推出 App。不可避免的，有許多相似功能相繼橫跨各個產品 App，這讓小威自覺必須有一套更好的方式管理自己團隊的程式碼，改善之後擴充性、維護性，和保護團隊工程師們的肝～</p>
@@ -81,86 +134,36 @@
       </tags>
   </entry>
   <entry>
-    <title>為什麼 RD 給的 Android App Bundle 連結不能用！</title>
-    <url>/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小威團隊的 PM，匆忙的跑到小威的座位旁，問到：「小威～ 為什麼你剛剛給我的連結不能用啊！」</p>
-<p>小威回問道：「什麼安裝連結？」</p>
-<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小威看他手機上的畫面：</p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<p>原來自從小威團隊轉用 <a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
-<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
-<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
-<p>小威接著解釋到，該如何開啟：</p>
-<ol>
-<li><p>開啟 Google Play</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
-</li>
-<li><p>點選左上角的漢堡選單</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
-</li>
-<li><p>找到設定，點開進去</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
-</li>
-<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
-</li>
-<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
-</li>
-<li><p>接著找到「內部應用程式分享」，開啟它</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
-
-</li>
-</ol>
-<p>噹噹～ 搞定</p>
-<div class="note danger">
-            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小威還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
-          </div>
-
-<div>
-    
-        <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
-        </div>
-    
-</div></body></html>]]></content>
-      <categories>
-        <category>小威</category>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>跳出方塊的 Android</title>
     <url>/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</url>
     <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>老皮是小威公司裡的好友，平常最愛的是，就是偷閒看幾本書，工作休息時，就會拉著小威，分享最近又從書裡學了哪招哪招，批評一下市面上產品、集團策略…。今天一早，老皮也是很興奮的跑來，小威本以為他又要講書裡的哪招，但沒想到老皮竟然掏出他的 Pixel 手機，說道：「你看看，我收集到這麼多的方塊和圈圈。」</p>
 <p>小威好奇問：「什麼！什麼方塊和圈圈」</p>
 <h2 id="App-通知的-icon-🟥-🔵-⬛️-🟤" class="heading-control"><a href="#App-通知的-icon-🟥-🔵-⬛️-🟤" class="headerlink" title="App 通知的 icon 🟥 🔵 ⬛️ 🟤"></a>App 通知的 icon 🟥 🔵 ⬛️ 🟤<a class="heading-anchor" href="#App-通知的-icon-🟥-🔵-⬛️-🟤" aria-hidden="true"></a></h2><p>老皮興奮地指著畫面上的方塊和圈圈：</p>
-<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="slug">
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1120_1.png" class="slug" width="324" height="666">
 
-<p>還有 status bar 上的方塊和圈圈：</p>
-<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="slug">
+<p>「這是什麼！？」小威思考著 🤔，接著老皮把畫面解鎖，從畫面上方拉下了通知列表</p>
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="slug" width="324" height="666">
 
-<p>這也讓小威會心一笑，這搞笑的方塊和圈圈他之前也遇過。小威記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，只會看到像上面一樣，白色或黑色一塊一塊，什麼都看不清楚。</p>
+<p>「喔～ 原來如此」小威暗自說道。老皮接著說：「還有 status bar 上的方塊和圈圈，也很有趣：</p>
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="slug" width="324">
+
+<p>這讓小威會心一笑，這搞笑的 App 通知方塊和圈圈他之前也遇過。小威記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，或是其他全彩 icon，只會看到像上面截圖一樣，白色或黑色一塊一塊，完全不知道是哪個 App 來的通知。</p>
 <h2 id="該怎麼做❔" class="heading-control"><a href="#該怎麼做❔" class="headerlink" title="該怎麼做❔"></a>該怎麼做❔<a class="heading-anchor" href="#該怎麼做❔" aria-hidden="true"></a></h2><p>雖然 icon 不能用全彩的，但是 Android 允許我們使用一個單色，給 icon 添點色彩，一般通常使用的是企業或產品的品牌色。</p>
 <p>所以正確步驟：</p>
 <ol>
-<li><p>使用單色透明背景的 icon 如下：</p>
+<li><p>使用單色透明背景的 icon 如下，Android 系統會自動在一般模式、夜晚模式中幫我們調整顏色：</p>
 <img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_9.png" class="slug">
 </li>
-<li><p>使用 NotificationCompat.Builder 的 <a href="https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setColor(int)">setColor</a></p>
+<li><p>使用 NotificationCompat.Builder 的 <a href="https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setColor(int)">setColor</a> 指定想要用的單色：</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> NotificationCompat.Builder(context, <span class="string">"channelId"</span>)</span><br><span class="line">     .setContentTitle(<span class="string">"title"</span>)</span><br><span class="line">     .setContentText(<span class="string">"message"</span>)</span><br><span class="line">     .setSmallIcon(R.drawable.ic_notify_icon)</span><br><span class="line">     .setColor(Color.RED)</span><br><span class="line">     .setContentIntent(pendingIntent).build();</span><br></pre></td></tr></tbody></table></figure>
 
 </li>
 </ol>
-<p>差不多就這樣～ 產品門面的 icon，還是需要好好關注一下啊 😏</p>
+<p>差不多就這樣～ icon 也是產品的門面，共是使用在鎖頻介面中，用來判斷通知來源的方式，所以還是需要好好關注一下啊 😏</p>
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 好 icon 才有好辨識度啊 -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-meh-rolling-eyes"></i> 我也要一個好 icon -------------</p>
         </div>
     
 </div>
