@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://wm4n.github.io/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png">
 <meta property="og:image" content="https://wm4n.github.io/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_9.png">
 <meta property="article:published_time" content="2020-11-19T12:31:04.000Z">
-<meta property="article:modified_time" content="2020-11-20T01:24:04.068Z">
+<meta property="article:modified_time" content="2020-11-30T06:38:50.850Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-11-20 09:24:04" itemprop="dateModified" datetime="2020-11-20T09:24:04+08:00">2020-11-20</time>
+                <time title="修改時間：2020-11-30 14:38:50" itemprop="dateModified" datetime="2020-11-30T14:38:50+08:00">2020-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,17 +296,17 @@
 <img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1120_1.png" class="slug" width="324" height="666">
 
 <p>「這是什麼！？」小威思考著 🤔，接著老皮把畫面解鎖，從畫面上方拉下了通知列表</p>
-<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="slug" width="324" height="666">
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="blah" width="324" height="666">
 
 <p>「喔～ 原來如此」小威暗自說道。老皮接著說：「還有 status bar 上的方塊和圈圈，也很有趣：</p>
-<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="slug" width="324">
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="blah" width="324">
 
 <p>這讓小威會心一笑，這搞笑的 App 通知方塊和圈圈他之前也遇過。小威記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，或是其他全彩 icon，只會看到像上面截圖一樣，白色或黑色一塊一塊，完全不知道是哪個 App 來的通知。</p>
 <h2 id="該怎麼做❔" class="heading-control"><a href="#該怎麼做❔" class="headerlink" title="該怎麼做❔"></a>該怎麼做❔<a class="heading-anchor" href="#該怎麼做❔" aria-hidden="true"></a></h2><p>雖然 icon 不能用全彩的，但是 Android 允許我們使用一個單色，給 icon 添點色彩，一般通常使用的是企業或產品的品牌色。</p>
 <p>所以正確步驟：</p>
 <ol>
 <li><p>使用單色透明背景的 icon 如下，Android 系統會自動在一般模式、夜晚模式中幫我們調整顏色：</p>
-<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_9.png" class="slug">
+<img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_9.png" class="blah">
 </li>
 <li><p>使用 NotificationCompat.Builder 的 <a target="_blank" rel="noopener" href="https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setColor(int)">setColor</a> 指定想要用的單色：</p>
 <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> NotificationCompat.Builder(context, <span class="string">"channelId"</span>)</span><br><span class="line">     .setContentTitle(<span class="string">"title"</span>)</span><br><span class="line">     .setContentText(<span class="string">"message"</span>)</span><br><span class="line">     .setSmallIcon(R.drawable.ic_notify_icon)</span><br><span class="line">     .setColor(Color.RED)</span><br><span class="line">     .setContentIntent(pendingIntent).build();</span><br></pre></td></tr></tbody></table></figure>
@@ -359,7 +359,10 @@
     <a href="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/" rel="prev" title="為什麼 RD 給的 Android App Bundle 連結不能用！">
       <i class="fa fa-chevron-left"></i> 為什麼 RD 給的 Android App Bundle 連結不能用！
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/App-%E5%91%BD%E5%90%8D%E8%88%87%E5%8F%96%E5%8F%A3%E8%99%9F%E7%9A%84%E5%93%B2%E5%AD%B8/" rel="next" title="App 命名與取口號的哲學">
+      App 命名與取口號的哲學 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -439,20 +442,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
