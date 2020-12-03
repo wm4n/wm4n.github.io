@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="bEfZVSXZY5SSSqRac3Ke3k-hoa4kTxmziinhN2ciwpU">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="小威的老闆，今天拿了自己的 iPhone 手機過來，問道：「幫我看看，這是怎麼做的。」小威探過頭去，老闆手機上開著 LINE，一篇對話視窗內，其中一則對話內容是個連結 &#96;line:&#x2F;&#x2F;app&#x2F;xxxxxxxxxx&#96;。老闆點了連結，app 底部跳出一個繪圖區，看起來 LINE 很不搭，不像是原生的功能，接著看著老闆在繪圖區畫了畫，點選送出，剛畫完的作品就貼到了對話視窗內...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 特效：底部滑出視窗">
+<meta property="og:url" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/index.html">
+<meta property="og:site_name" content="Coding Story">
+<meta property="og:description" content="小威的老闆，今天拿了自己的 iPhone 手機過來，問道：「幫我看看，這是怎麼做的。」小威探過頭去，老闆手機上開著 LINE，一篇對話視窗內，其中一則對話內容是個連結 &#96;line:&#x2F;&#x2F;app&#x2F;xxxxxxxxxx&#96;。老闆點了連結，app 底部跳出一個繪圖區，看起來 LINE 很不搭，不像是原生的功能，接著看著老闆在繪圖區畫了畫，點選送出，剛畫完的作品就貼到了對話視窗內...">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/screen.jpg">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/layout.png">
+<meta property="article:published_time" content="2020-12-03T15:30:49.000Z">
+<meta property="article:modified_time" content="2020-12-03T17:54:47.936Z">
+<meta property="article:author" content="William">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="ui">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/screen.jpg">
+
+<link rel="canonical" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Android 特效：底部滑出視窗 | Coding Story</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100890409-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Coding Story" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Coding Story</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">在黑暗中寫故事 👻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分類</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="William">
+      <meta itemprop="description" content="在黑暗中寫故事 👻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Story">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 特效：底部滑出視窗
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-12-03 23:30:49" itemprop="dateCreated datePublished" datetime="2020-12-03T23:30:49+08:00">2020-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-12-04 01:54:47" itemprop="dateModified" datetime="2020-12-04T01:54:47+08:00">2020-12-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%A8%81/" itemprop="url" rel="index"><span itemprop="name">小威</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%A8%81/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-特效：底部滑出視窗/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>9 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小威的老闆，今天拿了自己的 iPhone 手機過來，問道：「幫我看看，這是怎麼做的。」小威探過頭去，老闆手機上開著 LINE，一篇對話視窗內，其中一則對話內容是個連結 <code>line://app/1557539795-mrYlWQp7</code>。老闆點了連結，app 底部跳出一個繪圖區，看起來 LINE 很不搭，不像是原生的功能，接著看著老闆在繪圖區畫了畫，點選送出，剛畫完的作品就貼到了對話視窗內 😦</p>
+<img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/screen.jpg" class="iPhone screen" width="400">
+<br>
+
+<p>事後上網查詢後，小威才知道這技術叫做 LIFF，一句話來解釋就是讓開發者能透過 WebView 與 JavaScript 等技術與 LINE app 做互動，當然實際背後有更多技術成分讓互動上更便利與安全。<br><br></p>
+<h2 id="如何從底部跳出視窗" class="heading-control"><a href="#如何從底部跳出視窗" class="headerlink" title="如何從底部跳出視窗"></a>如何從底部跳出視窗<a class="heading-anchor" href="#如何從底部跳出視窗" aria-hidden="true"></a></h2><p>底部跳出視窗，這個看似 iOS 預設顯示選單的方式，在 Android 上要如何實現呢？🤔 這應該不是預設 Dialog 就能直接做到的效果，小威這邊選擇使用 DialogFragment：</p>
+<figure class="highlight kotlin"><figcaption><span>BottomDialogFragment.kt</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomDialogFragment</span> : <span class="type">DialogFragment</span></span>() {</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> _binding : BottomDialogFragmentBinding? = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> binding <span class="keyword">get</span>() = _binding!!</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">    setStyle(</span><br><span class="line">      STYLE_NORMAL,</span><br><span class="line">      R.style.BottomDialogFragment</span><br><span class="line">    )</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    inflater: <span class="type">LayoutInflater</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    container: <span class="type">ViewGroup</span>?,</span></span></span><br><span class="line"><span class="function"><span class="params">    savedInstanceState: <span class="type">Bundle</span>?</span></span></span><br><span class="line"><span class="function"><span class="params">  )</span></span>: View? {</span><br><span class="line">    _binding = BottomDialogFragmentBinding.inflate(inflater, container, <span class="literal">false</span>)</span><br><span class="line">    <span class="keyword">return</span> _binding?.viewRoot</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line">    _binding?.webView?.loadUrl(<span class="string">"https://wm4n.github.io"</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onDestroyView</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onDestroyView()</span><br><span class="line">    _binding = <span class="literal">null</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<br>
+
+<h3 id="Layout-樣式" class="heading-control"><a href="#Layout-樣式" class="headerlink" title="Layout 樣式"></a>Layout 樣式<a class="heading-anchor" href="#Layout-樣式" aria-hidden="true"></a></h3><p>以上程式碼應該就是 DialogFragment 的標準做法，網路上很多基本範例都是這樣，其中有幾個小地方，經過小威特別修改，以達成預期的效果。</p>
+<p>首先，layout 的樣式，也就是 <code>BottomDialogFragmentBinding</code> 的實作（因為是 DataBinding，所以實際 xml 名稱為 bottom_dialog_fragment)：</p>
+<figure class="highlight xml"><figcaption><span>bottom_dialog_fragment.xml</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">data</span>></span></span><br><span class="line">  <span class="tag"></<span class="name">data</span>></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/view_root"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fitsSystemWindows</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"@android:color/transparent"</span>></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"><<span class="name">androidx.cardview.widget.CardView</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:id</span>=<span class="string">"@+id/card_view"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_height</span>=<span class="string">"350dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:elevation</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardCornerRadius</span>=<span class="string">"12dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardBackgroundColor</span>=<span class="string">"?colorPrimary"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardElevation</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:contentPaddingTop</span>=<span class="string">"1dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">"parent"</span>></span></span><br><span class="line"></span><br><span class="line">      <span class="tag"><<span class="name">WebView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/web_view"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"></<span class="name">androidx.cardview.widget.CardView</span>></span></span><br><span class="line">  <span class="tag"></<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>></span></span><br><span class="line"><span class="tag"></<span class="name">layout</span>></span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>這在畫面的下方，放一個 CardView，裡面包著一個 WebView，範例使用 350dp 來當底部高度來模擬，實際上應該要是一個可控的參數，如下圖：</p>
+<img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/layout.png" class="layout">
+<br>
+
+<h3 id="Style-樣式" class="heading-control"><a href="#Style-樣式" class="headerlink" title="Style 樣式"></a>Style 樣式<a class="heading-anchor" href="#Style-樣式" aria-hidden="true"></a></h3><p>Style 樣式可說是這效果的重點，也是小威花費最多的時間在嘗試的部分，網路上資源很少，官方文件說明也很不容易懂，加上各個設定需互相搭配，組合起來數量可真是不少，以下是在 onCreate 中先指定 style 樣式：</p>
+<figure class="highlight kotlin"><figcaption><span>onCreate</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">  setStyle(</span><br><span class="line">    STYLE_NORMAL,</span><br><span class="line">    R.style.BottomDialogFragment</span><br><span class="line">  )</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>另外在 styles.xml 中定義實際的樣式設定：</p>
+<figure class="highlight xml"><figcaption><span>styles.xml</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">style</span> <span class="attr">name</span>=<span class="string">"BottomDialogFragment"</span> <span class="attr">parent</span>=<span class="string">"android:Theme.Translucent.NoTitleBar"</span>></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowAnimationStyle"</span>></span>@style/BottomDialogFragmentAnimation<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>></span>false<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:statusBarColor"</span>></span>@android:color/transparent<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowDrawsSystemBarBackgrounds"</span>></span>true<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="tag"></<span class="name">style</span>></span></span><br><span class="line"></span><br><span class="line"><span class="tag"><<span class="name">style</span> <span class="attr">name</span>=<span class="string">"BottomDialogFragmentAnimation"</span> <span class="attr">parent</span>=<span class="string">"@android:style/Animation.Activity"</span>></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowEnterAnimation"</span>></span>@anim/slide_in_from_bottom<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowExitAnimation"</span>></span>@anim/slide_out_to_bottom<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="tag"></<span class="name">style</span>></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>以上是小威測試過，最少 style 樣式設定內，可達成指定效果的，每行說明如下：</p>
+<ol>
+<li><p>parent 繼承 <code>android:Theme.Translucent.NoTitleBar</code>，確保使用透明背景時，同時保留 status bar (status 事情況保留，如果本身 App 中隱藏 status bar，這邊可以使用 <code>android:Theme.Translucent.NoTitleBar.Fullscreen</code>)</p>
+</li>
+<li><p><code>windowTranslucentStatus</code>、<code>statusBarColor</code>、<code>windowDrawsSystemBarBackgrounds</code> 搭配一起使用，三個設定讓 DialogFragment 的 status bar 變成完全透明，這讓向上移動的動畫效果不會出現殘影</p>
+</li>
+<li><p>slide 動畫只是單純的 translation 如下</p>
+ <figure class="highlight xml"><figcaption><span>slide_in_from_bottom.xml</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:duration</span>=<span class="string">"@android:integer/config_mediumAnimTime"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/linear"</span>></span></span><br><span class="line"><span class="tag"><<span class="name">translate</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fromYDelta</span>=<span class="string">"50%p"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:toYDelta</span>=<span class="string">"0"</span> /></span></span><br><span class="line"><span class="tag"></<span class="name">set</span>></span></span><br></pre></td></tr></tbody></table></figure>
+
+ <figure class="highlight xml"><figcaption><span>slide_out_to_bottom.xml</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:duration</span>=<span class="string">"@android:integer/config_mediumAnimTime"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/linear"</span>></span></span><br><span class="line"><span class="tag"><<span class="name">translate</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fromYDelta</span>=<span class="string">"0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:toYDelta</span>=<span class="string">"50%p"</span> /></span></span><br><span class="line"><span class="tag"></<span class="name">set</span>></span></span><br></pre></td></tr></tbody></table></figure>
+<br>
+
+</li>
+</ol>
+<h2 id="執行與驗證" class="heading-control"><a href="#執行與驗證" class="headerlink" title="執行與驗證"></a>執行與驗證<a class="heading-anchor" href="#執行與驗證" aria-hidden="true"></a></h2><p>最後，要使用 DialogFragment 也是相當容易：</p>
+<figure class="highlight kotlin"><figcaption><span>MainActivity.kt</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> f = BottomDialogFragment()</span><br><span class="line">f.show(supportFragmentManager, <span class="string">"BottomDialogFragment"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>效果如下：</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/n1Fh-ZnZ7u8" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<br>
+
+<p><strong>相關連結：</strong><a target="_blank" rel="noopener" href="https://github.com/wm4n/android-effect-demo"><i class="fab fa-github"></i> Demo 專案</a><br><br></p>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 我不懂 styles.xml 的設定啊～ -------------</p>
+        </div>
+    
+</div>
+<br></body></html>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>William
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/" title="Android 特效：底部滑出視窗">https://wm4n.github.io/Android-特效：底部滑出視窗/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/ui/" rel="tag"># ui</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/App-%E5%91%BD%E5%90%8D%E8%88%87%E5%8F%96%E5%8F%A3%E8%99%9F%E7%9A%84%E5%93%B2%E5%AD%B8/" rel="prev" title="App 命名與取口號的哲學">
+      <i class="fa fa-chevron-left"></i> App 命名與取口號的哲學
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BE%9E%E5%BA%95%E9%83%A8%E8%B7%B3%E5%87%BA%E8%A6%96%E7%AA%97"><span class="nav-text">如何從底部跳出視窗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Layout-%E6%A8%A3%E5%BC%8F"><span class="nav-text">Layout 樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Style-%E6%A8%A3%E5%BC%8F"><span class="nav-text">Style 樣式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%B7%E8%A1%8C%E8%88%87%E9%A9%97%E8%AD%89"><span class="nav-text">執行與驗證</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">William</p>
+  <div class="site-description" itemprop="description">在黑暗中寫故事 👻</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wm4n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wm4n" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wmandev@gmail.com" title="E-Mail → mailto:wmandev@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">by William (wmandev@gmail.com)</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb5e18906c1d31f" async="async"></script>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyDGEIOX1zR-Jr_1OwDoR-E6NCfczjayxNk',
+      projectId: 'coding-story'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://coding-story.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/";
+    this.page.identifier = "Android-特效：底部滑出視窗/";
+    this.page.title = "Android 特效：底部滑出視窗";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://coding-story.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
