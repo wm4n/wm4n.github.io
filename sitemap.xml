@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://wm4n.github.io/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</loc>
-    
-    <lastmod>2020-12-06</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://wm4n.github.io/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/</loc>
     
     <lastmod>2020-12-06</lastmod>
@@ -38,6 +31,13 @@
   
   <url>
     <loc>https://wm4n.github.io/tags/index.html</loc>
+    
+    <lastmod>2020-12-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://wm4n.github.io/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</loc>
     
     <lastmod>2020-12-06</lastmod>
     
