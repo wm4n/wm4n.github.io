@@ -21,27 +21,21 @@
     var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+  <meta name="description" content="電腦前，小威不斷地調整程式碼，重複編譯，檢查模擬器上的結果，小威一直在試一個標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小威一個上午了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻不正確...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="為什麼 RD 給的 Android App Bundle 連結不能用！">
-<meta property="og:url" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/index.html">
+<meta property="og:title" content="Android 特效：動態變更標籤元件(TabLayout)">
+<meta property="og:url" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/index.html">
 <meta property="og:site_name" content="Coding Story">
-<meta property="og:description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+<meta property="og:description" content="電腦前，小威不斷地調整程式碼，重複編譯，檢查模擬器上的結果，小威一直在試一個標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小威一個上午了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻不正確...">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png">
-<meta property="article:published_time" content="2020-11-18T08:21:24.000Z">
-<meta property="article:modified_time" content="2020-12-09T18:24:53.963Z">
+<meta property="article:published_time" content="2020-12-09T16:04:31.000Z">
+<meta property="article:modified_time" content="2020-12-09T18:24:53.955Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="android">
+<meta property="article:tag" content="ui">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
 
-<link rel="canonical" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+<link rel="canonical" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/">
 
 
 <script id="page-configurations">
@@ -54,7 +48,7 @@
   };
 </script>
 
-  <title>為什麼 RD 給的 Android App Bundle 連結不能用！ | Coding Story</title>
+  <title>Android 特效：動態變更標籤元件(TabLayout) | Coding Story</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
     <script>
@@ -208,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -221,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          為什麼 RD 給的 Android App Bundle 連結不能用！
+          Android 特效：動態變更標籤元件(TabLayout)
         </h1>
 
         <div class="post-meta">
@@ -230,16 +224,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
+              
 
-              <time title="創建時間：2020-11-18 16:21:24" itemprop="dateCreated datePublished" datetime="2020-11-18T16:21:24+08:00">2020-11-18</time>
+              <time title="創建時間：2020-12-10 00:04:31 / 修改時間：02:24:53" itemprop="dateCreated datePublished" datetime="2020-12-10T00:04:31+08:00">2020-12-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-12-10 02:24:53" itemprop="dateModified" datetime="2020-12-10T02:24:53+08:00">2020-12-10</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -270,8 +258,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="為什麼-RD-給的-Android-測試連結不能用！/" itemprop="commentCount"></span>
+    <a title="disqus" href="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-特效：動態變更標籤元件-TabLayout/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -281,7 +269,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>1 分鐘</span>
+              <span>4 分鐘</span>
             </span>
 
         </div>
@@ -293,48 +281,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小威團隊的 PM，匆忙的跑到小威的座位旁，問到：「小威～ 為什麼你剛剛給我的連結不能用啊！」</p>
-<p>小威回問道：「什麼安裝連結？」</p>
-<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小威看他手機上的畫面：</p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>電腦前，小威不斷地調整程式碼，重複編譯，檢查模擬器上的結果，小威一直在試一個標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小威一個上午了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻不正確。<br><br></p>
+<h2 id="簡單、不簡單" class="heading-control"><a href="#簡單、不簡單" class="headerlink" title="簡單、不簡單"></a>簡單、不簡單<a class="heading-anchor" href="#簡單、不簡單" aria-hidden="true"></a></h2><p>小威要的規則很簡單，準備一個標籤元件，透過程式的方式，可隨意添加新標籤頁，或移除現有標籤頁。規格聽起來很簡單，小威心裡盤點著：「TabLayout、ViewPager、FragmentPagerAdapter…」。以往使用標籤元件，常常都是固定數量的標籤頁，透過 FragmentPagerAdapter 定義標籤頁數量、標籤名稱、內容等：</p>
+<figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdatableTabAdapter</span></span>(fm: FragmentManager): FragmentPagerAdapter(</span><br><span class="line">  fm,</span><br><span class="line">  BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</span><br><span class="line">) {</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span> <span class="comment">// 三個標籤頁</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment {</span><br><span class="line">    <span class="comment">// 回傳指定位置的標籤頁 Fragment</span></span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>原來自從小威團隊轉用 <a target="_blank" rel="noopener" href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a target="_blank" rel="noopener" href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
-<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
-<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
-<p>小威接著解釋到，該如何開啟：</p>
-<ol>
-<li><p>開啟 Google Play</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
-</li>
-<li><p>點選左上角的漢堡選單</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
-</li>
-<li><p>找到設定，點開進去</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
-</li>
-<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
-</li>
-<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
-</li>
-<li><p>接著找到「內部應用程式分享」，開啟它</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
+<p>原本以為，只要把固定標籤頁的寫法，改為可變動內容的 MutableList，應該就可以輕鬆搞定吧：</p>
+<figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdatableTabAdapter</span></span>(fm: FragmentManager): FragmentPagerAdapter(</span><br><span class="line">  fm,</span><br><span class="line">  BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</span><br><span class="line">) {</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> tabs: MutableList<<span class="built_in">Int</span>> = mutableListOf(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> {</span><br><span class="line">    <span class="keyword">return</span> tabs.size</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment {</span><br><span class="line">    <span class="comment">// 回傳指定位置的標籤頁 Fragment</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPageTitle</span><span class="params">(position: <span class="type">Int</span>)</span></span>: CharSequence? {</span><br><span class="line">    <span class="keyword">return</span> tabs[position].toString()</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemId</span><span class="params">(position: <span class="type">Int</span>)</span></span>: <span class="built_in">Long</span> {</span><br><span class="line">    <span class="keyword">return</span> tabs[position].toLong()</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-</li>
-</ol>
-<p>噹噹～ 搞定</p>
-<div class="note danger">
-            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小威還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
-          </div>
+<p>結果卻不如預期：</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/dKKFvtnAWHE" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<br>
 
+<h2 id="意想不到的解決方案" class="heading-control"><a href="#意想不到的解決方案" class="headerlink" title="意想不到的解決方案"></a>意想不到的解決方案<a class="heading-anchor" href="#意想不到的解決方案" aria-hidden="true"></a></h2><p>上述做法是，只要在標籤頁上點選了新增符號，就會在右邊加一個新的標籤頁。反之，點選移除符號則移除最左邊的標籤頁，但怎知移除標籤頁後，卻出現了標籤混亂的狀態，因為 FragmentPagerAdapter 保存了標籤頁，並沒有在每次新增移除後都重建標籤頁，即使使用了 <code>notifyDataSetChanged()</code> 結果也是一樣。</p>
+<p>經過一個上午的努力，小威終於找到了關鍵原因，就出現 PagerAdapter 內，以下是 PagerAdapter 的內容：</p>
+<figure class="highlight java"><figcaption><span>PagerAdapter.java</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Called when the host view is attempting to determine if an item's position</span></span><br><span class="line"><span class="comment"> * has changed. Returns {<span class="doctag">@link</span> #POSITION_UNCHANGED} if the position of the given</span></span><br><span class="line"><span class="comment"> * item has not changed or {<span class="doctag">@link</span> #POSITION_NONE} if the item is no longer present</span></span><br><span class="line"><span class="comment"> * in the adapter.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <p>The default implementation assumes that items will never</span></span><br><span class="line"><span class="comment"> * change position and always returns {<span class="doctag">@link</span> #POSITION_UNCHANGED}.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> object Object representing an item, previously returned by a call to</span></span><br><span class="line"><span class="comment"> *               {<span class="doctag">@link</span> #instantiateItem(View, int)}.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> object's new position index from [0, {<span class="doctag">@link</span> #getCount()}),</span></span><br><span class="line"><span class="comment"> *         {<span class="doctag">@link</span> #POSITION_UNCHANGED} if the object's position has not changed,</span></span><br><span class="line"><span class="comment"> *         or {<span class="doctag">@link</span> #POSITION_NONE} if the item is no longer present.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemPosition</span><span class="params">(<span class="meta">@NonNull</span> Object object)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> POSITION_UNCHANGED;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>原來 PagerAdapter 的預設是 POSITION_UNCHANGED，這也是告訴自己，這個位置上的內容沒有變喔。小威立刻在 UpdatableTabAdapter 覆蓋這個 function：</p>
+<figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemPosition</span><span class="params">(`<span class="keyword">object</span>`: <span class="type">Any</span>)</span></span>: <span class="built_in">Int</span> {</span><br><span class="line">  <span class="keyword">return</span> PagerAdapter.POSITION_NONE</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>結果如預期，任務達成～ 🎉🎉🎉<br><br></p>
+<p><strong>相關連結：</strong><a target="_blank" rel="noopener" href="https://github.com/wm4n/android-effect-demo"><i class="fab fa-github"></i> Demo 專案</a><br><br></p>
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 我不懂 styles.xml 的設定啊～ -------------</p>
         </div>
     
-</div></body></html>
+</div>
+<br></body></html>
     </div>
 
     
@@ -349,7 +323,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/" title="為什麼 RD 給的 Android App Bundle 連結不能用！">https://wm4n.github.io/為什麼-RD-給的-Android-測試連結不能用！/</a>
+    <a href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/" title="Android 特效：動態變更標籤元件(TabLayout)">https://wm4n.github.io/Android-特效：動態變更標籤元件-TabLayout/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -361,6 +335,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/ui/" rel="tag"># ui</a>
           </div>
 
         
@@ -369,13 +344,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/" rel="prev" title="關於 Android 憑證過期">
-      <i class="fa fa-chevron-left"></i> 關於 Android 憑證過期
+    <a href="/%E9%9D%B6%E5%BF%83%E4%BA%BA%E5%85%AC%E5%BC%8F%E8%88%87%E5%90%8E%E7%BF%BC%E6%A3%84%E5%85%B5/" rel="prev" title="「后翼棄兵」是如何說故事 - 靶心人公式">
+      <i class="fa fa-chevron-left"></i> 「后翼棄兵」是如何說故事 - 靶心人公式
     </a></div>
-      <div class="post-nav-item">
-    <a href="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/" rel="next" title="為什麼 Android 跳出方塊通知！">
-      為什麼 Android 跳出方塊通知！ <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -441,7 +413,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E5%95%9F%E9%97%9C%E9%8D%B5%E9%96%8B%E9%97%9C"><span class="nav-text">開啟關鍵開關</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B0%A1%E5%96%AE%E3%80%81%E4%B8%8D%E7%B0%A1%E5%96%AE"><span class="nav-text">簡單、不簡單</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%84%8F%E6%83%B3%E4%B8%8D%E5%88%B0%E7%9A%84%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-text">意想不到的解決方案</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -651,9 +623,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/";
-    this.page.identifier = "為什麼-RD-給的-Android-測試連結不能用！/";
-    this.page.title = "為什麼 RD 給的 Android App Bundle 連結不能用！";
+    this.page.url = "https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/";
+    this.page.identifier = "Android-特效：動態變更標籤元件-TabLayout/";
+    this.page.title = "Android 特效：動態變更標籤元件(TabLayout)";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
