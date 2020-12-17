@@ -3,8 +3,8 @@
   <entry>
     <title>Android 特效：動態變更標籤元件(TabLayout)</title>
     <url>/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>電腦前，小威不斷地調整程式碼，重複編譯，檢查模擬器上的結果，一整個上午小威一直在試一個 Android 標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小威一段時間了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻怪怪地。<br><br></p>
-<h2 id="簡單、或不簡單" class="heading-control"><a href="#簡單、或不簡單" class="headerlink" title="簡單、或不簡單"></a>簡單、或不簡單<a class="heading-anchor" href="#簡單、或不簡單" aria-hidden="true"></a></h2><p>小威要求的規格很簡單，準備一個標籤元件，透過程式的方式，可隨意添加新標籤頁，或移除現有標籤頁（除非只剩下一個標籤頁）。規格聽起來很簡單，小威心裡盤點著：「需要 TabLayout、ViewPager、FragmentPagerAdapter…」。團隊以往使用標籤元件，常常都是固定數量的標籤頁，只需透過 FragmentPagerAdapter 定義標籤頁數量、標籤名稱、內容等，就能顯示預期的效果：</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>電腦前，小維不斷地調整程式碼，重複編譯，檢查模擬器上的結果，一整個上午小維一直在試一個 Android 標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小維一段時間了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻怪怪地。<br><br></p>
+<h2 id="簡單、或不簡單" class="heading-control"><a href="#簡單、或不簡單" class="headerlink" title="簡單、或不簡單"></a>簡單、或不簡單<a class="heading-anchor" href="#簡單、或不簡單" aria-hidden="true"></a></h2><p>小維要求的規格很簡單，準備一個標籤元件，透過程式的方式，可隨意添加新標籤頁，或移除現有標籤頁（除非只剩下一個標籤頁）。規格聽起來很簡單，小維心裡盤點著：「需要 TabLayout、ViewPager、FragmentPagerAdapter…」。團隊以往使用標籤元件，常常都是固定數量的標籤頁，只需透過 FragmentPagerAdapter 定義標籤頁數量、標籤名稱、內容等，就能顯示預期的效果：</p>
 <figure class="highlight kotlin"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdatableTabAdapter</span></span>(fm: FragmentManager): FragmentPagerAdapter(</span><br><span class="line">  fm,</span><br><span class="line">  BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</span><br><span class="line">) {</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span> <span class="comment">// 三個標籤頁</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment {</span><br><span class="line">    <span class="comment">// 回傳指定位置的標籤頁 Fragment</span></span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>但如果要能支援新增刪除，就稍微複雜一點，但只要把固定標籤頁的寫法，改為透過 MutableList 來控制標籤頁的數量，應該也不會太複雜吧：</p>
@@ -15,10 +15,10 @@
 <br>
 
 <h2 id="意想不到的解決方案" class="heading-control"><a href="#意想不到的解決方案" class="headerlink" title="意想不到的解決方案"></a>意想不到的解決方案<a class="heading-anchor" href="#意想不到的解決方案" aria-hidden="true"></a></h2><p>上述做法是，只要在標籤頁上點選了新增符號，就會在右邊加一個新的標籤頁。反之，點選移除符號則移除最左邊的標籤頁，但怎知移除標籤頁後，卻出現了標籤混亂的狀態，這是因為 FragmentPagerAdapter 保存了標籤頁，並沒有在每次新增移除後都重建標籤頁，即使使用了 <code>notifyDataSetChanged()</code> 結果也是一樣。</p>
-<p>經過一個上午的努力，小威終於找到了關鍵原因，就是在 PagerAdapter 內的 getItemPosition，以下是 PagerAdapter 的內容及說明文件：</p>
+<p>經過一個上午的努力，小維終於找到了關鍵原因，就是在 PagerAdapter 內的 getItemPosition，以下是 PagerAdapter 的內容及說明文件：</p>
 <figure class="highlight java"><figcaption><span>PagerAdapter.java</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Called when the host view is attempting to determine if an item's position</span></span><br><span class="line"><span class="comment"> * has changed. Returns {<span class="doctag">@link</span> #POSITION_UNCHANGED} if the position of the given</span></span><br><span class="line"><span class="comment"> * item has not changed or {<span class="doctag">@link</span> #POSITION_NONE} if the item is no longer present</span></span><br><span class="line"><span class="comment"> * in the adapter.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <p>The default implementation assumes that items will never</span></span><br><span class="line"><span class="comment"> * change position and always returns {<span class="doctag">@link</span> #POSITION_UNCHANGED}.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> object Object representing an item, previously returned by a call to</span></span><br><span class="line"><span class="comment"> *               {<span class="doctag">@link</span> #instantiateItem(View, int)}.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> object's new position index from [0, {<span class="doctag">@link</span> #getCount()}),</span></span><br><span class="line"><span class="comment"> *         {<span class="doctag">@link</span> #POSITION_UNCHANGED} if the object's position has not changed,</span></span><br><span class="line"><span class="comment"> *         or {<span class="doctag">@link</span> #POSITION_NONE} if the item is no longer present.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemPosition</span><span class="params">(<span class="meta">@NonNull</span> Object object)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> POSITION_UNCHANGED;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>原來 PagerAdapter 的預設是 POSITION_UNCHANGED，這也是告訴自己，這個位置上的內容沒有變喔。小威立刻在 UpdatableTabAdapter class 中覆蓋這個 function：</p>
+<p>原來 PagerAdapter 的預設是 POSITION_UNCHANGED，這也是告訴自己，這個位置上的內容沒有變喔。小維立刻在 UpdatableTabAdapter class 中覆蓋這個 function：</p>
 <figure class="highlight kotlin"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemPosition</span><span class="params">(`<span class="keyword">object</span>`: <span class="type">Any</span>)</span></span>: <span class="built_in">Int</span> {</span><br><span class="line">  <span class="keyword">return</span> PagerAdapter.POSITION_NONE</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>重新編譯，檢查模擬器！結果真如預期，任務達成～ 🎉🎉🎉<br><br></p>
@@ -32,27 +32,27 @@
 </div>
 <br></body></html>]]></content>
       <categories>
-        <category>小威</category>
-        <category>android</category>
+        <category>小維的故事</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>android</tag>
-        <tag>ui</tag>
+        <tag>Android</tag>
+        <tag>UI</tag>
       </tags>
   </entry>
   <entry>
     <title>Android 特效：底部滑出視窗</title>
     <url>/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小威的老闆，今天拿了自己的 iPhone 手機過來，問道：「幫我看看，這是怎麼做的。」小威探過頭去，老闆手機上開著 LINE，一篇對話視窗內，其中一則對話內容是個連結 <code>line://app/1557539795-mrYlWQp7</code>。老闆點了連結，app 底部跳出一個繪圖區，看起來 LINE 很不搭，不像是原生的功能，接著看著老闆在繪圖區畫了畫，點選送出，剛畫完的作品就貼到了對話視窗內 😦</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小維的老闆，今天拿了自己的 iPhone 手機過來，問道：「幫我看看，這是怎麼做的。」小維探過頭去，老闆手機上開著 LINE，一篇對話視窗內，其中一則對話內容是個連結 <code>line://app/1557539795-mrYlWQp7</code>。老闆點了連結，app 底部跳出一個繪圖區，看起來 LINE 很不搭，不像是原生的功能，接著看著老闆在繪圖區畫了畫，點選送出，剛畫完的作品就貼到了對話視窗內 😦</p>
 <img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/screen.jpg" class="iPhone screen" width="400">
 <br>
 
-<p>事後上網查詢後，小威才知道這技術叫做 LIFF，一句話來解釋就是讓開發者能透過 WebView 與 JavaScript 等技術與 LINE app 做互動，當然實際背後有更多技術成分讓互動上更便利與安全。<br><br></p>
-<h2 id="如何從底部跳出視窗" class="heading-control"><a href="#如何從底部跳出視窗" class="headerlink" title="如何從底部跳出視窗"></a>如何從底部跳出視窗<a class="heading-anchor" href="#如何從底部跳出視窗" aria-hidden="true"></a></h2><p>底部跳出視窗，這個看似 iOS 預設顯示選單的方式，在 Android 上要如何實現呢？🤔 這應該不是預設 Dialog 就能直接做到的效果，小威這邊選擇使用 DialogFragment：</p>
+<p>事後上網查詢後，小維才知道這技術叫做 LIFF，一句話來解釋就是讓開發者能透過 WebView 與 JavaScript 等技術與 LINE app 做互動，當然實際背後有更多技術成分讓互動上更便利與安全。<br><br></p>
+<h2 id="如何從底部跳出視窗" class="heading-control"><a href="#如何從底部跳出視窗" class="headerlink" title="如何從底部跳出視窗"></a>如何從底部跳出視窗<a class="heading-anchor" href="#如何從底部跳出視窗" aria-hidden="true"></a></h2><p>底部跳出視窗，這個看似 iOS 預設顯示選單的方式，在 Android 上要如何實現呢？🤔 這應該不是預設 Dialog 就能直接做到的效果，小維這邊選擇使用 DialogFragment：</p>
 <figure class="highlight kotlin"><figcaption><span>BottomDialogFragment.kt</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomDialogFragment</span> : <span class="type">DialogFragment</span></span>() {</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> _binding : BottomDialogFragmentBinding? = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> binding <span class="keyword">get</span>() = _binding!!</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">    setStyle(</span><br><span class="line">      STYLE_NORMAL,</span><br><span class="line">      R.style.BottomDialogFragment</span><br><span class="line">    )</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateView</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    inflater: <span class="type">LayoutInflater</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    container: <span class="type">ViewGroup</span>?,</span></span></span><br><span class="line"><span class="function"><span class="params">    savedInstanceState: <span class="type">Bundle</span>?</span></span></span><br><span class="line"><span class="function"><span class="params">  )</span></span>: View? {</span><br><span class="line">    _binding = BottomDialogFragmentBinding.inflate(inflater, container, <span class="literal">false</span>)</span><br><span class="line">    <span class="keyword">return</span> _binding?.viewRoot</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line">    _binding?.webView?.loadUrl(<span class="string">"https://wm4n.github.io"</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onDestroyView</span><span class="params">()</span></span> {</span><br><span class="line">    <span class="keyword">super</span>.onDestroyView()</span><br><span class="line">    _binding = <span class="literal">null</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <br>
 
-<h3 id="Layout-樣式" class="heading-control"><a href="#Layout-樣式" class="headerlink" title="Layout 樣式"></a>Layout 樣式<a class="heading-anchor" href="#Layout-樣式" aria-hidden="true"></a></h3><p>以上程式碼應該就是 DialogFragment 的標準做法，網路上很多基本範例都是這樣，其中有幾個小地方，經過小威特別修改，以達成預期的效果。</p>
+<h3 id="Layout-樣式" class="heading-control"><a href="#Layout-樣式" class="headerlink" title="Layout 樣式"></a>Layout 樣式<a class="heading-anchor" href="#Layout-樣式" aria-hidden="true"></a></h3><p>以上程式碼應該就是 DialogFragment 的標準做法，網路上很多基本範例都是這樣，其中有幾個小地方，經過小維特別修改，以達成預期的效果。</p>
 <p>首先，layout 的樣式，也就是 <code>BottomDialogFragmentBinding</code> 的實作（因為是 DataBinding，所以實際 xml 名稱為 bottom_dialog_fragment)：</p>
 <figure class="highlight xml"><figcaption><span>bottom_dialog_fragment.xml</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">data</span>></span></span><br><span class="line">  <span class="tag"></<span class="name">data</span>></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/view_root"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fitsSystemWindows</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"@android:color/transparent"</span>></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"><<span class="name">androidx.cardview.widget.CardView</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:id</span>=<span class="string">"@+id/card_view"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_height</span>=<span class="string">"350dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:elevation</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardCornerRadius</span>=<span class="string">"12dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardBackgroundColor</span>=<span class="string">"?colorPrimary"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:cardElevation</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:contentPaddingTop</span>=<span class="string">"1dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">"parent"</span>></span></span><br><span class="line"></span><br><span class="line">      <span class="tag"><<span class="name">WebView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/web_view"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"></<span class="name">androidx.cardview.widget.CardView</span>></span></span><br><span class="line">  <span class="tag"></<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>></span></span><br><span class="line"><span class="tag"></<span class="name">layout</span>></span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
@@ -60,13 +60,13 @@
 <img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%BA%95%E9%83%A8%E6%BB%91%E5%87%BA%E8%A6%96%E7%AA%97/layout.png" class="layout">
 <br>
 
-<h3 id="Style-樣式" class="heading-control"><a href="#Style-樣式" class="headerlink" title="Style 樣式"></a>Style 樣式<a class="heading-anchor" href="#Style-樣式" aria-hidden="true"></a></h3><p>Style 樣式可說是這效果的重點，也是小威花費最多的時間在嘗試的部分，網路上資源很少，官方文件說明也很不容易懂，加上各個設定需互相搭配，組合起來數量可真是不少，以下是在 onCreate 中先指定 style 樣式：</p>
+<h3 id="Style-樣式" class="heading-control"><a href="#Style-樣式" class="headerlink" title="Style 樣式"></a>Style 樣式<a class="heading-anchor" href="#Style-樣式" aria-hidden="true"></a></h3><p>Style 樣式可說是這效果的重點，也是小維花費最多的時間在嘗試的部分，網路上資源很少，官方文件說明也很不容易懂，加上各個設定需互相搭配，組合起來數量可真是不少，以下是在 onCreate 中先指定 style 樣式：</p>
 <figure class="highlight kotlin"><figcaption><span>onCreate</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> {</span><br><span class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">  setStyle(</span><br><span class="line">    STYLE_NORMAL,</span><br><span class="line">    R.style.BottomDialogFragment</span><br><span class="line">  )</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>另外在 styles.xml 中定義實際的樣式設定：</p>
 <figure class="highlight xml"><figcaption><span>styles.xml</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag"><<span class="name">style</span> <span class="attr">name</span>=<span class="string">"BottomDialogFragment"</span> <span class="attr">parent</span>=<span class="string">"android:Theme.Translucent.NoTitleBar"</span>></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowAnimationStyle"</span>></span>@style/BottomDialogFragmentAnimation<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>></span>false<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:statusBarColor"</span>></span>@android:color/transparent<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowDrawsSystemBarBackgrounds"</span>></span>true<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="tag"></<span class="name">style</span>></span></span><br><span class="line"></span><br><span class="line"><span class="tag"><<span class="name">style</span> <span class="attr">name</span>=<span class="string">"BottomDialogFragmentAnimation"</span> <span class="attr">parent</span>=<span class="string">"@android:style/Animation.Activity"</span>></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowEnterAnimation"</span>></span>@anim/slide_in_from_bottom<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="xml">  <span class="tag"><<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowExitAnimation"</span>></span>@anim/slide_out_to_bottom<span class="tag"></<span class="name">item</span>></span></span></span><br><span class="line"><span class="tag"></<span class="name">style</span>></span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>以上是小威測試過，最少 style 樣式設定內，可達成指定效果的，每行說明如下：</p>
+<p>以上是小維測試過，最少 style 樣式設定內，可達成指定效果的，每行說明如下：</p>
 <ol>
 <li><p>parent 繼承 <code>android:Theme.Translucent.NoTitleBar</code>，確保使用透明背景時，同時保留 status bar (status 事情況保留，如果本身 App 中隱藏 status bar，這邊可以使用 <code>android:Theme.Translucent.NoTitleBar.Fullscreen</code>)</p>
 </li>
@@ -97,12 +97,12 @@
 </div>
 <br></body></html>]]></content>
       <categories>
-        <category>小威</category>
-        <category>android</category>
+        <category>小維的故事</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>android</tag>
-        <tag>ui</tag>
+        <tag>Android</tag>
+        <tag>UI</tag>
       </tags>
   </entry>
   <entry>
@@ -142,7 +142,7 @@
 </div>
 </body></html>]]></content>
       <categories>
-        <category>老皮</category>
+        <category>老皮的故事</category>
         <category>讀書心得</category>
       </categories>
       <tags>
@@ -150,11 +150,79 @@
       </tags>
   </entry>
   <entry>
+    <title>RxJava 特效：API 搭配 zip 的妙用</title>
+    <url>/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小維公司的門口角落，放有幾張小桌子，小維正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小維負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小維的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小維團隊，腦中冒出一個之前看過的 <a href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br></p>
+<h2 id="在沒有的-ReactiveX-之前" class="heading-control"><a href="#在沒有的-ReactiveX-之前" class="headerlink" title="在沒有的 ReactiveX 之前"></a>在沒有的 ReactiveX 之前<a class="heading-anchor" href="#在沒有的-ReactiveX-之前" aria-hidden="true"></a></h2><p>當一個畫面對應一支 API，流程是相當單純：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg" class title="1 API / screen">
+<br>
+
+<p>但是當一個畫面有需要兩支或以上 API 才能呈現內容，就「稍微」有點複雜了，有多種組合都可以達到目的，通常會視狀況使用。</p>
+<h3 id="相依性高的-API-組合" class="heading-control"><a href="#相依性高的-API-組合" class="headerlink" title="相依性高的 API 組合"></a>相依性高的 API 組合<a class="heading-anchor" href="#相依性高的-API-組合" aria-hidden="true"></a></h3><p>在有強烈相依性下的狀況，當一支 API 失敗，接下來的都會變成毫無意義，這時可以讓一支 API 接著另一支，當第一支結果回來後，先處理結果，再決定是否要執行第二支 API。這就有兩種可能的組合：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg" class title="2 API / screen flow #1">
+<br>
+
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_2.svg" class title="2 API / screen flow #2">
+<br>
+
+<h3 id="最重要的先顯示" class="heading-control"><a href="#最重要的先顯示" class="headerlink" title="最重要的先顯示"></a>最重要的先顯示<a class="heading-anchor" href="#最重要的先顯示" aria-hidden="true"></a></h3><p>當第二支 API 只是單純的附加資訊時，這時使用者先看到第一支 API 資訊比較重要，就可以使用以下變形。這讓第一支結果回來後，就立刻渲染，等第二支 API 回來，再渲染第二支結果，即使後面的 API 失敗，對使用者的影響也較小：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_3.svg" class title="2 API / screen flow #3">
+<br>
+
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_4.svg" class title="2 API / screen flow #4">
+<br>
+
+<h3 id="大家都重要，且無相依性" class="heading-control"><a href="#大家都重要，且無相依性" class="headerlink" title="大家都重要，且無相依性"></a>大家都重要，且無相依性<a class="heading-anchor" href="#大家都重要，且無相依性" aria-hidden="true"></a></h3><p>當 API 誰先誰後的順序不重要，而且沒有相依性時，線性同步發送且等待結果都回來後，再渲染畫面：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_5.svg" class title="2 API / screen flow #5">
+<br>
+
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_6.svg" class title="2 API / screen flow #6">
+<br>
+
+<h3 id="非同步進行" class="heading-control"><a href="#非同步進行" class="headerlink" title="非同步進行"></a>非同步進行<a class="heading-anchor" href="#非同步進行" aria-hidden="true"></a></h3><p>非同步進行也是常用的方式之一，如果 API 無相依性，或者資料順序不重要，也可以非同步發送 API，哪個先回來就先渲染哪個。缺點也是常常會看到畫面先長出一部分，接著馬上在跳出剩下的部分，至於哪部分先，哪個後出來，則無法預測：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg" class title="2 API / screen flow #7">
+<br>
+
+<p>當資料內容必須一同顯示，那就得等待結果都回來後才渲染，這是小維公司內常見的用法，優點是不會看到畫面分別跳出來，缺點是不太容易實作，常常看到有寫錯亂的狀況（不會用又愛用，為什麼不乾脆使用同步方式，一個接一個）：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg" class title="2 API / screen flow #8">
+<br>
+
+<h2 id="ReactiveX-的出現" class="heading-control"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現<a class="heading-anchor" href="#ReactiveX-的出現" aria-hidden="true"></a></h2><p>自從小維團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png" class title="RxJava zip operator">
+<br>
+
+<p>使用 zip 後流程變成如下：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg" class title="2 API / zip operator">
+<br>
+
+<p>程式碼寫起來出奇的簡單：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Single<Result> <span class="title">getScreenData</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="comment">// 非同步呼叫 API 1</span></span><br><span class="line">    Single<ApiResult> api_1_result = api1();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 非同步呼叫 API 2</span></span><br><span class="line">    Single<ApiResult> api_2_result = api2();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待兩個結果都回來後，使用 handleApiResult 將資料轉換成 UI 可使用的 data model</span></span><br><span class="line">    <span class="keyword">return</span> Single.zip(api_1_result, api_2_result, <span class="keyword">this</span>::handleApiResult);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Result <span class="title">handleApiResult</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_1_result,</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_2_result)</span> </span>{</span><br><span class="line">    Result result = <span class="keyword">new</span> Result();</span><br><span class="line">    <span class="comment">// 模擬將資料整合</span></span><br><span class="line">    result.setData1(api_1_result);</span><br><span class="line">    result.setData2(api_2_result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<br>
+<br>
+
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-laptop-code"></i> 好想精通 RxJava 啊～ -------------</p>
+        </div>
+    
+</div>
+<br></body></html>]]></content>
+      <categories>
+        <category>小維的故事</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>RxJava</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git submodule 的分支追蹤</title>
     <url>/git-submodule-%E7%9A%84%E5%88%86%E6%94%AF%E8%BF%BD%E8%B9%A4/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小威在一間資訊公司擔任 Android 軟體工程師，負責公司內的主力產品開發，這是一項功能複雜的產品，它累計了數年的程式碼、商務邏輯、出包經驗等的功能與修正。數年後，團隊中正在推動全新 2.0 的產品，以及公司其他服務也即將推出 App。不可避免的，有許多相似功能相繼橫跨各個產品 App，這讓小威自覺必須有一套更好的方式管理自己團隊的程式碼，改善之後擴充性、維護性，和保護團隊工程師們的肝～</p>
-<p>一個從頭打造的產品，功能是不斷的疊加上去，鮮少有團隊能真的從開頭就搞好架構設計，小威團隊的產品也不例外。除了自身的核心功能外，還使用了圖隊之前開發的功能，以及許多現成 github 的模組，有的已提供 gradle 的安裝與使用，有的卻只是單純的 Java/Kotlin 程式碼。在初期，最直接暴力的方式就是直接抓下來，塞進當前的 App 中使用，累積到今時今日，已有數個相同模組，分別的複製到數個專案上 😱</p>
-<p>小威團隊有幾個選擇：</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小維在一間資訊公司擔任 Android 軟體工程師，負責公司內的主力產品開發，這是一項功能複雜的產品，它累計了數年的程式碼、商務邏輯、出包經驗等的功能與修正。數年後，團隊中正在推動全新 2.0 的產品，以及公司其他服務也即將推出 App。不可避免的，有許多相似功能相繼橫跨各個產品 App，這讓小維自覺必須有一套更好的方式管理自己團隊的程式碼，改善之後擴充性、維護性，和保護團隊工程師們的肝～</p>
+<p>一個從頭打造的產品，功能是不斷的疊加上去，鮮少有團隊能真的從開頭就搞好架構設計，小維團隊的產品也不例外。除了自身的核心功能外，還使用了圖隊之前開發的功能，以及許多現成 github 的模組，有的已提供 gradle 的安裝與使用，有的卻只是單純的 Java/Kotlin 程式碼。在初期，最直接暴力的方式就是直接抓下來，塞進當前的 App 中使用，累積到今時今日，已有數個相同模組，分別的複製到數個專案上 😱</p>
+<p>小維團隊有幾個選擇：</p>
 <ol>
 <li>維持現狀，每個 App 複製一份程式碼<ul>
 <li><strong>優點</strong>：現有架構、不需更改、各個 App 工程彈性自由，想怎麼改就怎麼改</li>
@@ -176,8 +244,8 @@
 </ul>
 </li>
 </ol>
-<p>最後，小威團隊選擇 submodule 模式去進行，以下是小威的手稿紀錄：</p>
-<h2 id="將專案切分成-submodule" class="heading-control"><a href="#將專案切分成-submodule" class="headerlink" title="將專案切分成 submodule"></a>將專案切分成 submodule<a class="heading-anchor" href="#將專案切分成-submodule" aria-hidden="true"></a></h2><p>目前小威團隊負責的產品 git 架構如下，一個巨型 git repo，內容包山包海，含之前團隊開發的功能模組，以及第三方 github 的功能模組等：</p>
+<p>最後，小維團隊選擇 submodule 模式去進行，以下是小維的手稿紀錄：</p>
+<h2 id="將專案切分成-submodule" class="heading-control"><a href="#將專案切分成-submodule" class="headerlink" title="將專案切分成 submodule"></a>將專案切分成 submodule<a class="heading-anchor" href="#將專案切分成-submodule" aria-hidden="true"></a></h2><p>目前小維團隊負責的產品 git 架構如下，一個巨型 git repo，內容包山包海，含之前團隊開發的功能模組，以及第三方 github 的功能模組等：</p>
 <img src="/git-submodule-%E7%9A%84%E5%88%86%E6%94%AF%E8%BF%BD%E8%B9%A4/app_diagram_1.svg" class title="產品架構圖 - 之前">
 
 <p>重新打造後，新的 git 架構如下，可被多個產品共用的模組，都會拉成獨立的 git repo，由一個主要 git repo 來把其他功能，以 submodule 方式添加進來：</p>
@@ -195,8 +263,8 @@
 <h3 id="更新-repo-內容" class="heading-control"><a href="#更新-repo-內容" class="headerlink" title="更新 repo 內容"></a>更新 repo 內容<a class="heading-anchor" href="#更新-repo-內容" aria-hidden="true"></a></h3><p>當要同步線上程式碼時，一般會用 <code>git pull</code> 來抓取最新內容，但改用 submodule 方式後，會發現 function1 不會同步。如果要更新，則必須進入到 function1 目錄下再次執行 <code>git pull</code></p>
 <figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line">❯ <span class="built_in">cd</span> function1</span><br><span class="line"></span><br><span class="line">❯ git pull</span><br><span class="line">remote: Enumerating objects: 5, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (5/5), <span class="keyword">done</span>.</span><br><span class="line">remote: Compressing objects: 100% (3/3), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0</span><br><span class="line">展開物件中: 100% (3/3), 691 位元組 | 138.00 KiB/s, 完成.</span><br><span class="line">來自 https://github.com/wm4n/function1</span><br><span class="line">   5f9ae22..e6843b4  main       -> origin/main</span><br><span class="line">更新 5f9ae22..e6843b4</span><br><span class="line">Fast-forward</span><br><span class="line"> README.md | 2 +-</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="當-submodule-數量成長後" class="heading-control"><a href="#當-submodule-數量成長後" class="headerlink" title="當 submodule 數量成長後"></a>當 submodule 數量成長後<a class="heading-anchor" href="#當-submodule-數量成長後" aria-hidden="true"></a></h3><p>小威團隊負責的產品，如今被拆解成 5 個 submodule 後，發現今後如果要更新，就要進入每個 submodule 的目錄，分別執行 <code>git pull</code> 指令，這表示一個專案如果有 X 個 submodule，每次更新最多就會有 X + 1 個 <code>git pull</code>。這不僅讓小威受不了，團隊也常為了忘記要確實執行，反而造成許多問題。</p>
-<p>為了改善這問題，小威在模組設定檔中，<strong>指定讓模組 submodule 追蹤某個特定的遠端分支</strong></p>
+<h3 id="當-submodule-數量成長後" class="heading-control"><a href="#當-submodule-數量成長後" class="headerlink" title="當 submodule 數量成長後"></a>當 submodule 數量成長後<a class="heading-anchor" href="#當-submodule-數量成長後" aria-hidden="true"></a></h3><p>小維團隊負責的產品，如今被拆解成 5 個 submodule 後，發現今後如果要更新，就要進入每個 submodule 的目錄，分別執行 <code>git pull</code> 指令，這表示一個專案如果有 X 個 submodule，每次更新最多就會有 X + 1 個 <code>git pull</code>。這不僅讓小維受不了，團隊也常為了忘記要確實執行，反而造成許多問題。</p>
+<p>為了改善這問題，小維在模組設定檔中，<strong>指定讓模組 submodule 追蹤某個特定的遠端分支</strong></p>
 <figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line">❯ cat .gitmodules</span><br><span class="line">[submodule <span class="string">"function1"</span>]</span><br><span class="line">	path = function1</span><br><span class="line">	url = https://wm4n@github.com/wm4n/function1.git</span><br><span class="line">	branch = main</span><br></pre></td></tr></tbody></table></figure>
 
 <p>branch 代表這個 submodule 將追蹤指定的遠端分支。之後，團隊只要使用 <code>git submodule update --remote</code> 指令<strong>一次</strong>，所有的 submodule 都會依照指定的<strong>分支</strong>去抓最新的內容，如下：</p>
@@ -205,14 +273,14 @@
 <h3 id="令人分心的-git-status" class="heading-control"><a href="#令人分心的-git-status" class="headerlink" title="令人分心的 git status"></a>令人分心的 git status<a class="heading-anchor" href="#令人分心的-git-status" aria-hidden="true"></a></h3><p>一切設定好，分支追蹤功能滿足了團隊的需求，從此之後，可重複使用的功能順利地抽出成獨立 git repo，不同 App 依照各自需求，添加自己需要的 submodule，然後一鍵更新所有模組也不再是夢想 🥳。一切是如此的美好，直到團隊發現… 經常 <code>git status</code>，就會出現：</p>
 <figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line">❯ git status</span><br><span class="line">位於分支 main</span><br><span class="line">您的分支與上游分支 <span class="string">'origin/main'</span> 一致。</span><br><span class="line"></span><br><span class="line">尚未暫存以備提交的變更：</span><br><span class="line">  （使用 <span class="string">"git add <檔案>..."</span> 更新要提交的內容）</span><br><span class="line">  （使用 <span class="string">"git restore <檔案>..."</span> 捨棄工作區的改動）</span><br><span class="line">	修改：     function1 (新提交)</span><br><span class="line"></span><br><span class="line">修改尚未加入提交（使用 <span class="string">"git add"</span> 和/或 <span class="string">"git commit -a"</span>）</span><br></pre></td></tr></tbody></table></figure>
 
-<p>在使用分支追蹤之前，小威的團隊總是會在跟新模組後，緊接著跟新主 App 的模組 commit ID。使用分支追蹤後，雖然不必要再跟新模組 commit ID（因為 <code>git submodule update --remote</code> 指令會自動同步分支最新的 commit ID），但 <code>git status</code> 指令還是會提醒有更新尚未提交。久而久之，團隊都覺得這訊息實在惱人啊～ 😖</p>
-<p>小威試了數個方式後，包括把相關檔案都加到 <code>.gitignore</code>（此方法無效），最後是在模組設定中，加上 <code>ignore = all</code>，就搞定了：</p>
+<p>在使用分支追蹤之前，小維的團隊總是會在跟新模組後，緊接著跟新主 App 的模組 commit ID。使用分支追蹤後，雖然不必要再跟新模組 commit ID（因為 <code>git submodule update --remote</code> 指令會自動同步分支最新的 commit ID），但 <code>git status</code> 指令還是會提醒有更新尚未提交。久而久之，團隊都覺得這訊息實在惱人啊～ 😖</p>
+<p>小維試了數個方式後，包括把相關檔案都加到 <code>.gitignore</code>（此方法無效），最後是在模組設定中，加上 <code>ignore = all</code>，就搞定了：</p>
 <figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line">❯ cat .gitmodules</span><br><span class="line">[submodule <span class="string">"function1"</span>]</span><br><span class="line">	path = function1</span><br><span class="line">	url = https://wm4n@github.com/wm4n/function1.git</span><br><span class="line">	branch = main</span><br><span class="line">	ignore = all</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="對-github-上的第三方專案做客製化" class="heading-control"><a href="#對-github-上的第三方專案做客製化" class="headerlink" title="對 github 上的第三方專案做客製化"></a>對 github 上的第三方專案做客製化<a class="heading-anchor" href="#對-github-上的第三方專案做客製化" aria-hidden="true"></a></h3><p>沒多久後，小威團隊發現，他們想對 github 上的第三方專案做客製化，以符合規格需求，但要如何追蹤 github 專案分支的同時，又做客製化呢？畢竟無法對第三方的專案做修改（除非經由 PR 流程，但一般來說不會接受客製化…）</p>
-<p>小威團隊利用 github fork 專案的方式，讓自己的專案轉追蹤 fork 的拷貝，利用 fork 拷貝來做客製化，同時又能<a href="https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/syncing-a-fork">不斷從 upstream 專案中更新</a></p>
+<h3 id="對-github-上的第三方專案做客製化" class="heading-control"><a href="#對-github-上的第三方專案做客製化" class="headerlink" title="對 github 上的第三方專案做客製化"></a>對 github 上的第三方專案做客製化<a class="heading-anchor" href="#對-github-上的第三方專案做客製化" aria-hidden="true"></a></h3><p>沒多久後，小維團隊發現，他們想對 github 上的第三方專案做客製化，以符合規格需求，但要如何追蹤 github 專案分支的同時，又做客製化呢？畢竟無法對第三方的專案做修改（除非經由 PR 流程，但一般來說不會接受客製化…）</p>
+<p>小維團隊利用 github fork 專案的方式，讓自己的專案轉追蹤 fork 的拷貝，利用 fork 拷貝來做客製化，同時又能<a href="https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/syncing-a-fork">不斷從 upstream 專案中更新</a></p>
 <hr>
-<p>從此之後，<code>git status</code> 也不再困擾小威團隊了 🥳</p>
+<p>從此之後，<code>git status</code> 也不再困擾小維團隊了 🥳</p>
 <p><strong>相關連結：</strong><a href="https://github.com/wm4n/app-host"><i class="fab fa-github"></i> Demo 專案</a></p>
 <div>
     
@@ -222,7 +290,7 @@
     
 </div></body></html>]]></content>
       <categories>
-        <category>小威</category>
+        <category>小維的故事</category>
         <category>git</category>
       </categories>
       <tags>
@@ -232,15 +300,15 @@
   <entry>
     <title>為什麼 RD 給的 Android App Bundle 連結不能用！</title>
     <url>/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小威團隊的 PM，匆忙的跑到小威的座位旁，問到：「小威～ 為什麼你剛剛給我的連結不能用啊！」</p>
-<p>小威回問道：「什麼安裝連結？」</p>
-<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小威看他手機上的畫面：</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小維團隊的 PM，匆忙的跑到小維的座位旁，問到：「小維～ 為什麼你剛剛給我的連結不能用啊！」</p>
+<p>小維回問道：「什麼安裝連結？」</p>
+<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小維看他手機上的畫面：</p>
 <div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
 
-<p>原來自從小威團隊轉用 <a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
+<p>原來自從小維團隊轉用 <a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
 <p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
 <h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
-<p>小威接著解釋到，該如何開啟：</p>
+<p>小維接著解釋到，該如何開啟：</p>
 <ol>
 <li><p>開啟 Google Play</p>
 <img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
@@ -264,7 +332,7 @@
 </ol>
 <p>噹噹～ 搞定</p>
 <div class="note danger">
-            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小威還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
+            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小維還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
           </div>
 
 <div>
@@ -275,28 +343,28 @@
     
 </div></body></html>]]></content>
       <categories>
-        <category>小威</category>
-        <category>android</category>
+        <category>小維的故事</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>android</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
     <title>為什麼 Android 跳出方塊通知！</title>
     <url>/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>老皮是小威公司裡的好友，平常最愛的是，就是偷閒看幾本書，工作休息時，就會拉著小威，分享最近又從書裡學了哪招哪招，批評一下市面上產品、集團策略…。今天一早，老皮也是很興奮的跑來，小威本以為他又要講書裡的哪招，但沒想到老皮竟然掏出他的 Pixel 手機，說道：「你看看，我收集到這麼多的方塊和圈圈。」</p>
-<p>小威好奇問：「什麼！什麼方塊和圈圈」</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>老皮是小維公司裡的好友，平常最愛的就是偷閒看幾本書，工作休息時，就會拉著小維，分享最近又從書裡學了哪招哪招，批評一下市面上產品、集團策略…。今天一早，老皮也是很興奮的跑來，小維本以為他又要講書裡的哪招，但沒想到老皮竟然掏出他的 Pixel 手機，說道：「你看看，我收集到這麼多的方塊和圈圈。」</p>
+<p>小維好奇問：「什麼！什麼方塊和圈圈」</p>
 <h2 id="App-通知的-icon-🟥-🔵-⬛️-🟤" class="heading-control"><a href="#App-通知的-icon-🟥-🔵-⬛️-🟤" class="headerlink" title="App 通知的 icon 🟥 🔵 ⬛️ 🟤"></a>App 通知的 icon 🟥 🔵 ⬛️ 🟤<a class="heading-anchor" href="#App-通知的-icon-🟥-🔵-⬛️-🟤" aria-hidden="true"></a></h2><p>老皮興奮地指著畫面上的方塊和圈圈：</p>
 <img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1120_1.png" class="slug" width="324" height="666">
 
-<p>「這是什麼！？」小威思考著 🤔，接著老皮把畫面解鎖，從畫面上方拉下了通知列表</p>
+<p>「這是什麼！？」小維思考著 🤔，接著老皮把畫面解鎖，從畫面上方拉下了通知列表</p>
 <img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_7.png" class="blah" width="324" height="666">
 
-<p>「喔～ 原來如此」小威暗自說道。老皮接著說：「還有 status bar 上的方塊和圈圈，也很有趣：</p>
+<p>「喔～ 原來如此」小維暗自說道。老皮接著說：「還有 status bar 上的方塊和圈圈，也很有趣：</p>
 <img src="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/1119_8.png" class="blah" width="324">
 
-<p>這讓小威會心一笑，這搞笑的 App 通知方塊和圈圈他之前也遇過。小威記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，或是其他全彩 icon，只會看到像上面截圖一樣，白色或黑色一塊一塊，完全不知道是哪個 App 來的通知。</p>
+<p>這讓小維會心一笑，這搞笑的 App 通知方塊和圈圈他之前也遇過。小維記得自從 Android 5 開始後，就應使用單色透明背景的通知 icon，如果直接拿桌面用的 icon，或是其他全彩 icon，只會看到像上面截圖一樣，白色或黑色一塊一塊，完全不知道是哪個 App 來的通知。</p>
 <h2 id="該怎麼做❔" class="heading-control"><a href="#該怎麼做❔" class="headerlink" title="該怎麼做❔"></a>該怎麼做❔<a class="heading-anchor" href="#該怎麼做❔" aria-hidden="true"></a></h2><p>雖然 icon 不能用全彩的，但是 Android 允許我們使用一個單色，給 icon 添點色彩，一般通常使用的是企業或產品的品牌色。</p>
 <p>所以正確步驟：</p>
 <ol>
@@ -318,30 +386,30 @@
 </div>
 </body></html>]]></content>
       <categories>
-        <category>小威</category>
-        <category>android</category>
+        <category>小維的故事</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>android</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
     <title>關於 Android 憑證過期</title>
     <url>/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/</url>
-    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>最近網路新聞在流傳著一篇「Android 使用者注意！7.1.1 前舊機將不能正常瀏覽網頁」，小威的公司也對此在做一些可能的準備動作。之所以會對這議題這麼敏感，正是因為不久前，小威公司才因為 <a href="https://support.sectigo.com/articles/Knowledge/Sectigo-AddTrust-External-CA-Root-Expiring-May-30-2020">AddTrust External Root CA 過期</a>，換了自己網站的簽署 root CA 憑證，造成在 Android 5 以下的手機，使用 WebView 時發生錯誤…</p>
-<h2 id="不建議的解決辦法" class="heading-control"><a href="#不建議的解決辦法" class="headerlink" title="不建議的解決辦法"></a>不建議的解決辦法<a class="heading-anchor" href="#不建議的解決辦法" aria-hidden="true"></a></h2><p>小威對這件事仍是記憶猶新，當時的解決辦法是，把新憑證一起打包進 App 中，使用 Android 更替 <a href="https://developer.android.com/reference/javax/net/ssl/X509TrustManager">X509TrustManager</a> 的方式，將需要允許連線的憑證包進去。</p>
+    <content><![CDATA[<html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>最近網路新聞在流傳著一篇「Android 使用者注意！7.1.1 前舊機將不能正常瀏覽網頁」，小維的公司也對此在做一些可能的準備動作。之所以會對這議題這麼敏感，正是因為不久前，小維公司才因為 <a href="https://support.sectigo.com/articles/Knowledge/Sectigo-AddTrust-External-CA-Root-Expiring-May-30-2020">AddTrust External Root CA 過期</a>，換了自己網站的簽署 root CA 憑證，造成在 Android 5 以下的手機，使用 WebView 時發生錯誤…</p>
+<h2 id="不建議的解決辦法" class="heading-control"><a href="#不建議的解決辦法" class="headerlink" title="不建議的解決辦法"></a>不建議的解決辦法<a class="heading-anchor" href="#不建議的解決辦法" aria-hidden="true"></a></h2><p>小維對這件事仍是記憶猶新，當時的解決辦法是，把新憑證一起打包進 App 中，使用 Android 更替 <a href="https://developer.android.com/reference/javax/net/ssl/X509TrustManager">X509TrustManager</a> 的方式，將需要允許連線的憑證包進去。</p>
 <p>過程中，有個錯誤做法值得一提，因為網路上會搜尋到這種做法：</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// "信任全部的" X509TrustManager</span></span><br><span class="line"><span class="keyword">final</span> TrustManager[] tm =</span><br><span class="line">  <span class="keyword">new</span> TrustManager[] {</span><br><span class="line">    <span class="keyword">new</span> X509TrustManager() {</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(java.security.cert.X509Certificate[] chain, String authType)</span> <span class="keyword">throws</span> CertificateException </span>{</span><br><span class="line">        <span class="comment">// 不做事就是默認信任</span></span><br><span class="line">      }</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(java.security.cert.X509Certificate[] chain, String authType)</span> <span class="keyword">throws</span> CertificateException </span>{</span><br><span class="line">        <span class="comment">// 不做事就是默認信任</span></span><br><span class="line">      }</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> java.security.cert.X509Certificate[] getAcceptedIssuers() {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> java.security.cert.X509Certificate[] {};</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">  };</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> SSLContext sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);</span><br><span class="line">sslContext.init(<span class="keyword">null</span>, tm, <span class="keyword">new</span> java.security.SecureRandom());</span><br><span class="line"><span class="keyword">final</span> SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 準備建立 OkHttpClient</span></span><br><span class="line">OkHttpClient.Builder builder = ...</span><br><span class="line">builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) tm[<span class="number">0</span>]);</span><br><span class="line">OkHttpClient = builder.build();</span><br></pre></td></tr></tbody></table></figure>
 
 <p>這是網路常見的做法之一，不建議的原因是還是安全性考量，默認相信所有憑證會讓惡意網頁有機可乘。</p>
-<h2 id="更好的做法" class="heading-control"><a href="#更好的做法" class="headerlink" title="更好的做法"></a>更好的做法<a class="heading-anchor" href="#更好的做法" aria-hidden="true"></a></h2><p>小威團隊使用的做法是，建立一個全新的鏈狀 <code>X509TrustManager</code> 如下，它會先檢查 Android 系統憑證，再檢查公司的新憑證，除此之外的一率不放行：</p>
+<h2 id="更好的做法" class="heading-control"><a href="#更好的做法" class="headerlink" title="更好的做法"></a>更好的做法<a class="heading-anchor" href="#更好的做法" aria-hidden="true"></a></h2><p>小維團隊使用的做法是，建立一個全新的鏈狀 <code>X509TrustManager</code> 如下，它會先檢查 Android 系統憑證，再檢查公司的新憑證，除此之外的一率不放行：</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomX509TrustManager</span> <span class="keyword">implements</span> <span class="title">X509TrustManager</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 建立憑證鏈，會依序檢查是否符合憑證</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> List<X509TrustManager> trustManagers;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> TrustManager[] getTrustManagers(KeyStore keyStore) {</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> TrustManager[] {<span class="keyword">new</span> CustomX509TrustManager(keyStore)};</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">CustomX509TrustManager</span><span class="params">(KeyStore keystore)</span> </span>{</span><br><span class="line">    <span class="keyword">this</span>.trustManagers = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    <span class="comment">// 加入原本的 TrustManager</span></span><br><span class="line">    <span class="keyword">this</span>.trustManagers.add(getDefaultTrustManager());</span><br><span class="line">    <span class="comment">// 加入指定 keystore TrustManager</span></span><br><span class="line">    <span class="keyword">this</span>.trustManagers.add(getTrustManager(keystore));</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">      <span class="keyword">this</span>.trustManagers.add(trustManagerForCertificates(trustedCertificatesInputStream()));</span><br><span class="line">    } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">      <span class="comment">// 無法添加我們自己的 cert，使用系統預設的</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> CertificateException </span>{</span><br><span class="line">    <span class="keyword">for</span> (X509TrustManager trustManager : trustManagers) {</span><br><span class="line">      <span class="keyword">try</span> {</span><br><span class="line">        trustManager.checkClientTrusted(chain, authType);</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">// 有其中一個 cert 通過，就當作通過</span></span><br><span class="line">      } <span class="keyword">catch</span> (CertificateException e) {</span><br><span class="line">        <span class="comment">// 這個不通過，換下一個</span></span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CertificateException(<span class="string">"None of the TrustManagers trust this certificate chain"</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> CertificateException </span>{</span><br><span class="line">    <span class="keyword">for</span> (X509TrustManager trustManager : trustManagers) {</span><br><span class="line">      <span class="keyword">try</span> {</span><br><span class="line">        trustManager.checkServerTrusted(chain, authType);</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">// 有其中一個 cert 通過，就當作通過</span></span><br><span class="line">      } <span class="keyword">catch</span> (CertificateException e) {</span><br><span class="line">        <span class="comment">// 這個不通過，換下一個</span></span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CertificateException(<span class="string">"None of the TrustManagers trust this certificate chain"</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> X509Certificate[] getAcceptedIssuers() {</span><br><span class="line">    List<X509Certificate> certificates = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    <span class="keyword">for</span> (X509TrustManager trustManager : trustManagers) {</span><br><span class="line">      certificates.addAll(Arrays.asList(trustManager.getAcceptedIssuers()));</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> certificates.toArray(<span class="keyword">new</span> X509Certificate[<span class="number">0</span>]);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> X509TrustManager <span class="title">getDefaultTrustManager</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> getTrustManager(<span class="keyword">null</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> X509TrustManager <span class="title">getTrustManager</span><span class="params">(KeyStore keystore)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> getTrustManager(TrustManagerFactory.getDefaultAlgorithm(), keystore);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 只取出 keystore 中 X509 TrustManager</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> X509TrustManager <span class="title">getTrustManager</span><span class="params">(String algorithm, KeyStore keystore)</span> </span>{</span><br><span class="line">    TrustManagerFactory factory;</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">      factory = TrustManagerFactory.getInstance(algorithm);</span><br><span class="line">      factory.init(keystore);</span><br><span class="line">      List<TrustManager> trustManagerList = Arrays.asList(factory.getTrustManagers());</span><br><span class="line">      List<X509TrustManager> x509TrustManagerList = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">      <span class="keyword">if</span> (trustManagerList != <span class="keyword">null</span>) {</span><br><span class="line">        <span class="keyword">for</span> (TrustManager tm : trustManagerList) {</span><br><span class="line">          <span class="keyword">if</span> (tm <span class="keyword">instanceof</span> X509TrustManager) {</span><br><span class="line">            x509TrustManagerList.add((X509TrustManager) tm);</span><br><span class="line">          }</span><br><span class="line">        }</span><br><span class="line">      }</span><br><span class="line">      <span class="keyword">if</span> (x509TrustManagerList.size() > <span class="number">0</span>) {</span><br><span class="line">        <span class="keyword">return</span> x509TrustManagerList.get(<span class="number">0</span>);</span><br><span class="line">      }</span><br><span class="line">    } <span class="keyword">catch</span> (NoSuchAlgorithmException | KeyStoreException e) {</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 將指定 InputStream 的的憑證建成 TrustManager</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> X509TrustManager <span class="title">trustManagerForCertificates</span><span class="params">(InputStream in)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> GeneralSecurityException </span>{</span><br><span class="line">    CertificateFactory certificateFactory = CertificateFactory.getInstance(<span class="string">"X.509"</span>);</span><br><span class="line">    Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);</span><br><span class="line">    <span class="keyword">if</span> (certificates.isEmpty()) {</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Unexpected empty InputStream"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建立 keystore</span></span><br><span class="line">    <span class="keyword">char</span>[] password = <span class="string">"password"</span>.toCharArray(); <span class="comment">// Any password will work.</span></span><br><span class="line">    KeyStore keyStore = newEmptyKeyStore(password);</span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Certificate certificate : certificates) {</span><br><span class="line">      String certificateAlias = Integer.toString(index++);</span><br><span class="line">      keyStore.setCertificateEntry(certificateAlias, certificate);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 keystore 建立 TrustManager</span></span><br><span class="line">    KeyManagerFactory keyManagerFactory =</span><br><span class="line">        KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());</span><br><span class="line">    keyManagerFactory.init(keyStore, password);</span><br><span class="line">    TrustManagerFactory trustManagerFactory =</span><br><span class="line">        TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());</span><br><span class="line">    trustManagerFactory.init(keyStore);</span><br><span class="line">    List<TrustManager> trustManagerList = Arrays.asList(trustManagerFactory.getTrustManagers());</span><br><span class="line">    List<X509TrustManager> x509TrustManagerList = <span class="keyword">new</span> ArrayList<>();</span><br><span class="line">    <span class="keyword">if</span> (trustManagerList != <span class="keyword">null</span>) {</span><br><span class="line">      <span class="keyword">for</span> (TrustManager tm : trustManagerList) {</span><br><span class="line">        <span class="keyword">if</span> (tm <span class="keyword">instanceof</span> X509TrustManager) {</span><br><span class="line">          x509TrustManagerList.add((X509TrustManager) tm);</span><br><span class="line">        }</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (x509TrustManagerList.size() > <span class="number">0</span>) {</span><br><span class="line">      <span class="keyword">return</span> x509TrustManagerList.get(<span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> KeyStore <span class="title">newEmptyKeyStore</span><span class="params">(<span class="keyword">char</span>[] password)</span> <span class="keyword">throws</span> GeneralSecurityException </span>{</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">      KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());</span><br><span class="line">      InputStream in = <span class="keyword">null</span>; <span class="comment">// By convention, 'null' creates an empty key store.</span></span><br><span class="line">      keyStore.load(in, password);</span><br><span class="line">      <span class="keyword">return</span> keyStore;</span><br><span class="line">    } <span class="keyword">catch</span> (IOException e) {</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(e);</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> InputStream <span class="title">trustedCertificatesInputStream</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="comment">// 憑證也能放在 resource 內，demo 放這容易看</span></span><br><span class="line">    String cert =</span><br><span class="line">        <span class="string">""</span></span><br><span class="line">            + <span class="string">"-----BEGIN CERTIFICATE-----\n"</span></span><br><span class="line">            <span class="comment">// 憑證內容放這</span></span><br><span class="line">            + <span class="string">"-----END CERTIFICATE-----\n"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Buffer().writeUtf8(cert).inputStream();</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>以上從 <a href="https://square.github.io/okhttp/https/#customizing-trusted-certificates-kt-java">https://square.github.io/okhttp/https/#customizing-trusted-certificates-kt-java</a> 變化而來</p>
-<h2 id="其他做法" class="heading-control"><a href="#其他做法" class="headerlink" title="其他做法"></a>其他做法<a class="heading-anchor" href="#其他做法" aria-hidden="true"></a></h2><p>小威之後又發現，okhttp 官方 github 也有類似的 sample，之後也許也能試試</p>
+<h2 id="其他做法" class="heading-control"><a href="#其他做法" class="headerlink" title="其他做法"></a>其他做法<a class="heading-anchor" href="#其他做法" aria-hidden="true"></a></h2><p>小維之後又發現，okhttp 官方 github 也有類似的 sample，之後也許也能試試</p>
 <p><a href="https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/CustomTrust.java">okhttp 官方 github CustomTrust.java</a></p>
 <h2 id="關於-Android-7-1-1" class="heading-control"><a href="#關於-Android-7-1-1" class="headerlink" title="關於 Android 7.1.1"></a>關於 Android 7.1.1<a class="heading-anchor" href="#關於-Android-7-1-1" aria-hidden="true"></a></h2><p>至於 Android 7.1.1 版本之前的裝置呢？因為許多網站簽署的憑證即將到期，勢必會換成新的憑證，造成舊機 WebView 或瀏覽器可能不支援新的憑證，解決方法還是建議更新系統（如果可以的話），要不就是 App 要準備處理過期憑證的錯誤，適時提醒使用者憑證問題，以及建議的解決方式，避免一開啟網頁就遇到一片空白，甚至 App 強制關閉 😖</p>
-<p>另一個小威在思索的事情是，非自己產品的相關的網頁，是否該用 WebView 開啟？嚴格來說其實不應該，因為不清楚其他人會在相關網頁內，做什麼事情，尤其時當開啟 JavaScript 後，這個問題更值得所有用 App WebView 去開啟第三方網頁的團隊去思索～</p>
+<p>另一個小維在思索的事情是，非自己產品的相關的網頁，是否該用 WebView 開啟？嚴格來說其實不應該，因為不清楚其他人會在相關網頁內，做什麼事情，尤其時當開啟 JavaScript 後，這個問題更值得所有用 App WebView 去開啟第三方網頁的團隊去思索～</p>
 <hr>
 <p><strong>相關連結：</strong><a href="https://gist.github.com/HughJeffner/6eac419b18c6001aeadb"><i class="fab fa-github"></i> CompositeTrustManager</a>, <a href="https://square.github.io/okhttp/https/#customizing-trusted-certificates-kt-java"><i class="fas fa-code"></i> okhttp customizing trusted certificates</a>, <a href="https://square.github.io/okhttp/https/#customizing-trusted-certificates-kt-java"><i class="fab fa-github"></i> okhttp customizing trusted certificates</a></p>
 <div>
@@ -353,11 +421,11 @@
 </div>
 </body></html>]]></content>
       <categories>
-        <category>小威</category>
-        <category>android</category>
+        <category>小維的故事</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>android</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -402,7 +470,7 @@
     
 </div></body></html>]]></content>
       <categories>
-        <category>老皮</category>
+        <category>老皮的故事</category>
         <category>讀書心得</category>
       </categories>
       <tags>

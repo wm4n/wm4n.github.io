@@ -21,27 +21,33 @@
     var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+  <meta name="description" content="接近年底的這一個月，小維團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="為什麼 RD 給的 Android App Bundle 連結不能用！">
-<meta property="og:url" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/index.html">
+<meta property="og:title" content="RxJava 特效：API 搭配 zip 的妙用">
+<meta property="og:url" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/index.html">
 <meta property="og:site_name" content="Coding Story">
-<meta property="og:description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+<meta property="og:description" content="接近年底的這一個月，小維團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png">
-<meta property="article:published_time" content="2020-11-18T08:21:24.000Z">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_2.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_3.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_4.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_5.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_6.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png">
+<meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg">
+<meta property="article:published_time" content="2020-12-14T16:14:20.000Z">
 <meta property="article:modified_time" content="2020-12-17T18:42:34.781Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
+<meta property="article:tag" content="RxJava">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
+<meta name="twitter:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg">
 
-<link rel="canonical" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+<link rel="canonical" href="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/">
 
 
 <script id="page-configurations">
@@ -54,7 +60,7 @@
   };
 </script>
 
-  <title>為什麼 RD 給的 Android App Bundle 連結不能用！ | Coding Story</title>
+  <title>RxJava 特效：API 搭配 zip 的妙用 | Coding Story</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
     <script>
@@ -208,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -221,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          為什麼 RD 給的 Android App Bundle 連結不能用！
+          RxJava 特效：API 搭配 zip 的妙用
         </h1>
 
         <div class="post-meta">
@@ -231,7 +237,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2020-11-18 16:21:24" itemprop="dateCreated datePublished" datetime="2020-11-18T16:21:24+08:00">2020-11-18</time>
+              <time title="創建時間：2020-12-15 00:14:20" itemprop="dateCreated datePublished" datetime="2020-12-15T00:14:20+08:00">2020-12-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -270,8 +276,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="為什麼-RD-給的-Android-測試連結不能用！/" itemprop="commentCount"></span>
+    <a title="disqus" href="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="RxJava-特效：API-搭配-zip-的妙用/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -281,7 +287,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>1 分鐘</span>
+              <span>3 分鐘</span>
             </span>
 
         </div>
@@ -293,48 +299,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小維團隊的 PM，匆忙的跑到小維的座位旁，問到：「小維～ 為什麼你剛剛給我的連結不能用啊！」</p>
-<p>小維回問道：「什麼安裝連結？」</p>
-<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小維看他手機上的畫面：</p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小維公司的門口角落，放有幾張小桌子，小維正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小維負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小維的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小維團隊，腦中冒出一個之前看過的 <a target="_blank" rel="noopener" href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br></p>
+<h2 id="在沒有的-ReactiveX-之前" class="heading-control"><a href="#在沒有的-ReactiveX-之前" class="headerlink" title="在沒有的 ReactiveX 之前"></a>在沒有的 ReactiveX 之前<a class="heading-anchor" href="#在沒有的-ReactiveX-之前" aria-hidden="true"></a></h2><p>當一個畫面對應一支 API，流程是相當單純：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg" class title="1 API / screen">
+<br>
 
-<p>原來自從小維團隊轉用 <a target="_blank" rel="noopener" href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a target="_blank" rel="noopener" href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
-<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
-<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
-<p>小維接著解釋到，該如何開啟：</p>
-<ol>
-<li><p>開啟 Google Play</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
-</li>
-<li><p>點選左上角的漢堡選單</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
-</li>
-<li><p>找到設定，點開進去</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
-</li>
-<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
-</li>
-<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
-</li>
-<li><p>接著找到「內部應用程式分享」，開啟它</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
+<p>但是當一個畫面有需要兩支或以上 API 才能呈現內容，就「稍微」有點複雜了，有多種組合都可以達到目的，通常會視狀況使用。</p>
+<h3 id="相依性高的-API-組合" class="heading-control"><a href="#相依性高的-API-組合" class="headerlink" title="相依性高的 API 組合"></a>相依性高的 API 組合<a class="heading-anchor" href="#相依性高的-API-組合" aria-hidden="true"></a></h3><p>在有強烈相依性下的狀況，當一支 API 失敗，接下來的都會變成毫無意義，這時可以讓一支 API 接著另一支，當第一支結果回來後，先處理結果，再決定是否要執行第二支 API。這就有兩種可能的組合：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg" class title="2 API / screen flow #1">
+<br>
 
-</li>
-</ol>
-<p>噹噹～ 搞定</p>
-<div class="note danger">
-            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小維還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
-          </div>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_2.svg" class title="2 API / screen flow #2">
+<br>
+
+<h3 id="最重要的先顯示" class="heading-control"><a href="#最重要的先顯示" class="headerlink" title="最重要的先顯示"></a>最重要的先顯示<a class="heading-anchor" href="#最重要的先顯示" aria-hidden="true"></a></h3><p>當第二支 API 只是單純的附加資訊時，這時使用者先看到第一支 API 資訊比較重要，就可以使用以下變形。這讓第一支結果回來後，就立刻渲染，等第二支 API 回來，再渲染第二支結果，即使後面的 API 失敗，對使用者的影響也較小：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_3.svg" class title="2 API / screen flow #3">
+<br>
+
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_4.svg" class title="2 API / screen flow #4">
+<br>
+
+<h3 id="大家都重要，且無相依性" class="heading-control"><a href="#大家都重要，且無相依性" class="headerlink" title="大家都重要，且無相依性"></a>大家都重要，且無相依性<a class="heading-anchor" href="#大家都重要，且無相依性" aria-hidden="true"></a></h3><p>當 API 誰先誰後的順序不重要，而且沒有相依性時，線性同步發送且等待結果都回來後，再渲染畫面：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_5.svg" class title="2 API / screen flow #5">
+<br>
+
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_6.svg" class title="2 API / screen flow #6">
+<br>
+
+<h3 id="非同步進行" class="heading-control"><a href="#非同步進行" class="headerlink" title="非同步進行"></a>非同步進行<a class="heading-anchor" href="#非同步進行" aria-hidden="true"></a></h3><p>非同步進行也是常用的方式之一，如果 API 無相依性，或者資料順序不重要，也可以非同步發送 API，哪個先回來就先渲染哪個。缺點也是常常會看到畫面先長出一部分，接著馬上在跳出剩下的部分，至於哪部分先，哪個後出來，則無法預測：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg" class title="2 API / screen flow #7">
+<br>
+
+<p>當資料內容必須一同顯示，那就得等待結果都回來後才渲染，這是小維公司內常見的用法，優點是不會看到畫面分別跳出來，缺點是不太容易實作，常常看到有寫錯亂的狀況（不會用又愛用，為什麼不乾脆使用同步方式，一個接一個）：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg" class title="2 API / screen flow #8">
+<br>
+
+<h2 id="ReactiveX-的出現" class="heading-control"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現<a class="heading-anchor" href="#ReactiveX-的出現" aria-hidden="true"></a></h2><p>自從小維團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png" class title="RxJava zip operator">
+<br>
+
+<p>使用 zip 後流程變成如下：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg" class title="2 API / zip operator">
+<br>
+
+<p>程式碼寫起來出奇的簡單：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Single<Result> <span class="title">getScreenData</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="comment">// 非同步呼叫 API 1</span></span><br><span class="line">    Single<ApiResult> api_1_result = api1();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 非同步呼叫 API 2</span></span><br><span class="line">    Single<ApiResult> api_2_result = api2();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待兩個結果都回來後，使用 handleApiResult 將資料轉換成 UI 可使用的 data model</span></span><br><span class="line">    <span class="keyword">return</span> Single.zip(api_1_result, api_2_result, <span class="keyword">this</span>::handleApiResult);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Result <span class="title">handleApiResult</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_1_result,</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_2_result)</span> </span>{</span><br><span class="line">    Result result = <span class="keyword">new</span> Result();</span><br><span class="line">    <span class="comment">// 模擬將資料整合</span></span><br><span class="line">    result.setData1(api_1_result);</span><br><span class="line">    result.setData2(api_2_result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<br>
+<br>
 
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-laptop-code"></i> 好想精通 RxJava 啊～ -------------</p>
         </div>
     
-</div></body></html>
+</div>
+<br></body></html>
     </div>
 
     
@@ -349,7 +369,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/" title="為什麼 RD 給的 Android App Bundle 連結不能用！">https://wm4n.github.io/為什麼-RD-給的-Android-測試連結不能用！/</a>
+    <a href="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/" title="RxJava 特效：API 搭配 zip 的妙用">https://wm4n.github.io/RxJava-特效：API-搭配-zip-的妙用/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -361,6 +381,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/RxJava/" rel="tag"># RxJava</a>
           </div>
 
         
@@ -369,13 +390,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/" rel="prev" title="關於 Android 憑證過期">
-      <i class="fa fa-chevron-left"></i> 關於 Android 憑證過期
+    <a href="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/" rel="prev" title="Android 特效：動態變更標籤元件(TabLayout)">
+      <i class="fa fa-chevron-left"></i> Android 特效：動態變更標籤元件(TabLayout)
     </a></div>
-      <div class="post-nav-item">
-    <a href="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/" rel="next" title="為什麼 Android 跳出方塊通知！">
-      為什麼 Android 跳出方塊通知！ <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -441,7 +459,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E5%95%9F%E9%97%9C%E9%8D%B5%E9%96%8B%E9%97%9C"><span class="nav-text">開啟關鍵開關</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%B2%92%E6%9C%89%E7%9A%84-ReactiveX-%E4%B9%8B%E5%89%8D"><span class="nav-text">在沒有的 ReactiveX 之前</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E4%BE%9D%E6%80%A7%E9%AB%98%E7%9A%84-API-%E7%B5%84%E5%90%88"><span class="nav-text">相依性高的 API 組合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E5%85%88%E9%A1%AF%E7%A4%BA"><span class="nav-text">最重要的先顯示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%AE%B6%E9%83%BD%E9%87%8D%E8%A6%81%EF%BC%8C%E4%B8%94%E7%84%A1%E7%9B%B8%E4%BE%9D%E6%80%A7"><span class="nav-text">大家都重要，且無相依性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%90%8C%E6%AD%A5%E9%80%B2%E8%A1%8C"><span class="nav-text">非同步進行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactiveX-%E7%9A%84%E5%87%BA%E7%8F%BE"><span class="nav-text">ReactiveX 的出現</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -651,9 +669,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/";
-    this.page.identifier = "為什麼-RD-給的-Android-測試連結不能用！/";
-    this.page.title = "為什麼 RD 給的 Android App Bundle 連結不能用！";
+    this.page.url = "https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/";
+    this.page.identifier = "RxJava-特效：API-搭配-zip-的妙用/";
+    this.page.title = "RxJava 特效：API 搭配 zip 的妙用";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
