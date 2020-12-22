@@ -21,27 +21,26 @@
     var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+  <meta name="description" content="Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於">
 <meta property="og:type" content="article">
-<meta property="og:title" content="為什麼 RD 給的 Android App Bundle 連結不能用！">
-<meta property="og:url" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/index.html">
+<meta property="og:title" content="Android 如何設計使用 Adaptive Icon">
+<meta property="og:url" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/index.html">
 <meta property="og:site_name" content="Coding Story">
-<meta property="og:description" content="自從轉用 Android App Bundle 技術打包產品後，由原本直接傳送 APK 發佈更新，改為使用 Internal App Sharing 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是「內部應用程式分享功能已關閉」這種，連結點開後，跳出不知所謂的訊息...">
+<meta property="og:description" content="Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png">
-<meta property="og:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png">
-<meta property="article:published_time" content="2020-11-18T08:21:24.000Z">
-<meta property="article:modified_time" content="2020-12-22T18:56:26.653Z">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_background.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_icon_margin.svg">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
+<meta property="article:published_time" content="2020-12-21T15:32:06.000Z">
+<meta property="article:modified_time" content="2020-12-22T18:56:26.641Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png">
+<meta name="twitter:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png">
 
-<link rel="canonical" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+<link rel="canonical" href="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/">
 
 
 <script id="page-configurations">
@@ -54,7 +53,7 @@
   };
 </script>
 
-  <title>為什麼 RD 給的 Android App Bundle 連結不能用！ | Coding Story</title>
+  <title>Android 如何設計使用 Adaptive Icon | Coding Story</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
     <script>
@@ -208,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -221,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          為什麼 RD 給的 Android App Bundle 連結不能用！
+          Android 如何設計使用 Adaptive Icon
         </h1>
 
         <div class="post-meta">
@@ -231,7 +230,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2020-11-18 16:21:24" itemprop="dateCreated datePublished" datetime="2020-11-18T16:21:24+08:00">2020-11-18</time>
+              <time title="創建時間：2020-12-21 23:32:06" itemprop="dateCreated datePublished" datetime="2020-12-21T23:32:06+08:00">2020-12-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -270,8 +269,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="為什麼-RD-給的-Android-測試連結不能用！/" itemprop="commentCount"></span>
+    <a title="disqus" href="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-如何設計使用-Adaptive-Icon/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -281,7 +280,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>1 分鐘</span>
+              <span>3 分鐘</span>
             </span>
 
         </div>
@@ -293,45 +292,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>星期三的下午，負責小唯團隊的 PM，匆忙的跑到小唯的座位旁，問到：「小唯～ 為什麼你剛剛給我的連結不能用啊！」</p>
-<p>小唯回問道：「什麼安裝連結？」</p>
-<p>PM：「就是那個新版 App 的安裝連結啊～」說完，給小唯看他手機上的畫面：</p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/BoxECeCH4sg" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<p>原來自從小唯團隊轉用 <a target="_blank" rel="noopener" href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle 技術</a> 打包產品後，由原本直接傳送 APK 發佈更新，改為使用 <a target="_blank" rel="noopener" href="https://play.google.com/console/about/internalappsharing/">Internal App Sharing</a> 的方式發佈。新的發佈方式會產生一個安裝用連結，在手機上點擊後，Google Play 會自動開啟安裝畫面。</p>
-<p>雖然聽起來簡單簡單，但是用起來真是問題不斷，其中最常見的就是上面這種「內部應用程式分享功能已關閉」，連結點開後，跳出不知所謂的訊息 😕！不但訊息沒幫助，上面的連結更是沒幫助！只能說 Google 工程、技術邏輯一流，但人性化上真是有待加強 🤖</p>
-<h2 id="開啟關鍵開關" class="heading-control"><a href="#開啟關鍵開關" class="headerlink" title="開啟關鍵開關"></a>開啟關鍵開關<a class="heading-anchor" href="#開啟關鍵開關" aria-hidden="true"></a></h2><p>其實上述的訊息，只是想講一件事！這位 PM，你沒有開啟一個關鍵開關！</p>
-<p>小唯接著解釋到，該如何開啟：</p>
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於發現這一切應該是 Google 的文件問題 😑。</p>
+<p>每次小唯遇到不同的設計，總是把 Android Developer 上面的 <a target="_blank" rel="noopener" href="https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive">adaptive icon</a> 文件丟給設計，請設計提供圖檔，結果不是檔案東缺西少，就是大小不符格式，直到後來發現，一份文件，十個設計就算沒有十種，也有八種解讀方式，所以小唯決定自己寫一份超簡易 guideline 給自家設計。<br><br></p>
+<h2 id="1-準備-Adaptive-Icon" class="heading-control"><a href="#1-準備-Adaptive-Icon" class="headerlink" title="1. 準備 Adaptive Icon"></a>1. 準備 Adaptive Icon<a class="heading-anchor" href="#1-準備-Adaptive-Icon" aria-hidden="true"></a></h2><h3 id="1-1-設計提供" class="heading-control"><a href="#1-1-設計提供" class="headerlink" title="1.1 設計提供"></a>1.1 設計提供<a class="heading-anchor" href="#1-1-設計提供" aria-hidden="true"></a></h3><p>提供兩個 SVG 格式的 108dp x 108dp 圖檔，讓工程使用 File > New > Vector Asset 匯入，分別用於前景圖層、與背景圖層：</p>
+<p><strong>前景圖</strong> 命名為 <code>ic_launcher_foreground.xml</code> （藍色背景色實際上為透明色） <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png" class width="324" height="324" title="前景圖"> </p>
+<p><strong>背景圖</strong> 命名為 <code>ic_launcher_background.xml</code>  <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_background.png" class width="324" height="324" title="背景圖"> </p>
+<p>兩張圖需要注意的重點為：</p>
 <ol>
-<li><p>開啟 Google Play</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_1.png" class="slug">
+<li><p>兩張圖必須為 108dp x 108dp 大小的圖檔，讓工程放在 <code>res/drawable</code> 資料夾內</p>
 </li>
-<li><p>點選左上角的漢堡選單</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_2.png" class="slug">
+<li><p>前景圖除了主題物外，其餘背景為透明色。所有需要跟著主題物一起移動的特效，都必須放在前景圖內</p>
 </li>
-<li><p>找到設定，點開進去</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_3.png" class="slug">
+<li><p>背景圖使用不透明色為背景色，任何不希望跟主題一起移動的內容，放在背景圖中</p>
 </li>
-<li><p>滑到最下面，應該會看到「Play 商店版本」</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_4.png" class="slug">
-</li>
-<li><p>點它，一直點到「你已啟用開發人員設定」的訊息跳出</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_5.png" class="slug">
-</li>
-<li><p>接著找到「內部應用程式分享」，開啟它</p>
-<img src="/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/1119_6.png" class="slug">
+<li><p>最常被忽略的一點。兩張圖中，<strong>所有可視物件，必須放在中間的 72dp x 72dp 中</strong>，也就是『不要放內容物在四邊的 18dp 中』（要不然顯示時就會被截掉）</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_icon_margin.svg" class width="452" height="452" title="Adaptive Icon Margin">
+<br>
 
 </li>
 </ol>
-<p>噹噹～ 搞定</p>
-<div class="note danger">
-            <p>‼️ 特別提醒，開啟內部應用程式分享，代表你可以透過連結安裝別人的程式。所以小唯還是要提醒各位，不要點選或安裝你不知道的安裝連結！‼️</p>
-          </div>
+<h3 id="1-2-工程提供" class="heading-control"><a href="#1-2-工程提供" class="headerlink" title="1.2 工程提供"></a>1.2 工程提供<a class="heading-anchor" href="#1-2-工程提供" aria-hidden="true"></a></h3><p>在 <code>res/mipmap-anydpi-v26</code> 資料夾下，準備兩個 xml 檔案：</p>
+<ol>
+<li><p><code>ic_launcher.xml</code></p>
+</li>
+<li><p><code>ic_launcher_round.xml</code></p>
+</li>
+</ol>
+<p>內容都放入相同的：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">adaptive-icon</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">background</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_background"</span> /></span></span><br><span class="line">  <span class="tag"><<span class="name">foreground</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_foreground"</span> /></span></span><br><span class="line"><span class="tag"></<span class="name">adaptive-icon</span>></span></span><br></pre></td></tr></tbody></table></figure>
+<br>
+
+<h2 id="2-為舊系統準備-Icon" class="heading-control"><a href="#2-為舊系統準備-Icon" class="headerlink" title="2. 為舊系統準備 Icon"></a>2. 為舊系統準備 Icon<a class="heading-anchor" href="#2-為舊系統準備-Icon" aria-hidden="true"></a></h2><h3 id="2-1-方形-Icon" class="heading-control"><a href="#2-1-方形-Icon" class="headerlink" title="2.1 方形 Icon"></a>2.1 方形 Icon<a class="heading-anchor" href="#2-1-方形-Icon" aria-hidden="true"></a></h3><p>設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的方形圖：</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class> 
+
+<p>讓工程將每張圖放入對應的資料夾中：</p>
+<p><code>192px x 192px</code> > res/mipmap-xxxhdpi/ic_launcher.png</p>
+<p><code>144px x 144px</code> > res/mipmap-xxhdpi/ic_launcher.png</p>
+<p><code>96px x 96px</code> > res/mipmap-xhdpi/ic_launcher.png</p>
+<p><code>72px x 72px</code> > res/mipmap-xhdpi/ic_launcher.png</p>
+<p><code>48px x 48px</code> > res/mipmap-xhdpi/ic_launcher.png<br><br></p>
+<h3 id="2-2-圓形-Icon" class="heading-control"><a href="#2-2-圓形-Icon" class="headerlink" title="2.2 圓形 Icon"></a>2.2 圓形 Icon<a class="heading-anchor" href="#2-2-圓形-Icon" aria-hidden="true"></a></h3><p>如方形 icon，設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的圓形圖（圓角用透明處理）：</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class> 
+
+<p>讓工程將每張圖放入對應的資料夾中：</p>
+<p><code>192px x 192px</code> > res/mipmap-xxxhdpi/ic_launcher_round.png</p>
+<p><code>144px x 144px</code> > res/mipmap-xxhdpi/ic_launcher_round.png</p>
+<p><code>96px x 96px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
+<p><code>72px x 72px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
+<p><code>48px x 48px</code> > res/mipmap-xhdpi/ic_launcher_round.png<br><br></p>
+<h2 id="工程引用" class="heading-control"><a href="#工程引用" class="headerlink" title="工程引用"></a>工程引用<a class="heading-anchor" href="#工程引用" aria-hidden="true"></a></h2><p>工程需在 App 的 AndroidManifest.xml 中添加：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">application</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:roundIcon</span>=<span class="string">"@mipmap/ic_launcher_round"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span>></span></span><br></pre></td></tr></tbody></table></figure>
+<br>
 
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> UI 人性化比實質功能更重要啊 -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-meh-rolling-eyes"></i> 不太為人所知的 Adaptive Icon -------------</p>
         </div>
     
 </div></body></html>
@@ -349,7 +365,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/" title="為什麼 RD 給的 Android App Bundle 連結不能用！">https://wm4n.github.io/為什麼-RD-給的-Android-測試連結不能用！/</a>
+    <a href="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/" title="Android 如何設計使用 Adaptive Icon">https://wm4n.github.io/Android-如何設計使用-Adaptive-Icon/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -369,13 +385,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E9%97%9C%E6%96%BCAndroid%E6%86%91%E8%AD%89%E9%81%8E%E6%9C%9F/" rel="prev" title="關於 Android 憑證過期">
-      <i class="fa fa-chevron-left"></i> 關於 Android 憑證過期
+    <a href="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/" rel="prev" title="RxJava 特效：API 搭配 zip 的妙用">
+      <i class="fa fa-chevron-left"></i> RxJava 特效：API 搭配 zip 的妙用
     </a></div>
-      <div class="post-nav-item">
-    <a href="/%E8%B7%B3%E5%87%BA%E6%96%B9%E5%A1%8A%E7%9A%84-Android/" rel="next" title="為什麼 Android 跳出方塊通知！">
-      為什麼 Android 跳出方塊通知！ <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -441,7 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E5%95%9F%E9%97%9C%E9%8D%B5%E9%96%8B%E9%97%9C"><span class="nav-text">開啟關鍵開關</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%BA%96%E5%82%99-Adaptive-Icon"><span class="nav-text">1. 準備 Adaptive Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%A8%AD%E8%A8%88%E6%8F%90%E4%BE%9B"><span class="nav-text">1.1 設計提供</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%B7%A5%E7%A8%8B%E6%8F%90%E4%BE%9B"><span class="nav-text">1.2 工程提供</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%82%BA%E8%88%8A%E7%B3%BB%E7%B5%B1%E6%BA%96%E5%82%99-Icon"><span class="nav-text">2. 為舊系統準備 Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%96%B9%E5%BD%A2-Icon"><span class="nav-text">2.1 方形 Icon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%9C%93%E5%BD%A2-Icon"><span class="nav-text">2.2 圓形 Icon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%BC%95%E7%94%A8"><span class="nav-text">工程引用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -651,9 +664,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://wm4n.github.io/%E7%82%BA%E4%BB%80%E9%BA%BC-RD-%E7%B5%A6%E7%9A%84-Android-%E6%B8%AC%E8%A9%A6%E9%80%A3%E7%B5%90%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%81/";
-    this.page.identifier = "為什麼-RD-給的-Android-測試連結不能用！/";
-    this.page.title = "為什麼 RD 給的 Android App Bundle 連結不能用！";
+    this.page.url = "https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/";
+    this.page.identifier = "Android-如何設計使用-Adaptive-Icon/";
+    this.page.title = "Android 如何設計使用 Adaptive Icon";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

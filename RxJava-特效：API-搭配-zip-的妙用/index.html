@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="接近年底的這一個月，小維團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
+  <meta name="description" content="接近年底的這一個月，小唯團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RxJava 特效：API 搭配 zip 的妙用">
 <meta property="og:url" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/index.html">
 <meta property="og:site_name" content="Coding Story">
-<meta property="og:description" content="接近年底的這一個月，小維團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
+<meta property="og:description" content="接近年底的這一個月，小唯團隊的工程們正忙著串接公司新的 API。新開的 API 不像是以往團隊所熟悉的，以一個畫面一支 API 為基礎的模式，反而會有一個畫面需要多支 API 相互組成狀況，在這種條件下，API 使用的時機就變得更有意思了...">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg">
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png">
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg">
 <meta property="article:published_time" content="2020-12-14T16:14:20.000Z">
-<meta property="article:modified_time" content="2020-12-17T18:42:34.781Z">
+<meta property="article:modified_time" content="2020-12-22T18:56:26.649Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="RxJava">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-12-18 02:42:34" itemprop="dateModified" datetime="2020-12-18T02:42:34+08:00">2020-12-18</time>
+                <time title="修改時間：2020-12-23 02:56:26" itemprop="dateModified" datetime="2020-12-23T02:56:26+08:00">2020-12-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,11 +252,11 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E7%B6%AD%E7%9A%84%E6%95%85%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">小維的故事</span></a>
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">小唯的故事</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E7%B6%AD%E7%9A%84%E6%95%85%E4%BA%8B/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -299,7 +299,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小維公司的門口角落，放有幾張小桌子，小維正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小維負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小維的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小維團隊，腦中冒出一個之前看過的 <a target="_blank" rel="noopener" href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br></p>
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小唯公司的門口角落，放有幾張小桌子，小唯正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小唯負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小唯的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小唯團隊，腦中冒出一個之前看過的 <a target="_blank" rel="noopener" href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br></p>
 <h2 id="在沒有的-ReactiveX-之前" class="heading-control"><a href="#在沒有的-ReactiveX-之前" class="headerlink" title="在沒有的 ReactiveX 之前"></a>在沒有的 ReactiveX 之前<a class="heading-anchor" href="#在沒有的-ReactiveX-之前" aria-hidden="true"></a></h2><p>當一個畫面對應一支 API，流程是相當單純：</p>
 <img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg" class title="1 API / screen">
 <br>
@@ -330,11 +330,11 @@
 <img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg" class title="2 API / screen flow #7">
 <br>
 
-<p>當資料內容必須一同顯示，那就得等待結果都回來後才渲染，這是小維公司內常見的用法，優點是不會看到畫面分別跳出來，缺點是不太容易實作，常常看到有寫錯亂的狀況（不會用又愛用，為什麼不乾脆使用同步方式，一個接一個）：</p>
+<p>當資料內容必須一同顯示，那就得等待結果都回來後才渲染，這是小唯公司內常見的用法，優點是不會看到畫面分別跳出來，缺點是不太容易實作，常常看到有寫錯亂的狀況（不會用又愛用，為什麼不乾脆使用同步方式，一個接一個）：</p>
 <img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg" class title="2 API / screen flow #8">
 <br>
 
-<h2 id="ReactiveX-的出現" class="heading-control"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現<a class="heading-anchor" href="#ReactiveX-的出現" aria-hidden="true"></a></h2><p>自從小維團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
+<h2 id="ReactiveX-的出現" class="heading-control"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現<a class="heading-anchor" href="#ReactiveX-的出現" aria-hidden="true"></a></h2><p>自從小唯團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
 <img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png" class title="RxJava zip operator">
 <br>
 
@@ -393,7 +393,10 @@
     <a href="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/" rel="prev" title="Android 特效：動態變更標籤元件(TabLayout)">
       <i class="fa fa-chevron-left"></i> Android 特效：動態變更標籤元件(TabLayout)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/" rel="next" title="Android 如何設計使用 Adaptive Icon">
+      Android 如何設計使用 Adaptive Icon <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -473,7 +476,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
