@@ -31,10 +31,11 @@
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png">
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_background.png">
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_icon_margin.svg">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_anim.gif">
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
 <meta property="article:published_time" content="2020-12-21T15:32:06.000Z">
-<meta property="article:modified_time" content="2020-12-22T18:56:26.641Z">
+<meta property="article:modified_time" content="2020-12-23T02:21:55.164Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -237,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-12-23 02:56:26" itemprop="dateModified" datetime="2020-12-23T02:56:26+08:00">2020-12-23</time>
+                <time title="修改時間：2020-12-23 10:21:55" itemprop="dateModified" datetime="2020-12-23T10:21:55+08:00">2020-12-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,7 +281,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>3 分鐘</span>
+              <span>4 分鐘</span>
             </span>
 
         </div>
@@ -322,6 +323,9 @@
 <figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">adaptive-icon</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">background</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_background"</span> /></span></span><br><span class="line">  <span class="tag"><<span class="name">foreground</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_foreground"</span> /></span></span><br><span class="line"><span class="tag"></<span class="name">adaptive-icon</span>></span></span><br></pre></td></tr></tbody></table></figure>
 <br>
 
+<p>Android 系統會自動在不同的使用者主題佈景下，套上相對應的遮罩：</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_anim.gif" class>
+
 <h2 id="2-為舊系統準備-Icon" class="heading-control"><a href="#2-為舊系統準備-Icon" class="headerlink" title="2. 為舊系統準備 Icon"></a>2. 為舊系統準備 Icon<a class="heading-anchor" href="#2-為舊系統準備-Icon" aria-hidden="true"></a></h2><h3 id="2-1-方形-Icon" class="heading-control"><a href="#2-1-方形-Icon" class="headerlink" title="2.1 方形 Icon"></a>2.1 方形 Icon<a class="heading-anchor" href="#2-1-方形-Icon" aria-hidden="true"></a></h3><p>設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的方形圖：</p>
 <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class> 
 
@@ -340,14 +344,14 @@
 <p><code>96px x 96px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
 <p><code>72px x 72px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
 <p><code>48px x 48px</code> > res/mipmap-xhdpi/ic_launcher_round.png<br><br></p>
-<h2 id="工程引用" class="heading-control"><a href="#工程引用" class="headerlink" title="工程引用"></a>工程引用<a class="heading-anchor" href="#工程引用" aria-hidden="true"></a></h2><p>工程需在 App 的 AndroidManifest.xml 中添加：</p>
+<h2 id="工程部署" class="heading-control"><a href="#工程部署" class="headerlink" title="工程部署"></a>工程部署<a class="heading-anchor" href="#工程部署" aria-hidden="true"></a></h2><p>工程需在 App 的 AndroidManifest.xml 中添加：</p>
 <figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">application</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:roundIcon</span>=<span class="string">"@mipmap/ic_launcher_round"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span>></span></span><br></pre></td></tr></tbody></table></figure>
 <br>
 
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-meh-rolling-eyes"></i> 不太為人所知的 Adaptive Icon -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-icons"></i> 不太為人所知的 Adaptive Icon -------------</p>
         </div>
     
 </div></body></html>
@@ -454,7 +458,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%BA%96%E5%82%99-Adaptive-Icon"><span class="nav-text">1. 準備 Adaptive Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%A8%AD%E8%A8%88%E6%8F%90%E4%BE%9B"><span class="nav-text">1.1 設計提供</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%B7%A5%E7%A8%8B%E6%8F%90%E4%BE%9B"><span class="nav-text">1.2 工程提供</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%82%BA%E8%88%8A%E7%B3%BB%E7%B5%B1%E6%BA%96%E5%82%99-Icon"><span class="nav-text">2. 為舊系統準備 Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%96%B9%E5%BD%A2-Icon"><span class="nav-text">2.1 方形 Icon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%9C%93%E5%BD%A2-Icon"><span class="nav-text">2.2 圓形 Icon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%BC%95%E7%94%A8"><span class="nav-text">工程引用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%BA%96%E5%82%99-Adaptive-Icon"><span class="nav-text">1. 準備 Adaptive Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%A8%AD%E8%A8%88%E6%8F%90%E4%BE%9B"><span class="nav-text">1.1 設計提供</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%B7%A5%E7%A8%8B%E6%8F%90%E4%BE%9B"><span class="nav-text">1.2 工程提供</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%82%BA%E8%88%8A%E7%B3%BB%E7%B5%B1%E6%BA%96%E5%82%99-Icon"><span class="nav-text">2. 為舊系統準備 Icon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%96%B9%E5%BD%A2-Icon"><span class="nav-text">2.1 方形 Icon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%9C%93%E5%BD%A2-Icon"><span class="nav-text">2.2 圓形 Icon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E9%83%A8%E7%BD%B2"><span class="nav-text">工程部署</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
