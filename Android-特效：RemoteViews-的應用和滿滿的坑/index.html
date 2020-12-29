@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="bEfZVSXZY5SSSqRac3Ke3k-hoa4kTxmziinhN2ciwpU">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何讓系統 UI 畫出客製化的 View，是小唯團隊最近一直在實驗的玩意。要在 Android 上面做到，就要使用 RemoteViews，通常第一次接觸到的開發者，都是經過 Google 搜尋如何實作某樣某樣功能，才間接找到 RemoteViews，然後就開始照著搜尋結果去做，接著就遇到許許多多問題，然後就是更多的 Google 搜尋，不斷的循環...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 特效：RemoteViews 的應用和滿滿的坑">
+<meta property="og:url" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/index.html">
+<meta property="og:site_name" content="Coding Story">
+<meta property="og:description" content="如何讓系統 UI 畫出客製化的 View，是小唯團隊最近一直在實驗的玩意。要在 Android 上面做到，就要使用 RemoteViews，通常第一次接觸到的開發者，都是經過 Google 搜尋如何實作某樣某樣功能，才間接找到 RemoteViews，然後就開始照著搜尋結果去做，接著就遇到許許多多問題，然後就是更多的 Google 搜尋，不斷的循環...">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen1.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen2.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen3.png">
+<meta property="article:published_time" content="2020-12-28T08:59:01.000Z">
+<meta property="article:modified_time" content="2020-12-29T13:36:32.046Z">
+<meta property="article:author" content="William">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen1.png">
+
+<link rel="canonical" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Android 特效：RemoteViews 的應用和滿滿的坑 | Coding Story</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100890409-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Coding Story" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Coding Story</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">在黑暗中寫故事 👻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分類</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="William">
+      <meta itemprop="description" content="在黑暗中寫故事 👻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Story">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 特效：RemoteViews 的應用和滿滿的坑
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-12-28 16:59:01" itemprop="dateCreated datePublished" datetime="2020-12-28T16:59:01+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-12-29 21:36:32" itemprop="dateModified" datetime="2020-12-29T21:36:32+08:00">2020-12-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">小唯的故事</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-特效：RemoteViews-的應用和滿滿的坑/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>16 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>如何讓系統 UI 畫出客製化的 View，是小唯團隊最近一直在實驗的玩意。要在 Android 上面做到，就要使用 <a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/widget/RemoteViews">RemoteViews</a>，通常第一次接觸到的開發者，都是經過 Google 搜尋如何實作某樣某樣功能，才間接找到 RemoteViews，然後就開始照著搜尋結果去做，接著就遇到許許多多問題、踩了很多坑，然後就是更多的 Google 搜尋，不斷的循環。小唯的團隊也是這樣走過來，所以特地把一些經驗記錄下來。<br><br></p>
+<h2 id="客製化通知訊息" class="heading-control"><a href="#客製化通知訊息" class="headerlink" title="客製化通知訊息"></a>客製化通知訊息<a class="heading-anchor" href="#客製化通知訊息" aria-hidden="true"></a></h2><p>小唯一開始也是為了找如何實作「客製化推播訊息的 UI 樣式」，所以找到了 RemoteViews，目標是在收到推播訊息後，顯示一個接受或拒絕來電的通知。照著搜尋結果，小唯組出了預期的畫面：</p>
+<img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen1.png" class width="320">
+
+<p>如圖片所示，點選 [Answer] 可以接通來電，[Decline] 則是掛斷來電，兩個按鈕都可直接運作，而不用透過另一個來電介面去做接通或掛斷，這就是一個典型客製化通知訊息的一個例子，要做這種效果的通知，需要準備幾樣東西：</p>
+<h3 id="1-通知訊息頻道" class="heading-control"><a href="#1-通知訊息頻道" class="headerlink" title="1. 通知訊息頻道"></a>1. 通知訊息頻道<a class="heading-anchor" href="#1-通知訊息頻道" aria-hidden="true"></a></h3><p>   首先，需要一個用來發送通知訊息的頻道（<a target="_blank" rel="noopener" href="https://developer.android.com/training/notify-user/channels">Notification Channel</a>）。從 Android 8 開始，所有通知訊息都要有一個對應的發送頻道，這些頻道會出現在系統設定中的 [App & notifications] 內，各別的 App 通知設定中：</p>
+   <img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen2.png" class width="320">
+
+<p>   透過這介面，使用者可以個別去開關某個通知訊息，應該是說可以有限度地去控制自己如何「被」訊息通知。但小唯覺得，這設計雖然立意良好，但是一來會落實使用的開發者不多（誰家的企劃規格會寫到這個？），二是知道如何進入調整的使用者那真是少之又少，兩個比率相乘下，造成了這個設計實際上不太具有太大意義。<br>   <br></p>
+<h3 id="2-準備一個-RemoteViews" class="heading-control"><a href="#2-準備一個-RemoteViews" class="headerlink" title="2. 準備一個 RemoteViews"></a>2. 準備一個 RemoteViews<a class="heading-anchor" href="#2-準備一個-RemoteViews" aria-hidden="true"></a></h3><p>   它可以透過一般 inflate XML 的方式來建立出來，「大多數」規則如同一般在 App 中使用 View 一致，注意這裡寫大多數，表示其中有先不一樣的限制，例如：<br>   <br></p>
+   <div class="note warning">
+            <p>一號坑！不是所有 Android View/ViewGroup 都可以使用在 RemoteViews 內！</p>
+          </div>
+   <br>
+
+<p>   使用不支援的 View/ViewGroup，通知會跳不出來，但沒有強制關閉提示，需要看背景 log 才知道發生什麼事 😆。<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout">>> 支援的 View/ViewGroup 清單可以看這 <<</a><br>   <br></p>
+   <div class="note warning">
+            <p>二號坑！XML layout 中不能使用 App theme 的參數！</p>
+          </div>
+   <br>
+
+<p>   如果使用到 App theme 中的參數（e.g. background 引用到 theme 內容 <code>android:background="?attr/colorPrimary"</code>），通知也是會跳不出來，但沒有強制關閉提示，看背景 log 會發現報錯說 view 無法被建立，如下：<br>   <br></p>
+   <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">E StatusBar: android.view.InflateException: Binary XML file line #2: Binary XML file line #2: Error inflating class android.widget.RelativeLayout</span><br><span class="line">E StatusBar: Caused by: android.view.InflateException: Binary XML file line #2: Error inflating class android.widget.RelativeLayout</span><br><span class="line">E StatusBar: Caused by: java.lang.reflect.InvocationTargetException</span><br><span class="line">E StatusBar: 	at java.lang.reflect.Constructor.newInstance0(Native Method)</span><br><span class="line">E StatusBar: 	at java.lang.reflect.Constructor.newInstance(Constructor.java:343)</span><br><span class="line">   </span><br></pre></td></tr></tbody></table></figure>
+   <br>
+
+<p>   這是可預期的，因為其他 process 無從得知 App theme 的設定為何。雖然不能用 theme，但是一般的 <code>resources_name-qualifier</code> 仍是可以使用（也是合理可預期，畢竟我們還是要用 qualifier 來設定寬高等的設定）。這也間接地讓小唯遇到了第三個坑：<br>   <br></p>
+   <div class="note warning">
+            <p>三號坑！即使的 App 不支援黑暗模式，我們還是要為 RemoteViews 準備黑暗模式。</p>
+          </div>
+   <br>
+
+<p>   既然跑在他人的 process 中，按照人家的規矩來顯示呈現也是應該的，設定 <code>-night</code> 資源來依照目前的模式來呈現，才不會造成在黑暗模式中顯示白底或一般模式中顯示黑底的尷尬窘境，像下面這張畫面，黑色的客製化訊息在白色佈景上：<br>   <br></p>
+   <img src="/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/screen3.png" class width="320">
+   <br>
+
+<p>   以下是 XML 全文：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">RelativeLayout</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:background</span>=<span class="string">"@color/custom_notification_background"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:padding</span>=<span class="string">"16dp"</span>></span></span><br><span class="line">  </span><br><span class="line">  <span class="tag"><<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/icon"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"16dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"16dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentTop</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span> /></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/avatar"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"48dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"48dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentTop</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentEnd</span>=<span class="string">"true"</span> /></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/title"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_gravity</span>=<span class="string">"center_vertical"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_marginStart</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:ellipsize</span>=<span class="string">"end"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fontFamily</span>=<span class="string">"sans-serif"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:maxLines</span>=<span class="string">"1"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:textColor</span>=<span class="string">"@color/custom_notification_text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:textSize</span>=<span class="string">"14sp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentTop</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_toEndOf</span>=<span class="string">"@id/icon"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_toStartOf</span>=<span class="string">"@id/avatar"</span>/></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:ellipsize</span>=<span class="string">"end"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fontFamily</span>=<span class="string">"sans-serif"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:maxLines</span>=<span class="string">"1"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:textColor</span>=<span class="string">"@color/custom_notification_text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:textSize</span>=<span class="string">"14sp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_below</span>=<span class="string">"@id/title"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_toEndOf</span>=<span class="string">"@id/icon"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span> /></span></span><br><span class="line"></span><br><span class="line">  <span class="tag"><<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_marginTop</span>=<span class="string">"16dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_below</span>=<span class="string">"@id/text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentEnd</span>=<span class="string">"true"</span>></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"><<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:id</span>=<span class="string">"@+id/button_decline"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_height</span>=<span class="string">"40dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:background</span>=<span class="string">"@drawable/bg_decline"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:fontFamily</span>=<span class="string">"sans-serif"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:gravity</span>=<span class="string">"center"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:text</span>=<span class="string">"Decline"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:textColor</span>=<span class="string">"@color/white"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:textSize</span>=<span class="string">"14sp"</span> /></span></span><br><span class="line"></span><br><span class="line">    <span class="tag"><<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:id</span>=<span class="string">"@+id/button_accept"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_height</span>=<span class="string">"40dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_marginStart</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:background</span>=<span class="string">"@drawable/bg_accept"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:fontFamily</span>=<span class="string">"sans-serif"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:gravity</span>=<span class="string">"center"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:text</span>=<span class="string">"Answer"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:textColor</span>=<span class="string">"@color/white"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:textSize</span>=<span class="string">"14sp"</span> /></span></span><br><span class="line">  <span class="tag"></<span class="name">LinearLayout</span>></span></span><br><span class="line"><span class="tag"></<span class="name">RelativeLayout</span>></span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="3-準備按鈕行為" class="heading-control"><a href="#3-準備按鈕行為" class="headerlink" title="3. 準備按鈕行為"></a>3. 準備按鈕行為<a class="heading-anchor" href="#3-準備按鈕行為" aria-hidden="true"></a></h3><p>   透過客製化的通知訊息，使用者有三個動作可以執行，點選 [Answer]、點選 [Decline]、或是點選訊息本身，所以小唯這三個動作準備了三個 <a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/app/PendingIntent">PendingIntent</a>，已正式線上產品來看，三個動作應該分別對應到接通電話、掛斷電話、和進入來電介面，讓使用者看更多訊息，再決定是否要接通電話。以下是小唯建立通知訊息的程式碼與每個步驟對應註解：</p>
+   <figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">showCustomHeadsUpNotification</span><span class="params">(context: <span class="type">Context</span>, message: <span class="type">String</span>)</span></span> {</span><br><span class="line">  <span class="keyword">val</span> notificationManager =</span><br><span class="line">    context.getSystemService(Context.NOTIFICATION_SERVICE) <span class="keyword">as</span> NotificationManager</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1. 為 Android 8+ 準備通知頻道</span></span><br><span class="line">  <span class="keyword">if</span> (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {</span><br><span class="line">    <span class="comment">// Create notification channel for SDK >= 26 (Android O)</span></span><br><span class="line">    <span class="keyword">val</span> channel = NotificationChannel(</span><br><span class="line">      HEADS_UP_CHANNEL_ID,</span><br><span class="line">      HEADS_UP_CHANNEL_NAME,</span><br><span class="line">      NotificationManager.IMPORTANCE_HIGH</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Configure the notification channel.</span></span><br><span class="line">    channel.enableLights(<span class="literal">true</span>)</span><br><span class="line">    channel.enableVibration(<span class="literal">true</span>)</span><br><span class="line">    notificationManager.createNotificationChannel(channel)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 準備一個 RemoteViews，之後用在 setCustomHeadsUpContentView</span></span><br><span class="line">  <span class="keyword">val</span> headsUpRemoteView = RemoteViews(context.packageName, R.layout.heads_up_notification).apply <span class="symbol">RemoteViews@</span> {</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 設定 RemoteView 上面顯示的資訊</span></span><br><span class="line">    setImageViewResource(R.id.icon, R.drawable.ic_round_call_24)</span><br><span class="line">    setImageViewResource(R.id.avatar, R.drawable.mom_avatar)</span><br><span class="line">    setTextViewText(R.id.title, context.getString(R.string.app_name))</span><br><span class="line">    setTextViewText(R.id.text, message)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3.1 點選 [Answer] 按鈕後，要執行的動作</span></span><br><span class="line">    Intent().apply {</span><br><span class="line">      flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP</span><br><span class="line">      <span class="comment">// For demo purpose, MainActivity is used here because it demonstrates how to handle PendingIntent</span></span><br><span class="line">      setClass(context, MainActivity::<span class="keyword">class</span>.java)</span><br><span class="line">      putExtra(SNACK_BAR_MESSAGE, <span class="string">"Answer call clicked"</span>)</span><br><span class="line">      putExtra(TAG_NOTIFICATION_ID, HEADS_UP_NOTIFICATION_ID)</span><br><span class="line">      <span class="comment">// Bind [Answer] intent to the RemoteViews</span></span><br><span class="line">      <span class="keyword">this</span><span class="symbol">@RemoteViews</span>.setOnClickPendingIntent(</span><br><span class="line">        R.id.button_accept,</span><br><span class="line">        PendingIntent.getActivity(context, <span class="number">5001</span>, <span class="keyword">this</span>, PendingIntent.FLAG_UPDATE_CURRENT)</span><br><span class="line">      )</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3.2 點選 [Decline] 按鈕後，要執行的動作</span></span><br><span class="line">    Intent().apply {</span><br><span class="line">      flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP</span><br><span class="line">      <span class="comment">// For demo purpose, MainActivity is used here because it demonstrates how to handle PendingIntent</span></span><br><span class="line">      setClass(context, MainActivity::<span class="keyword">class</span>.java)</span><br><span class="line">      putExtra(SNACK_BAR_MESSAGE, <span class="string">"Decline call clicked"</span>)</span><br><span class="line">      putExtra(TAG_NOTIFICATION_ID, HEADS_UP_NOTIFICATION_ID)</span><br><span class="line">      <span class="comment">// Bind [Decline] intent to the RemoteViews</span></span><br><span class="line">      <span class="keyword">this</span><span class="symbol">@RemoteViews</span>.setOnClickPendingIntent(</span><br><span class="line">        R.id.button_decline,</span><br><span class="line">        PendingIntent.getActivity(context, <span class="number">5002</span>, <span class="keyword">this</span>, PendingIntent.FLAG_UPDATE_CURRENT)</span><br><span class="line">      )</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.3 點選 notification 本身後，要執行的動作</span></span><br><span class="line">  <span class="keyword">val</span> pendingIntent = Intent().let {</span><br><span class="line">    it.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP</span><br><span class="line">    it.setClass(context, MainActivity::<span class="keyword">class</span>.java)</span><br><span class="line">    it.putExtra(SNACK_BAR_MESSAGE, <span class="string">"Notification clicked"</span>)</span><br><span class="line">    it.putExtra(TAG_NOTIFICATION_ID, HEADS_UP_NOTIFICATION_ID)</span><br><span class="line">    PendingIntent.getActivity(context, <span class="number">5003</span>, it, PendingIntent.FLAG_UPDATE_CURRENT)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 4. 設定通知訊息（這邊注意 setStyle 樣式，某些樣式會截掉 RemoteView）</span></span><br><span class="line">  <span class="keyword">val</span> notification = NotificationCompat.Builder(context, HEADS_UP_CHANNEL_ID).let {</span><br><span class="line">    it.setStyle(NotificationCompat.BigTextStyle())</span><br><span class="line">    NotificationCompat.Style</span><br><span class="line">    it.priority = NotificationCompat.PRIORITY_HIGH</span><br><span class="line">    it.color = ContextCompat.getColor(context, R.color.custom_notification_text)</span><br><span class="line">    it.setSmallIcon(R.drawable.ic_round_call_24)</span><br><span class="line">    it.setContentTitle(message)</span><br><span class="line">    it.setContentText(<span class="string">"Tap to enter the dialing screen..."</span>)</span><br><span class="line">    it.setCategory(NotificationCompat.CATEGORY_CALL)</span><br><span class="line">    it.setDefaults(NotificationCompat.DEFAULT_ALL)</span><br><span class="line">    it.setVibrate(longArrayOf(<span class="number">1000</span>, <span class="number">1000</span>))</span><br><span class="line">    it.setOngoing(<span class="literal">true</span>)</span><br><span class="line">    it.setAutoCancel(<span class="literal">false</span>)</span><br><span class="line">    it.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)</span><br><span class="line">    it.setCustomHeadsUpContentView(headsUpRemoteView)</span><br><span class="line">    it.setFullScreenIntent(pendingIntent, <span class="literal">true</span>)</span><br><span class="line">    it.setContentIntent(pendingIntent)</span><br><span class="line">    it.build()</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 5. 一切就緒，發送通知</span></span><br><span class="line">  notificationManager.notify(</span><br><span class="line">    HEADS_UP_NOTIFICATION_ID,</span><br><span class="line">    notification</span><br><span class="line">  )</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="4-設定通知訊息" class="heading-control"><a href="#4-設定通知訊息" class="headerlink" title="4. 設定通知訊息"></a>4. 設定通知訊息<a class="heading-anchor" href="#4-設定通知訊息" aria-hidden="true"></a></h3><p>   有了 RemoteViews 和 PendingIntent 定義的動作後，就可以用 <code>NotificationCompat.Builder</code> 來把一切都接起來，這邊要注意使用的 style：<br>   <br></p>
+   <div class="note warning">
+            <p>四號坑！慎選 style 樣式，要不然 RemoteViews 畫面很可能被截掉 😭</p>
+          </div>
+   <br>
+
+<p>   小唯這邊選擇的是 <code>BigTextStyle</code>，因為在眾多現成 Style 中，只有這個剛好適用，又不會截掉 RemoteViews 畫面。其他像是 <code>DecoratedCustomViewStyle</code>，實驗發現會把 heads-up 通知的底部給截掉，<code>BigPictureStyle</code>、<code>InboxStyle</code>、<code>MessagingStyle</code> 的應用則相對不適合來電通知。<br>   <br></p>
+<h3 id="5-一切就緒，發送通知" class="heading-control"><a href="#5-一切就緒，發送通知" class="headerlink" title="5. 一切就緒，發送通知"></a>5. 一切就緒，發送通知<a class="heading-anchor" href="#5-一切就緒，發送通知" aria-hidden="true"></a></h3><p>   記得將 notification ID 記錄下來，之後動作執行後，要針對紀錄的 notification ID 去做 cancel 的動作，否則 ongoing notification 會一直存在於通知列裡面。<br>   <br></p>
+<h2 id="更多限制" class="heading-control"><a href="#更多限制" class="headerlink" title="更多限制"></a>更多限制<a class="heading-anchor" href="#更多限制" aria-hidden="true"></a></h2><p>RemoteViews 其實在不同廠牌的手機上，行為或顯示都會有不盡相同的效果，在使用上，需要多多測試不同廠牌，甚至不同型號的手機。舉例來說，在小米手機上，小唯團隊就遇到了 heads-up 的畫面被截掉。無奈是 Android 手機廠牌、型號多到數不清，實在要驗也驗不完啊～～ 😭<br><br></p>
+<p><strong>相關連結：</strong><a target="_blank" rel="noopener" href="https://github.com/wm4n/android-effect-demo"><i class="fab fa-github"></i> Demo 專案</a><br><br></p>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 有比 RemoteViews 更好的選擇嗎？ -------------</p>
+        </div>
+    
+</div>
+<br></body></html>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>William
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/" title="Android 特效：RemoteViews 的應用和滿滿的坑">https://wm4n.github.io/Android-特效：RemoteViews-的應用和滿滿的坑/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/" rel="prev" title="Android 如何設計使用 Adaptive Icon">
+      <i class="fa fa-chevron-left"></i> Android 如何設計使用 Adaptive Icon
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E8%A3%BD%E5%8C%96%E9%80%9A%E7%9F%A5%E8%A8%8A%E6%81%AF"><span class="nav-text">客製化通知訊息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E7%9F%A5%E8%A8%8A%E6%81%AF%E9%A0%BB%E9%81%93"><span class="nav-text">1. 通知訊息頻道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BA%96%E5%82%99%E4%B8%80%E5%80%8B-RemoteViews"><span class="nav-text">2. 準備一個 RemoteViews</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%BA%96%E5%82%99%E6%8C%89%E9%88%95%E8%A1%8C%E7%82%BA"><span class="nav-text">3. 準備按鈕行為</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%A8%AD%E5%AE%9A%E9%80%9A%E7%9F%A5%E8%A8%8A%E6%81%AF"><span class="nav-text">4. 設定通知訊息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%B8%80%E5%88%87%E5%B0%B1%E7%B7%92%EF%BC%8C%E7%99%BC%E9%80%81%E9%80%9A%E7%9F%A5"><span class="nav-text">5. 一切就緒，發送通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E9%99%90%E5%88%B6"><span class="nav-text">更多限制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">William</p>
+  <div class="site-description" itemprop="description">在黑暗中寫故事 👻</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wm4n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wm4n" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wmandev@gmail.com" title="E-Mail → mailto:wmandev@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">by William (wmandev@gmail.com)</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb5e18906c1d31f" async="async"></script>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyDGEIOX1zR-Jr_1OwDoR-E6NCfczjayxNk',
+      projectId: 'coding-story'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://coding-story.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/";
+    this.page.identifier = "Android-特效：RemoteViews-的應用和滿滿的坑/";
+    this.page.title = "Android 特效：RemoteViews 的應用和滿滿的坑";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://coding-story.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
