@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
+<meta name="generator" content="Hexo 5.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
 <meta property="og:image" content="https://wm4n.github.io/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png">
 <meta property="article:published_time" content="2020-12-21T15:32:06.000Z">
-<meta property="article:modified_time" content="2020-12-29T13:36:32.022Z">
+<meta property="article:modified_time" content="2020-12-29T13:45:30.495Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-12-29 21:36:32" itemprop="dateModified" datetime="2020-12-29T21:36:32+08:00">2020-12-29</time>
+                <time title="修改時間：2020-12-29 21:45:30" itemprop="dateModified" datetime="2020-12-29T21:45:30+08:00">2020-12-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,11 +293,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於發現這一切應該是 Google 的文件問題 😑。</p>
-<p>每次小唯遇到不同的設計，總是把 Android Developer 上面的 <a target="_blank" rel="noopener" href="https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive">adaptive icon</a> 文件丟給設計，請設計提供圖檔，結果不是檔案東缺西少，就是大小不符格式，直到後來發現，一份文件，十個設計就算沒有十種，也有八種解讀方式，所以小唯決定自己寫一份超簡易 guideline 給自家設計。<br><br></p>
-<h2 id="1-準備-Adaptive-Icon" class="heading-control"><a href="#1-準備-Adaptive-Icon" class="headerlink" title="1. 準備 Adaptive Icon"></a>1. 準備 Adaptive Icon<a class="heading-anchor" href="#1-準備-Adaptive-Icon" aria-hidden="true"></a></h2><h3 id="1-1-設計提供" class="heading-control"><a href="#1-1-設計提供" class="headerlink" title="1.1 設計提供"></a>1.1 設計提供<a class="heading-anchor" href="#1-1-設計提供" aria-hidden="true"></a></h3><p>提供兩個 SVG 格式的 108dp x 108dp 圖檔，讓工程使用 File > New > Vector Asset 匯入，分別用於前景圖層、與背景圖層：</p>
-<p><strong>前景圖</strong> 命名為 <code>ic_launcher_foreground.xml</code> （藍色背景色實際上為透明色） <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png" class width="324" height="324" title="前景圖"> </p>
-<p><strong>背景圖</strong> 命名為 <code>ic_launcher_background.xml</code>  <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_background.png" class width="324" height="324" title="背景圖"> </p>
+        <h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於發現這一切應該是 Google 的文件問題 😑。</p>
+<p>每次小唯遇到不同的設計，總是把 Android Developer 上面的 <a target="_blank" rel="noopener" href="https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive">adaptive icon</a> 文件丟給設計，請設計提供圖檔，結果不是檔案東缺西少，就是大小不符格式，直到後來發現，一份文件，十個設計就算沒有十種，也有八種解讀方式，所以小唯決定自己寫一份超簡易 guideline 給自家設計。<br><br/></p>
+<h2 id="1-準備-Adaptive-Icon"><a href="#1-準備-Adaptive-Icon" class="headerlink" title="1. 準備 Adaptive Icon"></a>1. 準備 Adaptive Icon</h2><h3 id="1-1-設計提供"><a href="#1-1-設計提供" class="headerlink" title="1.1 設計提供"></a>1.1 設計提供</h3><p>提供兩個 SVG 格式的 108dp x 108dp 圖檔，讓工程使用 File &gt; New &gt; Vector Asset 匯入，分別用於前景圖層、與背景圖層：</p>
+<p><strong>前景圖</strong> 命名為 <code>ic_launcher_foreground.xml</code> （藍色背景色實際上為透明色） <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_foreground.png" class="" width="324" height="324" title="前景圖"> </p>
+<p><strong>背景圖</strong> 命名為 <code>ic_launcher_background.xml</code>  <img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/vector_background.png" class="" width="324" height="324" title="背景圖"> </p>
 <p>兩張圖需要注意的重點為：</p>
 <ol>
 <li><p>兩張圖必須為 108dp x 108dp 大小的圖檔，讓工程放在 <code>res/drawable</code> 資料夾內</p>
@@ -307,12 +307,12 @@
 <li><p>背景圖使用不透明色為背景色，任何不希望跟主題一起移動的內容，放在背景圖中</p>
 </li>
 <li><p>最常被忽略的一點。兩張圖中，<strong>所有可視物件，必須放在中間的 72dp x 72dp 中</strong>，也就是『不要放內容物在四邊的 18dp 中』（要不然顯示時就會被截掉）</p>
-<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_icon_margin.svg" class width="452" height="452" title="Adaptive Icon Margin">
-<br>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_icon_margin.svg" class="" width="452" height="452" title="Adaptive Icon Margin">
+<br/>
 
 </li>
 </ol>
-<h3 id="1-2-工程提供" class="heading-control"><a href="#1-2-工程提供" class="headerlink" title="1.2 工程提供"></a>1.2 工程提供<a class="heading-anchor" href="#1-2-工程提供" aria-hidden="true"></a></h3><p>在 <code>res/mipmap-anydpi-v26</code> 資料夾下，準備兩個 xml 檔案：</p>
+<h3 id="1-2-工程提供"><a href="#1-2-工程提供" class="headerlink" title="1.2 工程提供"></a>1.2 工程提供</h3><p>在 <code>res/mipmap-anydpi-v26</code> 資料夾下，準備兩個 xml 檔案：</p>
 <ol>
 <li><p><code>ic_launcher.xml</code></p>
 </li>
@@ -320,33 +320,33 @@
 </li>
 </ol>
 <p>內容都放入相同的：</p>
-<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?xml version="1.0" encoding="utf-8"?></span></span><br><span class="line"><span class="tag"><<span class="name">adaptive-icon</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>></span></span><br><span class="line">  <span class="tag"><<span class="name">background</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_background"</span> /></span></span><br><span class="line">  <span class="tag"><<span class="name">foreground</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_launcher_foreground"</span> /></span></span><br><span class="line"><span class="tag"></<span class="name">adaptive-icon</span>></span></span><br></pre></td></tr></tbody></table></figure>
-<br>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">adaptive-icon</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">background</span> <span class="attr">android:drawable</span>=<span class="string">&quot;@drawable/ic_launcher_background&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">foreground</span> <span class="attr">android:drawable</span>=<span class="string">&quot;@drawable/ic_launcher_foreground&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">adaptive-icon</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<br/>
 
 <p>Android 系統會自動在不同的使用者主題佈景下，套上相對應的遮罩：</p>
-<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_anim.gif" class>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/adaptive_anim.gif" class="">
 
-<h2 id="2-為舊系統準備-Icon" class="heading-control"><a href="#2-為舊系統準備-Icon" class="headerlink" title="2. 為舊系統準備 Icon"></a>2. 為舊系統準備 Icon<a class="heading-anchor" href="#2-為舊系統準備-Icon" aria-hidden="true"></a></h2><h3 id="2-1-方形-Icon" class="heading-control"><a href="#2-1-方形-Icon" class="headerlink" title="2.1 方形 Icon"></a>2.1 方形 Icon<a class="heading-anchor" href="#2-1-方形-Icon" aria-hidden="true"></a></h3><p>設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的方形圖：</p>
-<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class> 
-
-<p>讓工程將每張圖放入對應的資料夾中：</p>
-<p><code>192px x 192px</code> > res/mipmap-xxxhdpi/ic_launcher.png</p>
-<p><code>144px x 144px</code> > res/mipmap-xxhdpi/ic_launcher.png</p>
-<p><code>96px x 96px</code> > res/mipmap-xhdpi/ic_launcher.png</p>
-<p><code>72px x 72px</code> > res/mipmap-xhdpi/ic_launcher.png</p>
-<p><code>48px x 48px</code> > res/mipmap-xhdpi/ic_launcher.png<br><br></p>
-<h3 id="2-2-圓形-Icon" class="heading-control"><a href="#2-2-圓形-Icon" class="headerlink" title="2.2 圓形 Icon"></a>2.2 圓形 Icon<a class="heading-anchor" href="#2-2-圓形-Icon" aria-hidden="true"></a></h3><p>如方形 icon，設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的圓形圖（圓角用透明處理）：</p>
-<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class> 
+<h2 id="2-為舊系統準備-Icon"><a href="#2-為舊系統準備-Icon" class="headerlink" title="2. 為舊系統準備 Icon"></a>2. 為舊系統準備 Icon</h2><h3 id="2-1-方形-Icon"><a href="#2-1-方形-Icon" class="headerlink" title="2.1 方形 Icon"></a>2.1 方形 Icon</h3><p>設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的方形圖：</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class=""> 
 
 <p>讓工程將每張圖放入對應的資料夾中：</p>
-<p><code>192px x 192px</code> > res/mipmap-xxxhdpi/ic_launcher_round.png</p>
-<p><code>144px x 144px</code> > res/mipmap-xxhdpi/ic_launcher_round.png</p>
-<p><code>96px x 96px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
-<p><code>72px x 72px</code> > res/mipmap-xhdpi/ic_launcher_round.png</p>
-<p><code>48px x 48px</code> > res/mipmap-xhdpi/ic_launcher_round.png<br><br></p>
-<h2 id="工程部署" class="heading-control"><a href="#工程部署" class="headerlink" title="工程部署"></a>工程部署<a class="heading-anchor" href="#工程部署" aria-hidden="true"></a></h2><p>工程需在 App 的 AndroidManifest.xml 中添加：</p>
-<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag"><<span class="name">application</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:roundIcon</span>=<span class="string">"@mipmap/ic_launcher_round"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span>></span></span><br></pre></td></tr></tbody></table></figure>
-<br>
+<p><code>192px x 192px</code> &gt; res/mipmap-xxxhdpi/ic_launcher.png</p>
+<p><code>144px x 144px</code> &gt; res/mipmap-xxhdpi/ic_launcher.png</p>
+<p><code>96px x 96px</code> &gt; res/mipmap-xhdpi/ic_launcher.png</p>
+<p><code>72px x 72px</code> &gt; res/mipmap-xhdpi/ic_launcher.png</p>
+<p><code>48px x 48px</code> &gt; res/mipmap-xhdpi/ic_launcher.png<br><br/></p>
+<h3 id="2-2-圓形-Icon"><a href="#2-2-圓形-Icon" class="headerlink" title="2.2 圓形 Icon"></a>2.2 圓形 Icon</h3><p>如方形 icon，設計提供 5 張大小分別為 <code>192px x 192px</code>、<code>144px x 144px</code>、<code>96px x 96px</code>、<code>72px x 72px</code>、<code>48px x 48px</code> 的圓形圖（圓角用透明處理）：</p>
+<img src="/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/5_rect_icons.png" class=""> 
+
+<p>讓工程將每張圖放入對應的資料夾中：</p>
+<p><code>192px x 192px</code> &gt; res/mipmap-xxxhdpi/ic_launcher_round.png</p>
+<p><code>144px x 144px</code> &gt; res/mipmap-xxhdpi/ic_launcher_round.png</p>
+<p><code>96px x 96px</code> &gt; res/mipmap-xhdpi/ic_launcher_round.png</p>
+<p><code>72px x 72px</code> &gt; res/mipmap-xhdpi/ic_launcher_round.png</p>
+<p><code>48px x 48px</code> &gt; res/mipmap-xhdpi/ic_launcher_round.png<br><br/></p>
+<h2 id="工程部署"><a href="#工程部署" class="headerlink" title="工程部署"></a>工程部署</h2><p>工程需在 App 的 AndroidManifest.xml 中添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:icon</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:roundIcon</span>=<span class="string">&quot;@mipmap/ic_launcher_round&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<br/>
 
 <div>
     
@@ -354,7 +354,7 @@
 <p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-icons"></i> 不太為人所知的 Adaptive Icon -------------</p>
         </div>
     
-</div></body></html>
+</div>
     </div>
 
     

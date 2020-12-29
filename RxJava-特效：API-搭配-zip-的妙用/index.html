@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
+<meta name="generator" content="Hexo 5.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png">
 <meta property="og:image" content="https://wm4n.github.io/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg">
 <meta property="article:published_time" content="2020-12-14T16:14:20.000Z">
-<meta property="article:modified_time" content="2020-12-29T13:36:32.050Z">
+<meta property="article:modified_time" content="2020-12-29T13:45:30.531Z">
 <meta property="article:author" content="William">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="RxJava">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-12-29 21:36:32" itemprop="dateModified" datetime="2020-12-29T21:36:32+08:00">2020-12-29</time>
+                <time title="修改時間：2020-12-29 21:45:30" itemprop="dateModified" datetime="2020-12-29T21:45:30+08:00">2020-12-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,53 +299,53 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><h2 id="前言故事" class="heading-control"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事<a class="heading-anchor" href="#前言故事" aria-hidden="true"></a></h2><p>小唯公司的門口角落，放有幾張小桌子，小唯正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小唯負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小唯的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小唯團隊，腦中冒出一個之前看過的 <a target="_blank" rel="noopener" href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br></p>
-<h2 id="在沒有的-ReactiveX-之前" class="heading-control"><a href="#在沒有的-ReactiveX-之前" class="headerlink" title="在沒有的 ReactiveX 之前"></a>在沒有的 ReactiveX 之前<a class="heading-anchor" href="#在沒有的-ReactiveX-之前" aria-hidden="true"></a></h2><p>當一個畫面對應一支 API，流程是相當單純：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg" class title="1 API / screen">
-<br>
+        <h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>小唯公司的門口角落，放有幾張小桌子，小唯正與另一位負責 API 介面開發的同事，在其中一張桌上討論要如何為既有 API 設計新的 API 接口。以小唯負責的手機 App 前端角色，當然是希望越簡單越好，一個畫面一支 API 是對 App 最簡單的方式，進入畫面時使用 API 更新資料、重整介面，但是 API 同事卻有其他考量，因為架構問題，他無法把每個功能畫面，都依照小唯的期待去設計介面。最後結果是有數個畫面，需要使用超過一支 API 去將資料整合起來。這對於原本就在使用 <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a> 的小唯團隊，腦中冒出一個之前看過的 <a target="_blank" rel="noopener" href="http://reactivex.io/documentation/operators/zip.html">operator - Zip</a>。<br><br/></p>
+<h2 id="在沒有的-ReactiveX-之前"><a href="#在沒有的-ReactiveX-之前" class="headerlink" title="在沒有的 ReactiveX 之前"></a>在沒有的 ReactiveX 之前</h2><p>當一個畫面對應一支 API，流程是相當單純：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/1api.svg" class="" title="1 API &#x2F; screen">
+<br/>
 
 <p>但是當一個畫面有需要兩支或以上 API 才能呈現內容，就「稍微」有點複雜了，有多種組合都可以達到目的，通常會視狀況使用。</p>
-<h3 id="相依性高的-API-組合" class="heading-control"><a href="#相依性高的-API-組合" class="headerlink" title="相依性高的 API 組合"></a>相依性高的 API 組合<a class="heading-anchor" href="#相依性高的-API-組合" aria-hidden="true"></a></h3><p>在有強烈相依性下的狀況，當一支 API 失敗，接下來的都會變成毫無意義，這時可以讓一支 API 接著另一支，當第一支結果回來後，先處理結果，再決定是否要執行第二支 API。這就有兩種可能的組合：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg" class title="2 API / screen flow #1">
-<br>
+<h3 id="相依性高的-API-組合"><a href="#相依性高的-API-組合" class="headerlink" title="相依性高的 API 組合"></a>相依性高的 API 組合</h3><p>在有強烈相依性下的狀況，當一支 API 失敗，接下來的都會變成毫無意義，這時可以讓一支 API 接著另一支，當第一支結果回來後，先處理結果，再決定是否要執行第二支 API。這就有兩種可能的組合：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_1.svg" class="" title="2 API &#x2F; screen flow #1">
+<br/>
 
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_2.svg" class title="2 API / screen flow #2">
-<br>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_2.svg" class="" title="2 API &#x2F; screen flow #2">
+<br/>
 
-<h3 id="最重要的先顯示" class="heading-control"><a href="#最重要的先顯示" class="headerlink" title="最重要的先顯示"></a>最重要的先顯示<a class="heading-anchor" href="#最重要的先顯示" aria-hidden="true"></a></h3><p>當第二支 API 只是單純的附加資訊時，這時使用者先看到第一支 API 資訊比較重要，就可以使用以下變形。這讓第一支結果回來後，就立刻渲染，等第二支 API 回來，再渲染第二支結果，即使後面的 API 失敗，對使用者的影響也較小：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_3.svg" class title="2 API / screen flow #3">
-<br>
+<h3 id="最重要的先顯示"><a href="#最重要的先顯示" class="headerlink" title="最重要的先顯示"></a>最重要的先顯示</h3><p>當第二支 API 只是單純的附加資訊時，這時使用者先看到第一支 API 資訊比較重要，就可以使用以下變形。這讓第一支結果回來後，就立刻渲染，等第二支 API 回來，再渲染第二支結果，即使後面的 API 失敗，對使用者的影響也較小：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_3.svg" class="" title="2 API &#x2F; screen flow #3">
+<br/>
 
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_4.svg" class title="2 API / screen flow #4">
-<br>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_4.svg" class="" title="2 API &#x2F; screen flow #4">
+<br/>
 
-<h3 id="大家都重要，且無相依性" class="heading-control"><a href="#大家都重要，且無相依性" class="headerlink" title="大家都重要，且無相依性"></a>大家都重要，且無相依性<a class="heading-anchor" href="#大家都重要，且無相依性" aria-hidden="true"></a></h3><p>當 API 誰先誰後的順序不重要，而且沒有相依性時，線性同步發送且等待結果都回來後，再渲染畫面：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_5.svg" class title="2 API / screen flow #5">
-<br>
+<h3 id="大家都重要，且無相依性"><a href="#大家都重要，且無相依性" class="headerlink" title="大家都重要，且無相依性"></a>大家都重要，且無相依性</h3><p>當 API 誰先誰後的順序不重要，而且沒有相依性時，線性同步發送且等待結果都回來後，再渲染畫面：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_5.svg" class="" title="2 API &#x2F; screen flow #5">
+<br/>
 
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_6.svg" class title="2 API / screen flow #6">
-<br>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_6.svg" class="" title="2 API &#x2F; screen flow #6">
+<br/>
 
-<h3 id="非同步進行" class="heading-control"><a href="#非同步進行" class="headerlink" title="非同步進行"></a>非同步進行<a class="heading-anchor" href="#非同步進行" aria-hidden="true"></a></h3><p>非同步進行也是常用的方式之一，如果 API 無相依性，或者資料順序不重要，也可以非同步發送 API，哪個先回來就先渲染哪個。缺點也是常常會看到畫面先長出一部分，接著馬上在跳出剩下的部分，至於哪部分先，哪個後出來，則無法預測：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg" class title="2 API / screen flow #7">
-<br>
+<h3 id="非同步進行"><a href="#非同步進行" class="headerlink" title="非同步進行"></a>非同步進行</h3><p>非同步進行也是常用的方式之一，如果 API 無相依性，或者資料順序不重要，也可以非同步發送 API，哪個先回來就先渲染哪個。缺點也是常常會看到畫面先長出一部分，接著馬上在跳出剩下的部分，至於哪部分先，哪個後出來，則無法預測：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel2.svg" class="" title="2 API &#x2F; screen flow #7">
+<br/>
 
 <p>當資料內容必須一同顯示，那就得等待結果都回來後才渲染，這是小唯公司內常見的用法，優點是不會看到畫面分別跳出來，缺點是不太容易實作，常常看到有寫錯亂的狀況（不會用又愛用，為什麼不乾脆使用同步方式，一個接一個）：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg" class title="2 API / screen flow #8">
-<br>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_parallel.svg" class="" title="2 API &#x2F; screen flow #8">
+<br/>
 
-<h2 id="ReactiveX-的出現" class="heading-control"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現<a class="heading-anchor" href="#ReactiveX-的出現" aria-hidden="true"></a></h2><p>自從小唯團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png" class title="RxJava zip operator">
-<br>
+<h2 id="ReactiveX-的出現"><a href="#ReactiveX-的出現" class="headerlink" title="ReactiveX 的出現"></a>ReactiveX 的出現</h2><p>自從小唯團隊使用 RxJava zip 後，之前不容易實作的非同步寫法，突然變成無難度，zip 的特性是將多個資料來源，只在所有來源都接收到資料後，才一起發通知處理。下方的圖可以看成，白圈是 API 一號回傳的結果，黃色倒三角是 API 二號回傳的結果，黃色圈則是兩個 API 合併後的結果，也就預期達成的效果：</p>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/rxjava-zip.png" class="" title="RxJava zip operator">
+<br/>
 
 <p>使用 zip 後流程變成如下：</p>
-<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg" class title="2 API / zip operator">
-<br>
+<img src="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/2api_zip.svg" class="" title="2 API &#x2F; zip operator">
+<br/>
 
 <p>程式碼寫起來出奇的簡單：</p>
-<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Single<Result> <span class="title">getScreenData</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="comment">// 非同步呼叫 API 1</span></span><br><span class="line">    Single<ApiResult> api_1_result = api1();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 非同步呼叫 API 2</span></span><br><span class="line">    Single<ApiResult> api_2_result = api2();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待兩個結果都回來後，使用 handleApiResult 將資料轉換成 UI 可使用的 data model</span></span><br><span class="line">    <span class="keyword">return</span> Single.zip(api_1_result, api_2_result, <span class="keyword">this</span>::handleApiResult);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Result <span class="title">handleApiResult</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_1_result,</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_2_result)</span> </span>{</span><br><span class="line">    Result result = <span class="keyword">new</span> Result();</span><br><span class="line">    <span class="comment">// 模擬將資料整合</span></span><br><span class="line">    result.setData1(api_1_result);</span><br><span class="line">    result.setData2(api_2_result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<br>
-<br>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Single&lt;Result&gt; <span class="title">getScreenData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 非同步呼叫 API 1</span></span><br><span class="line">    Single&lt;ApiResult&gt; api_1_result = api1();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 非同步呼叫 API 2</span></span><br><span class="line">    Single&lt;ApiResult&gt; api_2_result = api2();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待兩個結果都回來後，使用 handleApiResult 將資料轉換成 UI 可使用的 data model</span></span><br><span class="line">    <span class="keyword">return</span> Single.zip(api_1_result, api_2_result, <span class="keyword">this</span>::handleApiResult);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Result <span class="title">handleApiResult</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_1_result,</span></span></span><br><span class="line"><span class="function"><span class="params">    ApiResult api_2_result)</span> </span>&#123;</span><br><span class="line">    Result result = <span class="keyword">new</span> Result();</span><br><span class="line">    <span class="comment">// 模擬將資料整合</span></span><br><span class="line">    result.setData1(api_1_result);</span><br><span class="line">    result.setData2(api_2_result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br/>
+<br/>
 
 <div>
     
@@ -354,7 +354,7 @@
         </div>
     
 </div>
-<br></body></html>
+<br/>
     </div>
 
     
