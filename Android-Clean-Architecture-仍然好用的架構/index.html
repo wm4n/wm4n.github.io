@@ -21,21 +21,27 @@
     var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="電腦前，小唯不斷地調整程式碼，重複編譯，檢查模擬器上的結果，一整個上午小唯一直在試一個 Android 標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小唯一段時間了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻怪怪地...">
+  <meta name="description" content="小唯的團隊使用 Clean Architecture 來重構自家的 Android 產品已經有一年多的時間。團隊從一開始毫無架構可言的 App，到最後完全重寫套用，中間歷經了許多甘苦，也收穫許多經驗。事後也證明（團隊一致認同），好的架構的確有效率的提升工作效率，以及程式的可擴展性等優點。所以小唯決定將使用經驗保留下來，也順道留一份模板程式，方便之後的產品更容易套用...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 特效：動態變更標籤元件(TabLayout)">
-<meta property="og:url" content="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/index.html">
+<meta property="og:title" content="Android Clean Architecture - 仍然好用的架構">
+<meta property="og:url" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/index.html">
 <meta property="og:site_name" content="Coding Story">
-<meta property="og:description" content="電腦前，小唯不斷地調整程式碼，重複編譯，檢查模擬器上的結果，一整個上午小唯一直在試一個 Android 標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小唯一段時間了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻怪怪地...">
+<meta property="og:description" content="小唯的團隊使用 Clean Architecture 來重構自家的 Android 產品已經有一年多的時間。團隊從一開始毫無架構可言的 App，到最後完全重寫套用，中間歷經了許多甘苦，也收穫許多經驗。事後也證明（團隊一致認同），好的架構的確有效率的提升工作效率，以及程式的可擴展性等優點。所以小唯決定將使用經驗保留下來，也順道留一份模板程式，方便之後的產品更容易套用...">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2020-12-09T16:04:31.000Z">
-<meta property="article:modified_time" content="2021-01-31T19:02:13.987Z">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture1.svg">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture2.svg">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture5.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture3.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture4.png">
+<meta property="og:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture6.svg">
+<meta property="article:published_time" content="2021-01-27T16:05:29.000Z">
+<meta property="article:modified_time" content="2021-01-31T19:02:13.959Z">
 <meta property="article:author" content="William">
-<meta property="article:tag" content="Android">
-<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Android, 程式架構">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture1.svg">
 
-<link rel="canonical" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/">
+<link rel="canonical" href="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/">
 
 
 <script id="page-configurations">
@@ -48,7 +54,7 @@
   };
 </script>
 
-  <title>Android 特效：動態變更標籤元件(TabLayout) | Coding Story</title>
+  <title>Android Clean Architecture - 仍然好用的架構 | Coding Story</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
     <script>
@@ -202,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -215,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android 特效：動態變更標籤元件(TabLayout)
+          Android Clean Architecture - 仍然好用的架構
         </h1>
 
         <div class="post-meta">
@@ -225,7 +231,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2020-12-10 00:04:31" itemprop="dateCreated datePublished" datetime="2020-12-10T00:04:31+08:00">2020-12-10</time>
+              <time title="創建時間：2021-01-28 00:05:29" itemprop="dateCreated datePublished" datetime="2021-01-28T00:05:29+08:00">2021-01-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -264,8 +270,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-特效：動態變更標籤元件-TabLayout/" itemprop="commentCount"></span>
+    <a title="disqus" href="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-Clean-Architecture-仍然好用的架構/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,7 +281,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>4 分鐘</span>
+              <span>5 分鐘</span>
             </span>
 
         </div>
@@ -287,34 +293,94 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>電腦前，小唯不斷地調整程式碼，重複編譯，檢查模擬器上的結果，一整個上午小唯一直在試一個 Android 標籤元件的特效（Tab 特效）- 動態新增新的標籤頁，及移除現有的標籤頁。這問題已經困擾小唯一段時間了，原本以為是個很簡單的效果，一個上午絕對可以搞定，但卻在最後一步，怎麼試效果都不正確，標籤頁雖然可以新增或移除，但標籤頁的內容卻怪怪地。<br><br/></p>
-<h2 id="簡單、或不簡單"><a href="#簡單、或不簡單" class="headerlink" title="簡單、或不簡單"></a>簡單、或不簡單</h2><p>小唯要求的規格很簡單，準備一個標籤元件，透過程式的方式，可隨意添加新標籤頁，或移除現有標籤頁（除非只剩下一個標籤頁）。規格聽起來很簡單，小唯心裡盤點著：「需要 TabLayout、ViewPager、FragmentPagerAdapter…」。團隊以往使用標籤元件，常常都是固定數量的標籤頁，只需透過 FragmentPagerAdapter 定義標籤頁數量、標籤名稱、內容等，就能顯示預期的效果：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdatableTabAdapter</span></span>(fm: FragmentManager): FragmentPagerAdapter(</span><br><span class="line">  fm,</span><br><span class="line">  BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span> <span class="comment">// 三個標籤頁</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment &#123;</span><br><span class="line">    <span class="comment">// 回傳指定位置的標籤頁 Fragment</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但如果要能支援新增刪除，就稍微複雜一點，但只要把固定標籤頁的寫法，改為透過 MutableList 來控制標籤頁的數量，應該也不會太複雜吧：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdatableTabAdapter</span></span>(fm: FragmentManager): FragmentPagerAdapter(</span><br><span class="line">  fm,</span><br><span class="line">  BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> tabs: MutableList&lt;<span class="built_in">Int</span>&gt; = mutableListOf(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> tabs.size</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment &#123;</span><br><span class="line">    <span class="comment">// 回傳指定位置的標籤頁 Fragment</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPageTitle</span><span class="params">(position: <span class="type">Int</span>)</span></span>: CharSequence? &#123;</span><br><span class="line">    <span class="keyword">return</span> tabs[position].toString()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemId</span><span class="params">(position: <span class="type">Int</span>)</span></span>: <span class="built_in">Long</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> tabs[position].toLong()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>結果卻不如預期 😫：</p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/dKKFvtnAWHE" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+        <h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>小唯加入當前的公司後，主要負責一款 Android App 的開發以及維護，那是一款相當有歷史年代的產品，介面是老式的風格、使用了許多 deprecated 的技術、連內部商務邏輯也都幾乎已經不可考了，要不是 Google 要求每年的更新 Android Target SDK 版本，相信有許多部份應該是會更老舊。小唯進公司沒多久後，機緣巧合內部設計師與企劃有對 App 改版的需求，想將產品改造成一個介面更現代化、資訊架構更有條理、以及為將來要推出的新服務事先鋪路，所以小唯也趁此機會，針對 App 的軟體架構進行了一次徹底的打掉重練。<br><br/></p>
+<h2 id="改版之前"><a href="#改版之前" class="headerlink" title="改版之前"></a>改版之前</h2><p>原始版本的 App，是一款集所有需求於一身的龐然大物，內含少說上百種以上的大小功能，但本身可以說是幾乎沒有程式架構可言。試想當年這款產品是怎麼開始的（以下假設這款產品是一個通訊錄 App）：</p>
+<p>2010年，產品企劃：「嗨～ 公司打算將目前線上那款通訊錄服務，上架到當前正在流行的手機平台（Android &amp; iOS），我們打算先做聯絡人的基本功能…」</p>
+<p>一年後，產品企劃：「之前上架的那款 App，反應不錯，我們打算將它與 Facebook 做整合…」</p>
+<p>半年後，產品企劃：「半年前 Facebook 的整合頗受好評，所以我們將另一個通訊錄服務做整合…」</p>
+<p>…<br><br/></p>
+<p>接著，更多的功能不斷上架，即時線上狀態、聯絡人相簿、Instagram 整合，需求一個接一個的來</p>
+<p>最終，這款通訊錄 App 就變成這樣：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture1.svg" class="" title="Software Architecture History">
+<br/>
 <br/>
 
-<h2 id="意想不到的解決方案"><a href="#意想不到的解決方案" class="headerlink" title="意想不到的解決方案"></a>意想不到的解決方案</h2><p>上述做法是，只要在標籤頁上點選了新增符號，就會在右邊加一個新的標籤頁。反之，點選移除符號則移除最左邊的標籤頁，但怎知移除標籤頁後，卻出現了標籤混亂的狀態，這是因為 FragmentPagerAdapter 保存了標籤頁，並沒有在每次新增移除後都重建標籤頁，即使使用了 <code>notifyDataSetChanged()</code> 結果也是一樣。</p>
-<p>經過一個上午的努力，小唯終於找到了關鍵原因，就是在 PagerAdapter 內的 getItemPosition，以下是 PagerAdapter 的內容及說明文件：</p>
-<figure class="highlight java"><figcaption><span>PagerAdapter.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Called when the host view is attempting to determine if an item&#x27;s position</span></span><br><span class="line"><span class="comment"> * has changed. Returns &#123;<span class="doctag">@link</span> #POSITION_UNCHANGED&#125; if the position of the given</span></span><br><span class="line"><span class="comment"> * item has not changed or &#123;<span class="doctag">@link</span> #POSITION_NONE&#125; if the item is no longer present</span></span><br><span class="line"><span class="comment"> * in the adapter.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;The default implementation assumes that items will never</span></span><br><span class="line"><span class="comment"> * change position and always returns &#123;<span class="doctag">@link</span> #POSITION_UNCHANGED&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> object Object representing an item, previously returned by a call to</span></span><br><span class="line"><span class="comment"> *               &#123;<span class="doctag">@link</span> #instantiateItem(View, int)&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> object&#x27;s new position index from [0, &#123;<span class="doctag">@link</span> #getCount()&#125;),</span></span><br><span class="line"><span class="comment"> *         &#123;<span class="doctag">@link</span> #POSITION_UNCHANGED&#125; if the object&#x27;s position has not changed,</span></span><br><span class="line"><span class="comment"> *         or &#123;<span class="doctag">@link</span> #POSITION_NONE&#125; if the item is no longer present.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemPosition</span><span class="params">(<span class="meta">@NonNull</span> Object object)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> POSITION_UNCHANGED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>功能需求一個接一個，當初的開發人員就是一個個疊加上去，上層的功能開發時，直接或間接的使用到下層的功能、服務、或介面等，造成強烈的耦合，如下圖：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture2.svg" class="" title="Software Architecture Coupling">
+<br/>
+<br/>
 
-<p>原來 PagerAdapter 的預設是 POSITION_UNCHANGED，這也是告訴自己，這個位置上的內容沒有變喔。小唯立刻在 UpdatableTabAdapter class 中覆蓋這個 function：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemPosition</span><span class="params">(`<span class="keyword">object</span>`: <span class="type">Any</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> PagerAdapter.POSITION_NONE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>圖片中，聯絡人的線上狀態依賴之前 Facebook 整合的程式，Facebook 又依賴下層聯絡人的基本功能，每個功能都是如此的環環相扣，每一次修改，都需要確定對不同功能的影響範圍。到最後，功能越做越多；相依性就越串越大；後面接手的人也越來越痛苦。如果某天需要拔除某個功能，會拉出一串串的相依性，讓整個過程幾乎是難以預估工時以及風險程度。也因如此，程式碼中有需多看似沒用到的程式碼，誰也不敢移除，因為它的確有被引用，但一堆引用點又無法確認到底哪些是有用，哪些是無用的。歷史悠久的程式碼中途已經不知道經過幾手了，許多的當初的合理行為，現在已經變成歷史包袱，到此地步，整個 App 重新設計已經是勢在必行了！</p>
+<h2 id="理想架構"><a href="#理想架構" class="headerlink" title="理想架構"></a>理想架構</h2><p>自從改版規劃確定後，小唯就在四處尋找合適的架構，最後是選用 <a target="_blank" rel="noopener" href="https://github.com/android10">Frnando Cejas（Android10）</a> 的 <a target="_blank" rel="noopener" href="https://github.com/android10/Android-CleanArchitecture">Android Clean Architecture</a>（以下稱 Android10 架構）。因為是幾年前選的架構，所以小唯是用 Java 版的，作者也有移植 Kotlin 版本。</p>
+<p>Android10 架構有幾個重點功能，對於改造架構上有很大的影響：</p>
+<ol>
+<li><p>明確的相依性設計</p>
+<p>首先，這架構上的相依性設計上非常的簡單：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture5.png" class="" title="Dependencies">
 
-<p>重新編譯，檢查模擬器！結果真如預期，任務達成～ 🎉🎉🎉<br><br/></p>
-<p><strong>相關連結：</strong><a target="_blank" rel="noopener" href="https://github.com/wm4n/android-effect-demo"><i class="fab fa-github"></i> Demo 專案</a><br><br/></p>
+<ul>
+<li><p>Entities 是商務邏輯上的最基礎元件，以通訊錄這個 App 來說，Entities 定義了聯絡人的格式，通常是使用 POJO 格式，可由 Clean Architecture 中的 Domain 看得出來，這是個純 Java library，連對 Android 都沒有相依，在 App 中所有行為都是針對 Entities 來做操作。</p>
+</li>
+<li><p>接著 Use cases 定義了 Entities 可以有什麼樣式的操作，例如取得聯絡人列表、聯絡人詳細資訊、新增、刪除等操作。</p>
+</li>
+<li><p>Presenter 則是實作了 App 中的操作邏輯，並把 UI 與 uses cases 串接起來，它本身不限制對應的 UI 要如何呈現，只要符合 presenter 定義的規格。</p>
+</li>
+<li><p>最後，UI 實作了畫面該如何呈現給使用者，它必須符合 presenter 定義的規格，但不限定方式，所以不管是 Activity、Fragment、Dialog、甚至是 console （也許 debug 用）都能使用。</p>
+<br/>
+</li>
+</ul>
+</li>
+<li><p>工作分明的架構</p>
+<p>在 Android10 的 Clean Architecture 規劃了三個模組，分別是：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture3.png" class="" title="Domain, Data and Presentation">
+
+<ul>
+<li><p>Domain 包含了所有商務邏輯上的基礎元件與互動行為的定義，也就是 Entities、資料層的介面接口，以及提供給 Presentation 模組的 Use cases。常見的誤解是，這個模組並不限制資料層面該如何實作，也不管 Uses cases 會被誰使用，如何使用。</p>
+</li>
+<li><p>Data 實際處理資料的來源，資料該從哪裡來、該如何處理、是否該快取等等。只要最後回傳的格式符合 Domain 的定義，資料則是可以從各式來源而來，像是雲端、資料庫、檔案、快取、甚至是模擬數據。</p>
+</li>
+<li><p>Presentation 負責將 Uses cases 的功能，轉為介面提供給使用者。</p>
+<br/>
+</li>
+</ul>
+</li>
+<li><p>易替換的 presentation 模組</p>
+<p>Android10 的 Clean Architecture 在 Presentation 中使用的是 MVP：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture4.png" class="" title="What" alt="s MVP">
+
+<p>如<a target="_blank" rel="noopener" href="https://fernandocejas.com/blog/engineering/2014-09-03-architecting-android-the-clean-way/#presentation-layer">原作者所提</a>，Presentation 層所使用的架構不拘，可以是 MVP，也可是 MVC 或 MVVM，唯一一致的地方只有是都透過 Domain 層的 Use cases 來與資料做互動。</p>
+<br/>
+</li>
+<li><p>reactive 的資料流向</p>
+<p>Clean Architecture 使用 RxJava 來聯繫所有資料的流動，所有來自 data 層的資料都是使用 <a target="_blank" rel="noopener" href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observer.html">Observer</a> 包裝過。RxJava 提供了相當多便捷的操作，像是之前提過的，<a href="../RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/">利用 RxJava 來把多個 API 組成一個結果</a>，或是監測資料是否有更新，並做即時的畫面處理。</p>
+<br/>
+
+</li>
+</ol>
+<h2 id="更新結果"><a href="#更新結果" class="headerlink" title="更新結果"></a>更新結果</h2><p>利用 Clean Architecture 重整後，原本通訊錄的 App 重構新的樣式：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture6.svg" class="" title="New architecture">
+<br/>
+
+<p>原本堆疊的功能，經過重新設計後，Domain 與 Data 的部分被取出來，剩下的則以垂直的方式排在 Domain 層上，原本相互引用的相依性，變成只向下相依，功能之間的依賴，也變成需透過 Domain 間接提供。如此一來，各功能間的介面也得以被抽象出來。新的架構讓原本的 App 變得：</p>
+<ol>
+<li><p>相依性大幅降低，各功能介面被抽象後，更容易開發、維護與測試。</p>
+</li>
+<li><p>Presentation、Domain 跟 Data 切分後，分工方式也更多元，從原本按功能分工的方式，之後也能以不同階層分工，有點類似前端與後端的分工。</p>
+</li>
+<li><p>與企劃規格更容易相互應對。Domain 層內的 Entities 與 Use cases 對應了規格上的元件與行為操作。</p>
+</li>
+</ol>
+<p>新架構花了小唯團隊將近一年的時間，才把所有功能陸續移植，中途還不斷收到需求變更，但靠著 Clean Architecture 架構上的彈性，移植上減少了很多工時的浪費。例如過程中，有一變更是將所原本直接透過 Retrofit 使用線上 API 的存取服務，改由透過 SDK 來存取資料，在這個例子中，只需要修改 Data 層中如何存取資料的方式，Domain 與 Presentation 兩層完全不需要變動。這正是 Clean Architecture 的優勢所在，雖然剛開始資訊架構較複雜，但是等專案成長到一定階段，所有辛苦都是遲早能回收的～<br><br/></p>
+<p><strong>相關連結：</strong><a target="_blank" rel="noopener" href="https://github.com/wm4n/Android-CleanArchitecture"><i class="fab fa-github"></i> Demo 專案</a><br><br/></p>
 <div>
     
         <div style="text-align:left;font-size:1em;">
-<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-question-circle"></i> 下次改用 ViewPager2 吧～ -------------</p>
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-layer-group"></i> 程式架構就是最重要地～ -------------</p>
         </div>
     
 </div>
 <br/>
+
     </div>
 
     
@@ -329,7 +395,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/" title="Android 特效：動態變更標籤元件(TabLayout)">https://wm4n.github.io/Android-特效：動態變更標籤元件-TabLayout/</a>
+    <a href="https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/" title="Android Clean Architecture - 仍然好用的架構">https://wm4n.github.io/Android-Clean-Architecture-仍然好用的架構/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -340,8 +406,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"># Android</a>
-              <a href="/tags/UI/" rel="tag"># UI</a>
+              <a href="/tags/Android-%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B/" rel="tag"># Android, 程式架構</a>
           </div>
 
         
@@ -350,13 +415,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E9%9D%B6%E5%BF%83%E4%BA%BA%E5%85%AC%E5%BC%8F%E8%88%87%E5%90%8E%E7%BF%BC%E6%A3%84%E5%85%B5/" rel="prev" title="「后翼棄兵」是如何說故事 - 靶心人公式">
-      <i class="fa fa-chevron-left"></i> 「后翼棄兵」是如何說故事 - 靶心人公式
+    <a href="/Android-%E7%89%B9%E6%95%88%EF%BC%9ARemoteViews-%E7%9A%84%E6%87%89%E7%94%A8%E5%92%8C%E6%BB%BF%E6%BB%BF%E7%9A%84%E5%9D%91/" rel="prev" title="Android 特效：RemoteViews 的應用和滿滿的坑">
+      <i class="fa fa-chevron-left"></i> Android 特效：RemoteViews 的應用和滿滿的坑
     </a></div>
-      <div class="post-nav-item">
-    <a href="/RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/" rel="next" title="RxJava 特效：API 搭配 zip 的妙用">
-      RxJava 特效：API 搭配 zip 的妙用 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -422,7 +484,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B0%A1%E5%96%AE%E3%80%81%E6%88%96%E4%B8%8D%E7%B0%A1%E5%96%AE"><span class="nav-text">簡單、或不簡單</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%84%8F%E6%83%B3%E4%B8%8D%E5%88%B0%E7%9A%84%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-text">意想不到的解決方案</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E7%89%88%E4%B9%8B%E5%89%8D"><span class="nav-text">改版之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E6%83%B3%E6%9E%B6%E6%A7%8B"><span class="nav-text">理想架構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%B5%90%E6%9E%9C"><span class="nav-text">更新結果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -632,9 +694,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://wm4n.github.io/Android-%E7%89%B9%E6%95%88%EF%BC%9A%E5%8B%95%E6%85%8B%E8%AE%8A%E6%9B%B4%E6%A8%99%E7%B1%A4%E5%85%83%E4%BB%B6-TabLayout/";
-    this.page.identifier = "Android-特效：動態變更標籤元件-TabLayout/";
-    this.page.title = "Android 特效：動態變更標籤元件(TabLayout)";
+    this.page.url = "https://wm4n.github.io/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/";
+    this.page.identifier = "Android-Clean-Architecture-仍然好用的架構/";
+    this.page.title = "Android Clean Architecture - 仍然好用的架構";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

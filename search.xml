@@ -1,6 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Android Clean Architecture - 仍然好用的架構</title>
+    <url>/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/</url>
+    <content><![CDATA[<h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>小唯加入當前的公司後，主要負責一款 Android App 的開發以及維護，那是一款相當有歷史年代的產品，介面是老式的風格、使用了許多 deprecated 的技術、連內部商務邏輯也都幾乎已經不可考了，要不是 Google 要求每年的更新 Android Target SDK 版本，相信有許多部份應該是會更老舊。小唯進公司沒多久後，機緣巧合內部設計師與企劃有對 App 改版的需求，想將產品改造成一個介面更現代化、資訊架構更有條理、以及為將來要推出的新服務事先鋪路，所以小唯也趁此機會，針對 App 的軟體架構進行了一次徹底的打掉重練。<br><br/></p>
+<h2 id="改版之前"><a href="#改版之前" class="headerlink" title="改版之前"></a>改版之前</h2><p>原始版本的 App，是一款集所有需求於一身的龐然大物，內含少說上百種以上的大小功能，但本身可以說是幾乎沒有程式架構可言。試想當年這款產品是怎麼開始的（以下假設這款產品是一個通訊錄 App）：</p>
+<p>2010年，產品企劃：「嗨～ 公司打算將目前線上那款通訊錄服務，上架到當前正在流行的手機平台（Android &amp; iOS），我們打算先做聯絡人的基本功能…」</p>
+<p>一年後，產品企劃：「之前上架的那款 App，反應不錯，我們打算將它與 Facebook 做整合…」</p>
+<p>半年後，產品企劃：「半年前 Facebook 的整合頗受好評，所以我們將另一個通訊錄服務做整合…」</p>
+<p>…<br><br/></p>
+<p>接著，更多的功能不斷上架，即時線上狀態、聯絡人相簿、Instagram 整合，需求一個接一個的來</p>
+<p>最終，這款通訊錄 App 就變成這樣：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture1.svg" class="" title="Software Architecture History">
+<br/>
+<br/>
+
+<p>功能需求一個接一個，當初的開發人員就是一個個疊加上去，上層的功能開發時，直接或間接的使用到下層的功能、服務、或介面等，造成強烈的耦合，如下圖：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture2.svg" class="" title="Software Architecture Coupling">
+<br/>
+<br/>
+
+<p>圖片中，聯絡人的線上狀態依賴之前 Facebook 整合的程式，Facebook 又依賴下層聯絡人的基本功能，每個功能都是如此的環環相扣，每一次修改，都需要確定對不同功能的影響範圍。到最後，功能越做越多；相依性就越串越大；後面接手的人也越來越痛苦。如果某天需要拔除某個功能，會拉出一串串的相依性，讓整個過程幾乎是難以預估工時以及風險程度。也因如此，程式碼中有需多看似沒用到的程式碼，誰也不敢移除，因為它的確有被引用，但一堆引用點又無法確認到底哪些是有用，哪些是無用的。歷史悠久的程式碼中途已經不知道經過幾手了，許多的當初的合理行為，現在已經變成歷史包袱，到此地步，整個 App 重新設計已經是勢在必行了！</p>
+<h2 id="理想架構"><a href="#理想架構" class="headerlink" title="理想架構"></a>理想架構</h2><p>自從改版規劃確定後，小唯就在四處尋找合適的架構，最後是選用 <a href="https://github.com/android10">Frnando Cejas（Android10）</a> 的 <a href="https://github.com/android10/Android-CleanArchitecture">Android Clean Architecture</a>（以下稱 Android10 架構）。因為是幾年前選的架構，所以小唯是用 Java 版的，作者也有移植 Kotlin 版本。</p>
+<p>Android10 架構有幾個重點功能，對於改造架構上有很大的影響：</p>
+<ol>
+<li><p>明確的相依性設計</p>
+<p>首先，這架構上的相依性設計上非常的簡單：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture5.png" class="" title="Dependencies">
+
+<ul>
+<li><p>Entities 是商務邏輯上的最基礎元件，以通訊錄這個 App 來說，Entities 定義了聯絡人的格式，通常是使用 POJO 格式，可由 Clean Architecture 中的 Domain 看得出來，這是個純 Java library，連對 Android 都沒有相依，在 App 中所有行為都是針對 Entities 來做操作。</p>
+</li>
+<li><p>接著 Use cases 定義了 Entities 可以有什麼樣式的操作，例如取得聯絡人列表、聯絡人詳細資訊、新增、刪除等操作。</p>
+</li>
+<li><p>Presenter 則是實作了 App 中的操作邏輯，並把 UI 與 uses cases 串接起來，它本身不限制對應的 UI 要如何呈現，只要符合 presenter 定義的規格。</p>
+</li>
+<li><p>最後，UI 實作了畫面該如何呈現給使用者，它必須符合 presenter 定義的規格，但不限定方式，所以不管是 Activity、Fragment、Dialog、甚至是 console （也許 debug 用）都能使用。</p>
+<br/>
+</li>
+</ul>
+</li>
+<li><p>工作分明的架構</p>
+<p>在 Android10 的 Clean Architecture 規劃了三個模組，分別是：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture3.png" class="" title="Domain, Data and Presentation">
+
+<ul>
+<li><p>Domain 包含了所有商務邏輯上的基礎元件與互動行為的定義，也就是 Entities、資料層的介面接口，以及提供給 Presentation 模組的 Use cases。常見的誤解是，這個模組並不限制資料層面該如何實作，也不管 Uses cases 會被誰使用，如何使用。</p>
+</li>
+<li><p>Data 實際處理資料的來源，資料該從哪裡來、該如何處理、是否該快取等等。只要最後回傳的格式符合 Domain 的定義，資料則是可以從各式來源而來，像是雲端、資料庫、檔案、快取、甚至是模擬數據。</p>
+</li>
+<li><p>Presentation 負責將 Uses cases 的功能，轉為介面提供給使用者。</p>
+<br/>
+</li>
+</ul>
+</li>
+<li><p>易替換的 presentation 模組</p>
+<p>Android10 的 Clean Architecture 在 Presentation 中使用的是 MVP：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture4.png" class="" title="What" alt="s MVP">
+
+<p>如<a href="https://fernandocejas.com/blog/engineering/2014-09-03-architecting-android-the-clean-way/#presentation-layer">原作者所提</a>，Presentation 層所使用的架構不拘，可以是 MVP，也可是 MVC 或 MVVM，唯一一致的地方只有是都透過 Domain 層的 Use cases 來與資料做互動。</p>
+<br/>
+</li>
+<li><p>reactive 的資料流向</p>
+<p>Clean Architecture 使用 RxJava 來聯繫所有資料的流動，所有來自 data 層的資料都是使用 <a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observer.html">Observer</a> 包裝過。RxJava 提供了相當多便捷的操作，像是之前提過的，<a href="../RxJava-%E7%89%B9%E6%95%88%EF%BC%9AAPI-%E6%90%AD%E9%85%8D-zip-%E7%9A%84%E5%A6%99%E7%94%A8/">利用 RxJava 來把多個 API 組成一個結果</a>，或是監測資料是否有更新，並做即時的畫面處理。</p>
+<br/>
+
+</li>
+</ol>
+<h2 id="更新結果"><a href="#更新結果" class="headerlink" title="更新結果"></a>更新結果</h2><p>利用 Clean Architecture 重整後，原本通訊錄的 App 重構新的樣式：</p>
+<img src="/Android-Clean-Architecture-%E4%BB%8D%E7%84%B6%E5%A5%BD%E7%94%A8%E7%9A%84%E6%9E%B6%E6%A7%8B/architecture6.svg" class="" title="New architecture">
+<br/>
+
+<p>原本堆疊的功能，經過重新設計後，Domain 與 Data 的部分被取出來，剩下的則以垂直的方式排在 Domain 層上，原本相互引用的相依性，變成只向下相依，功能之間的依賴，也變成需透過 Domain 間接提供。如此一來，各功能間的介面也得以被抽象出來。新的架構讓原本的 App 變得：</p>
+<ol>
+<li><p>相依性大幅降低，各功能介面被抽象後，更容易開發、維護與測試。</p>
+</li>
+<li><p>Presentation、Domain 跟 Data 切分後，分工方式也更多元，從原本按功能分工的方式，之後也能以不同階層分工，有點類似前端與後端的分工。</p>
+</li>
+<li><p>與企劃規格更容易相互應對。Domain 層內的 Entities 與 Use cases 對應了規格上的元件與行為操作。</p>
+</li>
+</ol>
+<p>新架構花了小唯團隊將近一年的時間，才把所有功能陸續移植，中途還不斷收到需求變更，但靠著 Clean Architecture 架構上的彈性，移植上減少了很多工時的浪費。例如過程中，有一變更是將所原本直接透過 Retrofit 使用線上 API 的存取服務，改由透過 SDK 來存取資料，在這個例子中，只需要修改 Data 層中如何存取資料的方式，Domain 與 Presentation 兩層完全不需要變動。這正是 Clean Architecture 的優勢所在，雖然剛開始資訊架構較複雜，但是等專案成長到一定階段，所有辛苦都是遲早能回收的～<br><br/></p>
+<p><strong>相關連結：</strong><a href="https://github.com/wm4n/Android-CleanArchitecture"><i class="fab fa-github"></i> Demo 專案</a><br><br/></p>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="fas fa-layer-group"></i> 程式架構就是最重要地～ -------------</p>
+        </div>
+    
+</div>
+<br/>
+]]></content>
+      <categories>
+        <category>小唯的故事</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android, 程式架構</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Android 如何設計使用 Adaptive Icon</title>
     <url>/Android-%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88%E4%BD%BF%E7%94%A8-Adaptive-Icon/</url>
     <content><![CDATA[<h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>Adaptive icon 是自 Android 8 新增的 App icon 技術，支援相當多有趣的特效，雖然它已經上市一段時間，但是市面上支援的 App 仍然不多，當看到一個 App icon 不太對勁時，那大概就是沒未 adaptive icon 去量身定做。小唯的團隊雖然已經不是第一次使用，但是每隔一陣子請設計重畫新 icon 時，一開始總是會收到不符合格式的圖檔，小唯再三思考為什麼，終於發現這一切應該是 Google 的文件問題 😑。</p>
