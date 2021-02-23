@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="bEfZVSXZY5SSSqRac3Ke3k-hoa4kTxmziinhN2ciwpU">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wm4n.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Android Room Database 是 Google 官方前幾年推出來的技術，官方也建議開發者使用 Room 而不直接使用 SQLite APIs。小唯的團隊也使用 Room 來取代原本的 SQLite 程式碼，中間遇到了不少大小問題，這篇小唯紀錄自己團隊使用 Room 的一些經驗，方便之後參照...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Room Database 立馬上手就看這篇">
+<meta property="og:url" content="https://wm4n.github.io/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/index.html">
+<meta property="og:site_name" content="Coding Story">
+<meta property="og:description" content="Android Room Database 是 Google 官方前幾年推出來的技術，官方也建議開發者使用 Room 而不直接使用 SQLite APIs。小唯的團隊也使用 Room 來取代原本的 SQLite 程式碼，中間遇到了不少大小問題，這篇小唯紀錄自己團隊使用 Room 的一些經驗，方便之後參照...">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-02-20T08:59:34.000Z">
+<meta property="article:modified_time" content="2021-02-23T06:33:32.132Z">
+<meta property="article:author" content="William">
+<meta property="article:tag" content="Android, Database, Room">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wm4n.github.io/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Android Room Database 立馬上手就看這篇 | Coding Story</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100890409-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-100890409-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Coding Story" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Coding Story</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">在黑暗中寫故事 👻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分類</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://wm4n.github.io/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="William">
+      <meta itemprop="description" content="在黑暗中寫故事 👻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Story">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android Room Database 立馬上手就看這篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-02-20 16:59:34" itemprop="dateCreated datePublished" datetime="2021-02-20T16:59:34+08:00">2021-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2021-02-23 14:33:32" itemprop="dateModified" datetime="2021-02-23T14:33:32+08:00">2021-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">小唯的故事</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B0%8F%E5%94%AF%E7%9A%84%E6%95%85%E4%BA%8B/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Android-Room Database-立馬上手就看這篇/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>12 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言故事"><a href="#前言故事" class="headerlink" title="前言故事"></a>前言故事</h2><p>自從團隊重新打造新 App 開始，小唯就四處查看是否有可用的新技術，Android Jetpack 中的 Room 就是其中之一（話說那時候好像還不是 Part of Jetpack）。Room 是 Google 官方前幾年推出來的技術，官方也建議開發者使用 Room 而不直接使用 SQLite APIs。小唯的團隊當下就開始使用 Room 來取代原本的 SQLite 程式碼，當然途中一定遇到了不少大小問題，也是小唯紀錄這幾篇的主因之一，希望避免再有人浪費時間在這些問題上。</p>
+<div class="note success">
+            <p>（如何從現有的 db 檔來建立在 2.2 版 Room 已有支援，可查看這篇<a target="_blank" rel="noopener" href="https://developer.android.com/training/data-storage/room/prepopulate">官方文章</a>。當初小唯團隊使用時可還沒有，那時是使用 <a target="_blank" rel="noopener" href="https://github.com/humazed/RoomAsset">humazed/RoomAsset</a>。</p>
+          </div>
+
+<h2 id="建立-Room-DB"><a href="#建立-Room-DB" class="headerlink" title="建立 Room DB"></a>建立 Room DB</h2><p>要使用 Room，須先定義 database 中要包含哪些 table，裡面有哪些動作可以執行等，例：</p>
+<figure class="highlight java"><figcaption><span>AppDatabase.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Database(entities = &#123;SearchHistoryEntity.class&#125;, version = 1)</span></span><br><span class="line"><span class="meta">@TypeConverters(&#123;RoomConverter.class&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppDatabase</span> <span class="keyword">extends</span> <span class="title">RoomDatabase</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> SearchHistoryDao <span class="title">searchHistoryDao</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Database(entities = &#123;SearchHistoryEntity.class&#125;, version = 1)</code> 定義這個 database 內含有什麼 table，和 table 中有什麼欄位。</p>
+<p><code>@TypeConverters(&#123;RoomConverter.class&#125;)</code> 定義當 Room 遇到不能識別的類型，該要如何做轉換。</p>
+<p><code>SearchHistoryDao</code> 定義 database 支援什麼類型的 database 動作，像是新增、刪除、讀取，通常一個動作就是一個 sqlite statement。<br><br/></p>
+<h2 id="定義-Entity-資料"><a href="#定義-Entity-資料" class="headerlink" title="定義 Entity 資料"></a>定義 Entity 資料</h2><p>Entity 將相關的資料欄位合併在一起，要比擬的話可以看做 sqlite 中的 table row 。先來看 <code>SearchHistoryEntity.java</code>，這個 entity 定義了搜尋紀錄的資料，內容很直覺的。這邊有特地舉出使用三個非 sqlite primitive 的欄位：</p>
+<figure class="highlight java"><figcaption><span>SearchHistoryEntity.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity(tableName = &quot;search_history&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SearchHistoryEntity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">TYPE</span> </span>&#123;</span><br><span class="line">    TYPE_ONE,</span><br><span class="line">    TYPE_TWO,</span><br><span class="line">    TYPE_THREE,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 像是 table 中的 _id 欄位</span></span><br><span class="line">  <span class="meta">@PrimaryKey(autoGenerate = true)</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> uid;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// enum 類型，需透過 Room converter 來轉換，後面會接受</span></span><br><span class="line">  <span class="meta">@ColumnInfo(name = &quot;type&quot;)</span></span><br><span class="line">  <span class="keyword">private</span> TYPE type;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 一般 String，沒什麼特別的</span></span><br><span class="line">  <span class="meta">@ColumnInfo(name = &quot;display_text&quot;)</span></span><br><span class="line">  <span class="keyword">private</span> String displayText;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 透過 JSON dictionary 來把文字跟 Map 互相轉換</span></span><br><span class="line">  <span class="meta">@ColumnInfo(name = &quot;query_string&quot;)</span></span><br><span class="line">  <span class="keyword">private</span> Map&lt;String, String&gt; queryString;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ISO 8601 的日期格式</span></span><br><span class="line">  <span class="meta">@ColumnInfo(name = &quot;date&quot;)</span></span><br><span class="line">  <span class="keyword">private</span> String date;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">SearchHistoryEntity</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      TYPE type,</span></span></span><br><span class="line"><span class="function"><span class="params">      String displayText,</span></span></span><br><span class="line"><span class="function"><span class="params">      Map&lt;String, String&gt; queryString,</span></span></span><br><span class="line"><span class="function"><span class="params">      String date)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.type = type;</span><br><span class="line">    <span class="keyword">this</span>.displayText = displayText;</span><br><span class="line">    <span class="keyword">this</span>.queryString = queryString;</span><br><span class="line">    <span class="keyword">this</span>.date = date;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Getters and setters are required for Room to work.</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getUid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> uid;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUid</span><span class="params">(<span class="keyword">int</span> uid)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.uid = uid;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> TYPE <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> type;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setType</span><span class="params">(TYPE type)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.type = type;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getDisplayText</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> displayText;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDisplayText</span><span class="params">(String displayText)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.displayText = displayText;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Map&lt;String, String&gt; <span class="title">getQueryString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> queryString;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQueryString</span><span class="params">(Map&lt;String, String&gt; queryString)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.queryString = <span class="keyword">new</span> HashMap&lt;&gt;(queryString);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> date;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(String date)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.date = date;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h2 id="DAO-定義資料操作方式"><a href="#DAO-定義資料操作方式" class="headerlink" title="DAO 定義資料操作方式"></a>DAO 定義資料操作方式</h2><p>有了資料格式與轉換方式，接著需要的就是定義 DAO (Data Access Object)，這步將原本 sqlite 中會使用的 sqlite statement 轉為 API。依照 Room 的方式，只需把 sqlite statement 放在 annotation 上：</p>
+<figure class="highlight java"><figcaption><span>SearchHistoryDao.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Dao</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SearchHistoryDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 取得所有 Search History 紀錄，依時間先後順序排序</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Query(&quot;SELECT * FROM search_history order by timestamp desc&quot;)</span></span><br><span class="line">  Flowable&lt;List&lt;SearchHistoryEntity&gt;&gt; getAll();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 取得某幾筆 Search History 紀錄，依時間先後順序排序</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Query(&quot;SELECT * FROM search_history WHERE uid IN (:ids) order by timestamp desc&quot;)</span></span><br><span class="line">  Flowable&lt;List&lt;SearchHistoryEntity&gt;&gt; getByIds(<span class="keyword">int</span>[] ids);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 取得某特定類型的 Search History 紀錄，依時間先後順序排序</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Query(&quot;SELECT * FROM search_history WHERE type = :type order by timestamp desc&quot;)</span></span><br><span class="line">  Flowable&lt;List&lt;SearchHistoryEntity&gt;&gt; getByType(SearchHistoryEntity.TYPE type);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 取得某特定類型的 Search History 紀錄，指定最多取得的筆數，依時間先後順序排序</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Query(&quot;SELECT * FROM search_history WHERE type = :type order by timestamp desc LIMIT :limit&quot;)</span></span><br><span class="line">  Flowable&lt;List&lt;SearchHistoryEntity&gt;&gt; getByTypeWithLimit(SearchHistoryEntity.TYPE type, <span class="keyword">int</span> limit);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 新增 Search History 至 Room</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Insert</span></span><br><span class="line">  Long[] insertAll(SearchHistoryEntity... searchHistories);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 刪除某筆 Search History</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Delete</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(SearchHistoryEntity searchHistory)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 刪除所有 Search History</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Query(&quot;DELETE FROM search_history&quot;)</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">clearTable</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h2 id="使用-Converter-來互換資料類型"><a href="#使用-Converter-來互換資料類型" class="headerlink" title="使用 Converter 來互換資料類型"></a>使用 Converter 來互換資料類型</h2><p>如果資料中有使用到一些非基本的資料類型，像是 Text、Integer、Numeric、Blob 等，就需要用 Converter 協助轉換程式中的物件到 Room DB 的資料結構（上述的那幾種），例如說，程式中可能直接使用 Date 物件，但如果要存到 Room DB 就需要轉換為像 2021-02-22T18:01Z 的 String。</p>
+<p>來看看 RoomConverter.java 怎麼樣把 Map 轉 Json 存入、Enum 物件轉為 int  存入、還有 Date 物件轉為 ISO 8601 String 存入：</p>
+<figure class="highlight java"><figcaption><span>RoomConverter.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoomConverter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 將 Map 轉為 Json，並存入 Room</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">mapToJson</span><span class="params">(Map&lt;String, String&gt; params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JSONObject(params).toString();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 Json 從 Room 讀取出，並轉換為 Map 給 App 使用</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title">jsonToMap</span><span class="params">(String json)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (TextUtils.isEmpty(json)) &#123;</span><br><span class="line">      <span class="keyword">return</span> Collections.emptyMap();</span><br><span class="line">    &#125;</span><br><span class="line">    Gson gson = <span class="keyword">new</span> Gson();</span><br><span class="line">    Type type = <span class="keyword">new</span> TypeToken&lt;Map&lt;String, String&gt;&gt;() &#123;&#125;.getType();</span><br><span class="line">    <span class="keyword">return</span> gson.fromJson(json, type);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 App 中的 Enum 物件轉為 Room 可服用的格式</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">searchHistoryTypeToInt</span><span class="params">(SearchHistoryEntity.TYPE type)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> type.ordinal();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 Room 的資料轉為 App 可識得的 Enum 物件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> SearchHistoryEntity.<span class="function">TYPE <span class="title">intToSearchHistoryType</span><span class="params">(<span class="keyword">int</span> type)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> SearchHistoryEntity.TYPE.values()[type];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 Room 的 ISO 8601 的日期字串轉為 OffsetDateTime 物件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> OffsetDateTime <span class="title">toOffsetDateTime</span><span class="params">(String offsetDateTime)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!TextUtils.isEmpty(offsetDateTime)) &#123;</span><br><span class="line">      <span class="keyword">return</span> OffsetDateTime.from(dateTimeFormatter.parse(offsetDateTime));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 OffsetDateTime 物件轉為 Room 可服用的 ISO 8601 的日期字串</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@TypeConverter</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">fromOffsetDateTime</span><span class="params">(OffsetDateTime dateTime)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> dateTimeFormatter.format(dateTime);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h2 id="設定-sqlite-trigger"><a href="#設定-sqlite-trigger" class="headerlink" title="設定 sqlite trigger"></a>設定 sqlite trigger</h2><p>以往用 sqlite 時，常會定義一些自動化 trigger 來調整資料內容，但是換作 Room 後，使用的方法就有點不太一樣。新的方式要定義在 <code>AppDatabase.java</code> 中，插入 callback 在 DB 建立時獲取通知並建立 trigger：</p>
+<figure class="highlight java"><figcaption><span>AppDatabase.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Database(entities = &#123;SearchHistoryEntity.class&#125;, version = 1)</span></span><br><span class="line"><span class="meta">@TypeConverters(&#123;RoomConverter.class&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppDatabase</span> <span class="keyword">extends</span> <span class="title">RoomDatabase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> SearchHistoryDao <span class="title">searchHistoryDao</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AppDatabase <span class="title">getAppDatabase</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sInstance == <span class="keyword">null</span>) &#123;</span><br><span class="line">      RoomDatabase.Builder&lt;AppDatabase&gt; builder =</span><br><span class="line">          Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, <span class="string">&quot;userdata&quot;</span>);</span><br><span class="line">      builder.addCallback(callback);</span><br><span class="line">      sInstance = builder.build();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sInstance;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 可利用 callback 取得 DB 建立的時機，在建立時一併建立 trigger</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Callback callback =</span><br><span class="line">      <span class="keyword">new</span> Callback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(<span class="meta">@NonNull</span> SupportSQLiteDatabase db)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">super</span>.onCreate(db);</span><br><span class="line"></span><br><span class="line">          <span class="comment">// 最多保留 200 筆搜尋紀錄，每當有新搜尋紀錄新增，就刪除 200 筆後的資料</span></span><br><span class="line">          db.execSQL(</span><br><span class="line">              <span class="string">&quot;CREATE TRIGGER IF NOT EXISTS truncate_search_history AFTER INSERT ON search_history BEGIN &quot;</span></span><br><span class="line">                  + <span class="string">&quot;delete from search_history where timestamp &lt; &quot;</span></span><br><span class="line">                  + <span class="string">&quot;    (select timestamp from search_history order by timestamp desc limit 1 offset 200);&quot;</span></span><br><span class="line">                  + <span class="string">&quot;END;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onOpen</span><span class="params">(<span class="meta">@NonNull</span> SupportSQLiteDatabase db)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">super</span>.onOpen(db);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br/>
+
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><p>小唯團隊開始使用 Room 時，那時技術還很新，很多功能支援不是很完善，像是不支援 prepolutate 資料庫。但這些日子下來，可以看到 Room 的支援度越來越好，不但加入了 Android Jetpack，更新也很頻繁。下次專案上如有需要，應該還是會推薦團隊使用。<br><br/></p>
+<div>
+    
+        <div style="text-align:left;font-size:1em;">
+<p style="text-align:center;color: #ccc;">------------- 本文结束 <i class="far fa-laugh-squint"></i> 話說為什麼叫做 Room～ -------------</p>
+        </div>
+    
+</div>
+<br/>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>William
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://wm4n.github.io/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/" title="Android Room Database 立馬上手就看這篇">https://wm4n.github.io/Android-Room Database-立馬上手就看這篇/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android-Database-Room/" rel="tag"># Android, Database, Room</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Android-Room-Database-%E5%A6%82%E4%BD%95%E9%96%8B%E5%95%9F%E7%8F%BE%E6%9C%89%E7%9A%84-sqlite-DB/" rel="prev" title="Android Room Database 立馬上手就看這篇">
+      <i class="fa fa-chevron-left"></i> Android Room Database 立馬上手就看這篇
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%E6%95%85%E4%BA%8B"><span class="nav-text">前言故事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-Room-DB"><span class="nav-text">建立 Room DB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9-Entity-%E8%B3%87%E6%96%99"><span class="nav-text">定義 Entity 資料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAO-%E5%AE%9A%E7%BE%A9%E8%B3%87%E6%96%99%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="nav-text">DAO 定義資料操作方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Converter-%E4%BE%86%E4%BA%92%E6%8F%9B%E8%B3%87%E6%96%99%E9%A1%9E%E5%9E%8B"><span class="nav-text">使用 Converter 來互換資料類型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A-sqlite-trigger"><span class="nav-text">設定 sqlite trigger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%83%E5%BE%97"><span class="nav-text">心得</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">William</p>
+  <div class="site-description" itemprop="description">在黑暗中寫故事 👻</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wm4n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wm4n" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wmandev@gmail.com" title="E-Mail → mailto:wmandev@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">by William (wmandev@gmail.com)</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb5e18906c1d31f" async="async"></script>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyDGEIOX1zR-Jr_1OwDoR-E6NCfczjayxNk',
+      projectId: 'coding-story'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://coding-story.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://wm4n.github.io/Android-Room%20Database-%E7%AB%8B%E9%A6%AC%E4%B8%8A%E6%89%8B%E5%B0%B1%E7%9C%8B%E9%80%99%E7%AF%87/";
+    this.page.identifier = "Android-Room Database-立馬上手就看這篇/";
+    this.page.title = "Android Room Database 立馬上手就看這篇";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://coding-story.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
